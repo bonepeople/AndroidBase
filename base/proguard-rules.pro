@@ -19,3 +19,12 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+#ViewBinding
+-keepclassmembers class * implements androidx.viewbinding.ViewBinding{
+  inflate(android.view.LayoutInflater);
+}
+
+#ImmersionBar
+-keep class com.gyf.immersionbar.* {*;}
+-dontwarn com.gyf.immersionbar.**
