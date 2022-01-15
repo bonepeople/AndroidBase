@@ -1,11 +1,15 @@
 package com.bonepeople.android.base.simple
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.bonepeople.android.base.ViewBindingActivity
+import com.bonepeople.android.base.simple.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
+    override fun initView() {
+        views.root
+    }
+
+    override fun initData(savedInstanceState: Bundle?) {
+
     }
 }
