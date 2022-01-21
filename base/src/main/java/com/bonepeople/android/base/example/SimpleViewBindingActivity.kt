@@ -53,12 +53,10 @@ class SimpleViewBindingActivity : ViewBindingActivity<ActivitySimpleBinding>() {
 
     companion object {
         private const val CURRENT_INDEX = "currentIndex"
-        fun open(activity: Activity?, index: Int) {
-            activity?.let {
-                Intent(it, this::class.java.enclosingClass).run {
-                    putExtra(CURRENT_INDEX, index)
-                    it.startActivity(this)
-                }
+        fun open(activity: Activity?, index: Int) = activity?.let {
+            Intent(it, this::class.java.enclosingClass).run {
+                putExtra(CURRENT_INDEX, index)
+                it.startActivity(this)
             }
         }
     }

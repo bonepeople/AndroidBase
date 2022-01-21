@@ -1,5 +1,6 @@
 package com.bonepeople.android.base
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -35,7 +36,7 @@ abstract class ViewBindingFragment<V : ViewBinding> : Fragment(), CoroutineScope
         val method = subclass.getDeclaredMethod("inflate", LayoutInflater::class.java)
         method.invoke(null, layoutInflater) as V
     }
-    protected val loadingDialog by lazy { SimpleLoadingDialog(requireActivity()) }
+    protected open val loadingDialog: Dialog by lazy { SimpleLoadingDialog(requireActivity()) }
 
     @CallSuper
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -52,12 +53,12 @@ abstract class ViewBindingFragment<V : ViewBinding> : Fragment(), CoroutineScope
      *
      * 会在onViewCreated中被调用
      */
-    abstract fun initView()
+    protected abstract fun initView()
 
     /**
      * 初始化数据
      *
      * 会在onViewCreated中被调用
      */
-    abstract fun initData(savedInstanceState: Bundle?)
+    protected abstract fun initData(savedInstanceState: Bundle?)
 }

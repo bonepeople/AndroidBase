@@ -1,5 +1,6 @@
 package com.bonepeople.android.base
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -36,7 +37,7 @@ abstract class ViewBindingActivity<V : ViewBinding> : AppCompatActivity(), Corou
         val method = subclass.getDeclaredMethod("inflate", LayoutInflater::class.java)
         method.invoke(null, layoutInflater) as V
     }
-    protected val loadingDialog by lazy { SimpleLoadingDialog(this) }
+    protected open val loadingDialog: Dialog by lazy { SimpleLoadingDialog(this) }
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,12 +76,12 @@ abstract class ViewBindingActivity<V : ViewBinding> : AppCompatActivity(), Corou
      *
      * 会在onCreate中被调用
      */
-    abstract fun initView()
+    protected abstract fun initView()
 
     /**
      * 初始化数据
      *
      * 会在onCreate中被调用
      */
-    abstract fun initData(savedInstanceState: Bundle?)
+    protected abstract fun initData(savedInstanceState: Bundle?)
 }
