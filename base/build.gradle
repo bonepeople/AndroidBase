@@ -47,6 +47,9 @@ dependencies {
     //ImmersionBar https://github.com/gyf-dev/ImmersionBar
     implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
     implementation 'com.gyf.immersionbar:immersionbar-ktx:3.0.0'
+
+    //paging https://developer.android.google.cn/topic/libraries/architecture/paging/v3-overview
+    implementation("androidx.paging:paging-runtime-ktx:3.0.1")
 }
 
 afterEvaluate {
