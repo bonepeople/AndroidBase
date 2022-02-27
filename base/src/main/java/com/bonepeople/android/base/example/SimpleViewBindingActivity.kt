@@ -43,6 +43,11 @@ class SimpleViewBindingActivity : ViewBindingActivity<ActivitySimpleBinding>() {
         super.onBackPressed()
     }
 
+    override fun onDestroy() {
+        //...
+        super.onDestroy()
+    }
+
     private fun updateData() {
         //...
     }

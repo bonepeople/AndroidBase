@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/titleViewBackground">
+
+    <com.bonepeople.android.dimensionutil.StatusBarHolder
+        android:id="@+id/statusBarHolder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/statusBarBackground"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/titleBarHeight"
+        android:background="@drawable/titleBarBackground"
+        app:layout_constraintTop_toBottomOf="@id/statusBarHolder">
+
+        <ImageView
+            android:id="@+id/imageView_title_back"
+            android:layout_width="@dimen/titleBarHeight"
+            android:layout_height="@dimen/titleBarHeight"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/description_title_back"
+            android:padding="10dp"
+            android:src="@drawable/icon_back"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/titleColor"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/textView_title_name"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/titleBarHeight"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="@string/defaultTitleText"
+            android:textColor="@color/titleColor"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/imageView_title_action"
+            app:layout_constraintStart_toEndOf="@id/imageView_title_back"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_goneMarginEnd="@dimen/pagePadding"
+            app:layout_goneMarginStart="@dimen/pagePadding" />
+
+        <ImageView
+            android:id="@+id/imageView_title_action"
+            android:layout_width="@dimen/titleBarHeight"
+            android:layout_height="@dimen/titleBarHeight"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/description_title_action"
+            android:padding="10dp"
+            android:src="@drawable/icon_more"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/titleColor"
+            tools:visibility="visible" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="titleColor">#B3000000</color>
+    <drawable name="titleViewBackground">@null</drawable>
+    <drawable name="statusBarBackground">#FF42A5F5</drawable>
+    <drawable name="titleBarBackground">#FF90CAF9</drawable>
+    <dimen name="titleBarHeight">56dp</dimen>
+    <dimen name="pagePadding">16dp</dimen>
+    <string name="defaultTitleText">Title</string>
+    <string name="description_title_back">Back</string>
+    <string name="description_title_action">Action</string>
+</resources>
