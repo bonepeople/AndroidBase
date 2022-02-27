@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import com.bonepeople.android.base.ViewBindingActivity
 import com.bonepeople.android.base.databinding.ActivitySimpleBinding
 import com.bonepeople.android.localbroadcastutil.LocalBroadcastUtil
@@ -15,6 +16,11 @@ class SimpleViewBindingActivity : ViewBindingActivity<ActivitySimpleBinding>() {
     private var currentIndex = 1
 
     override fun initView() {
+        views.titleView.imageViewTitleBack.run {
+            setOnClickListener { onBackPressed() }
+            visibility = View.VISIBLE
+        }
+        views.titleView.textViewTitleName.text = "SimpleActivity"
         views.buttonSubmit.setOnClickListener { submit() }
     }
 
