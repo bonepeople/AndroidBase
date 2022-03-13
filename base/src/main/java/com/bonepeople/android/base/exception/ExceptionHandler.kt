@@ -14,13 +14,17 @@ import java.util.*
  * + 需要调用[setCrashAction]方法设置捕获后的操作，处理完相关操作后会杀死当前进程
  */
 object ExceptionHandler : Thread.UncaughtExceptionHandler {
+    private var defaultHandler: Thread.UncaughtExceptionHandler? = null
     private var crashAction: suspend (exceptionInfo: ExceptionInfo, exception: Throwable) -> Unit = { _, _ -> }
     override fun uncaughtException(thread: Thread, exception: Throwable) {
         AppLog.error("uncaughtException @ ${thread.name}", exception)
         runBlocking {
-            crashAction.invoke(makeExceptionInfo(exception), exception)
+            kotlin.runCatching {
+                crashAction.invoke(makeExceptionInfo(exception), exception)
+            }
         }
-        android.os.Process.killProcess(android.os.Process.myPid())
+        defaultHandler?.uncaughtException(thread, exception)
+//        android.os.Process.killProcess(android.os.Process.myPid())
     }
 
     /**
@@ -30,6 +34,7 @@ object ExceptionHandler : Thread.UncaughtExceptionHandler {
      */
     fun setCrashAction(action: suspend (exceptionInfo: ExceptionInfo, exception: Throwable) -> Unit) {
         crashAction = action
+        defaultHandler = Thread.getDefaultUncaughtExceptionHandler()
         Thread.setDefaultUncaughtExceptionHandler(this)
     }
 
