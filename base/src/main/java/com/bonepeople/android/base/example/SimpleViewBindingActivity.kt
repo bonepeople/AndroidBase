@@ -9,6 +9,7 @@ import android.view.View
 import com.bonepeople.android.base.ViewBindingActivity
 import com.bonepeople.android.base.databinding.ActivitySimpleBinding
 import com.bonepeople.android.localbroadcastutil.LocalBroadcastUtil
+import com.bonepeople.android.widget.util.singleClick
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -17,11 +18,11 @@ class SimpleViewBindingActivity : ViewBindingActivity<ActivitySimpleBinding>() {
 
     override fun initView() {
         views.titleView.imageViewTitleBack.run {
-            setOnClickListener { onBackPressed() }
+            singleClick { onBackPressed() }
             visibility = View.VISIBLE
         }
         views.titleView.textViewTitleName.text = "SimpleActivity"
-        views.buttonSubmit.setOnClickListener { submit() }
+        views.buttonSubmit.singleClick { submit() }
     }
 
     override fun initData(savedInstanceState: Bundle?) {
