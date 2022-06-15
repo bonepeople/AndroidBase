@@ -40,6 +40,12 @@ class SimpleViewBindingActivity : ViewBindingActivity<ActivitySimpleBinding>() {
         }
     }
 
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        currentIndex = intent.getIntExtra(CURRENT_INDEX, 1)
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putInt(CURRENT_INDEX, currentIndex)
         super.onSaveInstanceState(outState)
