@@ -1,27 +1,28 @@
 package com.bonepeople.android.base.exception
 
+import android.content.Context
 import android.os.Build
+import androidx.startup.Initializer
 import com.bonepeople.android.widget.ApplicationHolder
 import com.bonepeople.android.widget.util.AppLog
 import com.bonepeople.android.widget.util.AppTime
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.runBlocking
 import java.util.*
 
 /**
- * 异常处理类
+ * 崩溃处理类
  *
- * 可用于java全局未捕获异常的捕获处理，也可以用于对异常信息的封装
- * + 需要调用[setCrashAction]方法设置捕获后的操作，处理完相关操作后会杀死当前进程
+ * + 可用于java全局未捕获异常的捕获处理，也可以用于对异常信息的封装
+ * + 可调用[setCrashAction]方法设置捕获后的操作
  */
-object ExceptionHandler : Thread.UncaughtExceptionHandler {
+object CrashHandler : Thread.UncaughtExceptionHandler {
     private var defaultHandler: Thread.UncaughtExceptionHandler? = null
-    private var crashAction: suspend (exceptionInfo: ExceptionInfo, exception: Throwable) -> Unit = { _, _ -> }
+    private var crashAction: (message: String, exception: Throwable) -> Unit = CrashHandler::defaultCrashAction
+
     override fun uncaughtException(thread: Thread, exception: Throwable) {
-        AppLog.error("uncaughtException @ ${thread.name}", exception)
-        runBlocking {
-            kotlin.runCatching {
-                crashAction.invoke(makeExceptionInfo(exception), exception)
-            }
+        kotlin.runCatching {
+            crashAction.invoke("uncaughtException @ ${thread.name}", exception)
         }
         defaultHandler?.uncaughtException(thread, exception)
 //        android.os.Process.killProcess(android.os.Process.myPid())
@@ -29,13 +30,20 @@ object ExceptionHandler : Thread.UncaughtExceptionHandler {
 
     /**
      * 设置捕获全局异常后的处理逻辑
-     *
-     * 调用此方法会设置全局异常捕获的处理类为当前实例
      */
-    fun setCrashAction(action: suspend (exceptionInfo: ExceptionInfo, exception: Throwable) -> Unit) {
+    fun setCrashAction(action: (message: String, exception: Throwable) -> Unit) {
         crashAction = action
-        defaultHandler = Thread.getDefaultUncaughtExceptionHandler()
-        Thread.setDefaultUncaughtExceptionHandler(this)
+    }
+
+    /**
+     * 默认处理方式
+     */
+    fun defaultCrashAction(message: String, exception: Throwable) {
+        runBlocking {
+            coroutineScope {
+                AppLog.error(message, exception)
+            }
+        }
     }
 
     /**
@@ -55,18 +63,34 @@ object ExceptionHandler : Thread.UncaughtExceptionHandler {
             model = Build.MODEL
             this.message = exception.message ?: ""
             if (withStack) {
+                stack.add(exception.toString())
                 saveStackTrace(exception, stack)
             }
         }
     }
 
     private fun saveStackTrace(exception: Throwable, stackList: LinkedList<String>) {
-        stackList.add(exception.toString())
         exception.stackTrace.forEach {
             stackList.add(it.toString())
         }
         exception.cause?.let {
+            stackList.add("Caused by: $it")
             saveStackTrace(it, stackList)
+        }
+    }
+
+    /**
+     * ExceptionHandler的初始化逻辑
+     */
+    class StartUp : Initializer<CrashHandler> {
+        override fun create(context: Context): CrashHandler {
+            defaultHandler = Thread.getDefaultUncaughtExceptionHandler()
+            Thread.setDefaultUncaughtExceptionHandler(CrashHandler)
+            return CrashHandler
+        }
+
+        override fun dependencies(): List<Class<out Initializer<*>>> {
+            return listOf(ApplicationHolder.StartUp::class.java)
         }
     }
 }
