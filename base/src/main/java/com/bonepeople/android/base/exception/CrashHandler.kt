@@ -1,13 +1,19 @@
 package com.bonepeople.android.base.exception
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
+import androidx.core.content.FileProvider
 import androidx.startup.Initializer
 import com.bonepeople.android.widget.ApplicationHolder
 import com.bonepeople.android.widget.util.AppLog
 import com.bonepeople.android.widget.util.AppTime
+import com.google.gson.GsonBuilder
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.runBlocking
+import java.io.File
+import java.io.FileOutputStream
 import java.util.*
 
 /**
@@ -42,6 +48,26 @@ object CrashHandler : Thread.UncaughtExceptionHandler {
         runBlocking {
             coroutineScope {
                 AppLog.error(message, exception)
+                val exceptionInfo = makeExceptionInfo(exception)
+                val webContent = GsonBuilder().setPrettyPrinting().create().toJson(exceptionInfo)
+                val path = File(ApplicationHolder.instance.cacheDir, "crashReport")
+                path.mkdirs()
+                val file = File(path, "error_${exceptionInfo.timestamp}.txt")
+                FileOutputStream(file).use {
+                    it.write(webContent.toByteArray())
+                }
+                val uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    val authority = ApplicationHolder.instance.packageName + ".crash.provider"
+                    FileProvider.getUriForFile(ApplicationHolder.instance, authority, file)
+                } else {
+                    Uri.fromFile(file)
+                }
+                Intent(Intent.ACTION_VIEW).let {
+                    it.data = uri
+                    it.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    ApplicationHolder.instance.startActivity(it)
+                }
             }
         }
     }
@@ -74,7 +100,7 @@ object CrashHandler : Thread.UncaughtExceptionHandler {
             stackList.add(it.toString())
         }
         exception.cause?.let {
-            stackList.add("Caused by: $it")
+            stackList.add("** Caused by: $it")
             saveStackTrace(it, stackList)
         }
     }
