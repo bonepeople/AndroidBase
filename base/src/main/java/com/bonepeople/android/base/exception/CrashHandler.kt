@@ -2,7 +2,6 @@ package com.bonepeople.android.base.exception
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import androidx.core.content.FileProvider
 import androidx.startup.Initializer
@@ -47,26 +46,28 @@ object CrashHandler : Thread.UncaughtExceptionHandler {
     fun defaultCrashAction(message: String, exception: Throwable) {
         runBlocking {
             coroutineScope {
+                //输出错误日志到控制台
                 AppLog.error(message, exception)
+                //收集错误信息并生成日志内容
                 val exceptionInfo = makeExceptionInfo(exception)
                 val webContent = GsonBuilder().setPrettyPrinting().create().toJson(exceptionInfo)
+                //将错误日志写到缓存目录
                 val path = File(ApplicationHolder.instance.cacheDir, "crashReport")
                 path.mkdirs()
                 val file = File(path, "error_${exceptionInfo.timestamp}.txt")
                 FileOutputStream(file).use {
                     it.write(webContent.toByteArray())
                 }
-                val uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    val authority = ApplicationHolder.instance.packageName + ".crash.provider"
-                    FileProvider.getUriForFile(ApplicationHolder.instance, authority, file)
-                } else {
-                    Uri.fromFile(file)
-                }
+                //通过浏览器展示日志内容
+                val authority = ApplicationHolder.instance.packageName + ".crash.provider"
+                val uri = FileProvider.getUriForFile(ApplicationHolder.instance, authority, file)
                 Intent(Intent.ACTION_VIEW).let {
                     it.data = uri
                     it.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    ApplicationHolder.instance.startActivity(it)
+                    kotlin.runCatching {
+                        ApplicationHolder.instance.startActivity(it)
+                    }
                 }
             }
         }
@@ -74,6 +75,7 @@ object CrashHandler : Thread.UncaughtExceptionHandler {
 
     /**
      * 获取异常的数据信息
+     * + 会获取当前线程的名称存储为异常线程
      * @param exception 需要处理的异常
      * @param withStack 是否包括调用栈信息，默认包含
      * @return 提取异常信息及当前环境信息并封装的数据类，后续可以在[ExceptionInfo.extra]中放入额外数据
