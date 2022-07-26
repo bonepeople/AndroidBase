@@ -6,6 +6,9 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.bonepeople.android.base.ViewBindingActivity
 import com.bonepeople.android.base.databinding.ActivityStandardBinding
+import com.bonepeople.android.widget.ActivityHolder
+import com.bonepeople.android.widget.activity.result.IntentResult
+import com.bonepeople.android.widget.activity.result.launch
 import java.util.*
 
 class StandardActivity : ViewBindingActivity<ActivityStandardBinding>() {
@@ -27,12 +30,32 @@ class StandardActivity : ViewBindingActivity<ActivityStandardBinding>() {
         private const val FRAGMENT_KEY = "FRAGMENT_KEY"
         private val fragmentContainer = HashMap<String, Fragment>()
 
-        fun open(activity: Activity?, fragment: Fragment) = activity?.let {
+        /**
+         * 通过[startActivity]方法打开一个新的页面并加载提供的[Fragment]
+         */
+        fun open(fragment: Fragment) = ActivityHolder.getTopActivity()?.let {
             val fragmentKey = UUID.randomUUID().toString()
             fragmentContainer[fragmentKey] = fragment
             Intent(it, this::class.java.enclosingClass).run {
                 putExtra(FRAGMENT_KEY, fragmentKey)
                 it.startActivity(this)
+            }
+        }
+
+        /**
+         * 通过[startActivityForResult]方法打开一个新的页面并加载提供的[Fragment]
+         * @return 返回[IntentResult]，用于处理[Activity]返回的结果
+         */
+        fun call(fragment: Fragment): IntentResult {
+            val activity = ActivityHolder.getTopActivity()
+            return if (activity == null) {
+                throw IllegalStateException("No Activity to call startActivityForResult")
+            } else {
+                val fragmentKey = UUID.randomUUID().toString()
+                fragmentContainer[fragmentKey] = fragment
+                Intent(activity, this::class.java.enclosingClass).apply {
+                    putExtra(FRAGMENT_KEY, fragmentKey)
+                }.launch()
             }
         }
 

@@ -18,6 +18,6 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
     }
 
     private fun openStandardActivity() {
-        StandardActivity.open(this, TestFragment())
+        StandardActivity.open(TestFragment())
     }
 }

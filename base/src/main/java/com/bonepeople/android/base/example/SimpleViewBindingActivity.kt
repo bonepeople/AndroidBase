@@ -1,6 +1,5 @@
 package com.bonepeople.android.base.example
 
-import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -9,6 +8,7 @@ import android.view.View
 import com.bonepeople.android.base.ViewBindingActivity
 import com.bonepeople.android.base.databinding.ActivitySimpleBinding
 import com.bonepeople.android.localbroadcastutil.LocalBroadcastUtil
+import com.bonepeople.android.widget.ActivityHolder
 import com.bonepeople.android.widget.util.singleClick
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -71,7 +71,7 @@ class SimpleViewBindingActivity : ViewBindingActivity<ActivitySimpleBinding>() {
 
     companion object {
         private const val CURRENT_INDEX = "currentIndex"
-        fun open(activity: Activity?, index: Int) = activity?.let {
+        fun open(index: Int) = ActivityHolder.getTopActivity()?.let {
             Intent(it, this::class.java.enclosingClass).run {
                 putExtra(CURRENT_INDEX, index)
                 it.startActivity(this)
