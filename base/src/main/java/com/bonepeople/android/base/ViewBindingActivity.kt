@@ -1,14 +1,13 @@
 package com.bonepeople.android.base
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
+import com.bonepeople.android.base.view.CustomLoadingDialog
 import com.bonepeople.android.widget.util.AppKeyboard
-import com.bonepeople.android.widget.view.SimpleLoadingDialog
 import com.gyf.immersionbar.ktx.immersionBar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -37,7 +36,7 @@ abstract class ViewBindingActivity<V : ViewBinding> : AppCompatActivity(), Corou
         val method = subclass.getDeclaredMethod("inflate", LayoutInflater::class.java)
         method.invoke(null, layoutInflater) as V
     }
-    protected open val loadingDialog: Dialog by lazy { SimpleLoadingDialog(this) }
+    protected val loadingDialog by lazy { CustomLoadingDialog(supportFragmentManager) }
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
