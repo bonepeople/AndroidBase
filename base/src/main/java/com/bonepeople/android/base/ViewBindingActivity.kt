@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
 import androidx.viewbinding.ViewBinding
 import com.bonepeople.android.base.view.CustomLoadingDialog
 import com.bonepeople.android.widget.util.AppKeyboard
@@ -36,7 +37,7 @@ abstract class ViewBindingActivity<V : ViewBinding> : AppCompatActivity(), Corou
         val method = subclass.getDeclaredMethod("inflate", LayoutInflater::class.java)
         method.invoke(null, layoutInflater) as V
     }
-    protected val loadingDialog by lazy { CustomLoadingDialog(supportFragmentManager) }
+    protected val loadingDialog: DialogFragment by lazy { CustomLoadingDialog(supportFragmentManager) }
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
