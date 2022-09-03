@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.bonepeople.android.base.view.CustomLoadingDialog
@@ -36,7 +35,7 @@ abstract class ViewBindingFragment<V : ViewBinding> : Fragment(), CoroutineScope
         val method = subclass.getDeclaredMethod("inflate", LayoutInflater::class.java)
         method.invoke(null, layoutInflater) as V
     }
-    protected val loadingDialog: DialogFragment by lazy { CustomLoadingDialog(childFragmentManager) }
+    protected val loadingDialog by lazy { CustomLoadingDialog(childFragmentManager) }
 
     @CallSuper
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
