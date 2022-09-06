@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.view.View
 import com.bonepeople.android.base.ViewBindingActivity
 import com.bonepeople.android.base.databinding.ActivitySimpleBinding
-import com.bonepeople.android.localbroadcastutil.LocalBroadcastUtil
+import com.bonepeople.android.localbroadcastutil.LocalBroadcastHelper
 import com.bonepeople.android.widget.ActivityHolder
 import com.bonepeople.android.widget.util.singleClick
 import kotlinx.coroutines.delay
@@ -26,7 +26,7 @@ class SimpleViewBindingActivity : ViewBindingActivity<ActivitySimpleBinding>() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        LocalBroadcastUtil.registerReceiver(this, Receiver(), "EXAMPLE")
+        LocalBroadcastHelper().setLifecycleOwner(this).setReceiver(Receiver()).addAction("EXAMPLE").register()
         currentIndex = intent.getIntExtra(CURRENT_INDEX, 1)
         savedInstanceState?.let {
             currentIndex = it.getInt(CURRENT_INDEX)
@@ -80,8 +80,8 @@ class SimpleViewBindingActivity : ViewBindingActivity<ActivitySimpleBinding>() {
     }
 
     private inner class Receiver : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            when (intent?.action) {
+        override fun onReceive(context: Context, intent: Intent) {
+            when (intent.action) {
                 "EXAMPLE" -> {
                     //...
                 }

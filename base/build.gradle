@@ -40,7 +40,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
 
-    api 'com.github.bonepeople:AndroidWidget:1.3.4'
+    api 'com.github.bonepeople:AndroidWidget:1.4.0'
 
     // ImmersionBar https://github.com/gyf-dev/ImmersionBar
     implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
