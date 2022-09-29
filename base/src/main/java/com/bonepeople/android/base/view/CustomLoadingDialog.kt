@@ -7,6 +7,7 @@ import com.bonepeople.android.base.databinding.DialogCustomLoadingBinding
 class CustomLoadingDialog(manager: FragmentManager) : ViewBindingDialogFragment<DialogCustomLoadingBinding>(manager) {
 
     override fun initView() {
+        views.root
         isCancelable = false
     }
 }
