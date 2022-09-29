@@ -1,4 +1,4 @@
-package com.bonepeople.android.base.example
+package com.bonepeople.android.base.example.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 

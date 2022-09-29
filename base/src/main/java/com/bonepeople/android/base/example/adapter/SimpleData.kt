@@ -1,4 +1,4 @@
-package com.bonepeople.android.base.example
+package com.bonepeople.android.base.example.adapter
 
 class SimpleData {
     var id = 1

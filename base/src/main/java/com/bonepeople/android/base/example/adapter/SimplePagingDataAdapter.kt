@@ -1,12 +1,13 @@
-package com.bonepeople.android.base.example
+package com.bonepeople.android.base.example.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bonepeople.android.base.databinding.ItemSimpleListBinding
 import com.bonepeople.android.widget.util.singleClick
 
-class SimpleRecyclerViewAdapter(private val list: ArrayList<Any>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SimplePagingDataAdapter : PagingDataAdapter<SimpleData, RecyclerView.ViewHolder>(SimpleDataComparator) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return DataHolder(ItemSimpleListBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
@@ -15,17 +16,17 @@ class SimpleRecyclerViewAdapter(private val list: ArrayList<Any>) : RecyclerView
         when (holder) {
             is DataHolder -> {
                 holder.binding.let { views ->
-                    val data = list[position]
-                    //...
-                    views.root.singleClick {
+                    getItem(position)?.let { data ->
+                        views.textViewContent.text = data.name
                         //...
+                        views.root.singleClick {
+                            //...
+                        }
                     }
                 }
             }
         }
     }
-
-    override fun getItemCount() = list.size
 
     private class DataHolder(val binding: ItemSimpleListBinding) : RecyclerView.ViewHolder(binding.root)
 }
