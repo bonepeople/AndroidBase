@@ -1,4 +1,4 @@
-package com.bonepeople.android.base.simple.fragment
+package com.bonepeople.android.base.simple.ui
 
 import android.os.Bundle
 import com.bonepeople.android.base.ViewBindingFragment
