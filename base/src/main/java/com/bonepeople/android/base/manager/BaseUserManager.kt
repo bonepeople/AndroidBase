@@ -23,7 +23,7 @@ abstract class BaseUserManager<D> {
         if (!isLogin) {
             AppStorage.putString(USER_ID, resolveUserId(userInfo))
             AppStorage.putString(USER_INFO, AppGson.toJson(userInfo))
-            LocalBroadcastUtil.sendBroadcast("USER_LOGIN")
+            LocalBroadcastUtil.sendBroadcast(BroadcastAction.USER_LOGIN)
         }
     }
 
@@ -31,7 +31,7 @@ abstract class BaseUserManager<D> {
         if (isLogin) {
             AppStorage.putString(USER_ID, resolveUserId(defaultUserInfo))
             AppStorage.putString(USER_INFO, "")
-            LocalBroadcastUtil.sendBroadcast("USER_LOGOUT")
+            LocalBroadcastUtil.sendBroadcast(BroadcastAction.USER_LOGOUT)
         }
     }
 
