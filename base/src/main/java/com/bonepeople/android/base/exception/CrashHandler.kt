@@ -5,11 +5,15 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.content.FileProvider
 import androidx.startup.Initializer
+import com.bonepeople.android.shade.Protector
 import com.bonepeople.android.widget.ApplicationHolder
+import com.bonepeople.android.widget.util.AppGson
 import com.bonepeople.android.widget.util.AppLog
 import com.bonepeople.android.widget.util.AppTime
 import com.google.gson.GsonBuilder
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.io.FileOutputStream
@@ -22,11 +26,22 @@ import java.util.*
  */
 object CrashHandler : Thread.UncaughtExceptionHandler {
     private var defaultHandler: Thread.UncaughtExceptionHandler? = null
-    private var crashAction: (message: String, exception: Throwable) -> Unit = CrashHandler::defaultCrashAction
+    private var crashAction: suspend (message: String, exception: Throwable) -> Unit = CrashHandler::defaultCrashAction
 
     override fun uncaughtException(thread: Thread, exception: Throwable) {
-        kotlin.runCatching {
-            crashAction.invoke("uncaughtException @ ${thread.name}", exception)
+        runBlocking {
+            kotlin.runCatching {
+                coroutineScope {
+                    launch {
+                        crashAction("uncaughtException @ ${thread.name}", exception)
+                    }
+                    launch {
+                        val exceptionInfo = makeExceptionInfo(exception)
+                        val json = AppGson.toJson(exceptionInfo)
+                        Protector.save("shade.exception", 1, "崩溃异常", json)
+                    }
+                }
+            }
         }
         defaultHandler?.uncaughtException(thread, exception)
 //        android.os.Process.killProcess(android.os.Process.myPid())
@@ -35,16 +50,16 @@ object CrashHandler : Thread.UncaughtExceptionHandler {
     /**
      * 设置捕获全局异常后的处理逻辑
      */
-    fun setCrashAction(action: (message: String, exception: Throwable) -> Unit) {
+    fun setCrashAction(action: suspend (message: String, exception: Throwable) -> Unit) {
         crashAction = action
     }
 
     /**
      * 默认处理方式
      */
-    fun defaultCrashAction(message: String, exception: Throwable) {
-        runBlocking {
-            coroutineScope {
+    suspend fun defaultCrashAction(message: String, exception: Throwable) {
+        coroutineScope {
+            launch(Dispatchers.IO) {
                 //输出错误日志到控制台
                 AppLog.error(message, exception)
                 //收集错误信息并生成日志内容
