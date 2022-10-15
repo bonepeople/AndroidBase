@@ -24,7 +24,3 @@
 -keepclassmembers class * implements androidx.viewbinding.ViewBinding{
   inflate(android.view.LayoutInflater);
 }
-
-#ImmersionBar
--keep class com.gyf.immersionbar.* {*;}
--dontwarn com.gyf.immersionbar.**
