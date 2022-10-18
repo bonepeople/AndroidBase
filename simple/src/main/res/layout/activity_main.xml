@@ -24,7 +24,7 @@
             android:padding="@dimen/pagePadding">
 
             <Button
-                android:id="@+id/button_open_activity"
+                android:id="@+id/buttonOpenActivity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="StandardActivity.open" />

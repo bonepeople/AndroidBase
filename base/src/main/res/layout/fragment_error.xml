@@ -10,7 +10,7 @@
         layout="@layout/view_title" />
 
     <TextView
-        android:id="@+id/textView_error"
+        android:id="@+id/textViewError"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:padding="@dimen/pagePadding"
