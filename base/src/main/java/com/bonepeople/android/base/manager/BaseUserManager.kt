@@ -3,7 +3,7 @@ package com.bonepeople.android.base.manager
 import com.bonepeople.android.localbroadcastutil.LocalBroadcastUtil
 import com.bonepeople.android.widget.util.AppGson
 import com.bonepeople.android.widget.util.AppStorage
-import com.google.gson.reflect.TypeToken
+import java.lang.reflect.ParameterizedType
 
 abstract class BaseUserManager<D> {
     val userId: String
@@ -11,7 +11,9 @@ abstract class BaseUserManager<D> {
     val userInfo: D
         get() {
             return kotlin.runCatching {
-                AppGson.gson.fromJson<D>(AppStorage.getString(USER_INFO), object : TypeToken<D>() {}.type)
+                val superclass = javaClass.genericSuperclass as ParameterizedType
+                val subclass = superclass.actualTypeArguments[0] as Class<*>
+                AppGson.gson.fromJson<D>(AppStorage.getString(USER_INFO), subclass)
             }.getOrNull() ?: defaultUserInfo
         }
     val isLogin: Boolean

@@ -3,3 +3,6 @@
   inflate(android.view.LayoutInflater);
   inflate(android.view.LayoutInflater,android.view.ViewGroup,boolean);
 }
+
+#BaseUserManager
+-keepclassmembernames class com.bonepeople.android.base.manager.BaseUserManager
