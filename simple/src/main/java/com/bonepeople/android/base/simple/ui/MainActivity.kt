@@ -8,15 +8,11 @@ import com.bonepeople.android.widget.util.singleClick
 
 class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
     override fun initView() {
-        views.titleView.textViewTitleName.text = "SimpleActivity"
-        views.buttonOpenActivity.singleClick { openStandardActivity() }
+        views.titleView.textViewTitleName.text = "BaseTestActivity"
+        views.buttonUserManager.singleClick { StandardActivity.open(UserInfoFragment()) }
     }
 
     override fun initData(savedInstanceState: Bundle?) {
 
-    }
-
-    private fun openStandardActivity() {
-        StandardActivity.open(TestFragment())
     }
 }

@@ -24,10 +24,10 @@
             android:padding="@dimen/pagePadding">
 
             <Button
-                android:id="@+id/buttonOpenActivity"
+                android:id="@+id/buttonUserManager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="StandardActivity.open" />
+                android:text="测试UserManager" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
