@@ -20,6 +20,7 @@ abstract class ViewBindingRecyclerAdapter<V : ViewBinding, D> : RecyclerView.Ada
         val subclass = superclass.actualTypeArguments[0] as Class<*>
         val method = subclass.getDeclaredMethod("inflate", LayoutInflater::class.java, ViewGroup::class.java, Boolean::class.javaPrimitiveType)
         val binding = method.invoke(null, LayoutInflater.from(parent.context), parent, false) as V
+        onCreateView(binding)
         return DataHolder(binding)
     }
 
@@ -38,6 +39,12 @@ abstract class ViewBindingRecyclerAdapter<V : ViewBinding, D> : RecyclerView.Ada
      * @param position 当前视图的位置
      */
     protected abstract fun updateView(views: V, data: D, position: Int)
+
+    /**
+     * 视图首次创建时的回调函数
+     * @param views 视图所对应的ViewBinding类实例
+     */
+    protected open fun onCreateView(views: V) {}
 
     private class DataHolder<V : ViewBinding>(val binding: V) : RecyclerView.ViewHolder(binding.root)
 }
