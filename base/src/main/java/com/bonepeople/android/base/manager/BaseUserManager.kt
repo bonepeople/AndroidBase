@@ -21,18 +21,21 @@ abstract class BaseUserManager<D> {
             return userId.isNotBlank()
         }
 
-    fun login(userInfo: D) {
-        if (!isLogin) {
-            AppStorage.putString(USER_ID, resolveUserId(userInfo))
-            AppStorage.putString(USER_INFO, AppGson.toJson(userInfo))
+    fun login(info: D) {
+        val login = !isLogin
+        AppStorage.putString(USER_INFO, AppGson.toJson(info))
+        AppStorage.putString(USER_ID, resolveUserId(info))
+        if (login) {
             LocalBroadcastUtil.sendBroadcast(BroadcastAction.USER_LOGIN)
+        } else {
+            LocalBroadcastUtil.sendBroadcast(BroadcastAction.USER_UPDATE)
         }
     }
 
     fun logout() {
         if (isLogin) {
-            AppStorage.putString(USER_ID, resolveUserId(defaultUserInfo))
             AppStorage.putString(USER_INFO, "")
+            AppStorage.putString(USER_ID, resolveUserId(defaultUserInfo))
             LocalBroadcastUtil.sendBroadcast(BroadcastAction.USER_LOGOUT)
         }
     }
