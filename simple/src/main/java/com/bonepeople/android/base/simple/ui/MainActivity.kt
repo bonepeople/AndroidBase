@@ -10,6 +10,7 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
     override fun initView() {
         views.titleView.textViewTitleName.text = "BaseTestActivity"
         views.buttonUserManager.singleClick { StandardActivity.open(UserInfoFragment()) }
+        views.buttonProductList.singleClick { StandardActivity.open(ProductListFragment()) }
     }
 
     override fun initData(savedInstanceState: Bundle?) {
