@@ -9,6 +9,7 @@ import androidx.annotation.CallSuper
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.viewbinding.ViewBinding
+import com.bonepeople.android.shade.Protector
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -21,10 +22,12 @@ abstract class ViewBindingDialogFragment<V : ViewBinding>(private val manager: F
 
     @Suppress("UNCHECKED_CAST")
     protected val views by lazy {
-        val superclass = javaClass.genericSuperclass as ParameterizedType
-        val subclass = superclass.actualTypeArguments[0] as Class<*>
-        val method = subclass.getDeclaredMethod("inflate", LayoutInflater::class.java)
-        method.invoke(null, layoutInflater) as V
+        Protector.protect {
+            val superclass = javaClass.genericSuperclass as ParameterizedType
+            val subclass = superclass.actualTypeArguments[0] as Class<*>
+            val method = subclass.getDeclaredMethod("inflate", LayoutInflater::class.java)
+            method.invoke(null, layoutInflater) as V
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View = views.root

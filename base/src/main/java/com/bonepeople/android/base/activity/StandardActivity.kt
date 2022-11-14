@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.bonepeople.android.base.ViewBindingActivity
 import com.bonepeople.android.base.databinding.ActivityStandardBinding
+import com.bonepeople.android.shade.Protector
 import com.bonepeople.android.widget.ActivityHolder
 import com.bonepeople.android.widget.activity.result.IntentResult
 import com.bonepeople.android.widget.activity.result.launch
@@ -18,7 +19,7 @@ class StandardActivity : ViewBindingActivity<ActivityStandardBinding>() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        val fragmentKey = intent.getStringExtra(FRAGMENT_KEY) ?: "default_key"
+        val fragmentKey = Protector.protect { intent.getStringExtra(FRAGMENT_KEY) ?: "default_key" }
         var fragment = supportFragmentManager.findFragmentByTag(fragmentKey)
         if (fragment == null) {
             fragment = getFragment(fragmentKey)

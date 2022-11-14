@@ -7,6 +7,7 @@ import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import com.bonepeople.android.base.view.CustomLoadingDialog
+import com.bonepeople.android.shade.Protector
 import com.bonepeople.android.widget.util.AppKeyboard
 import com.gyf.immersionbar.ktx.immersionBar
 import kotlinx.coroutines.CoroutineScope
@@ -30,10 +31,12 @@ abstract class ViewBindingActivity<V : ViewBinding> : AppCompatActivity(), Corou
 
     @Suppress("UNCHECKED_CAST")
     protected val views: V by lazy {
-        val superclass = javaClass.genericSuperclass as ParameterizedType
-        val subclass = superclass.actualTypeArguments[0] as Class<*>
-        val method = subclass.getDeclaredMethod("inflate", LayoutInflater::class.java)
-        method.invoke(null, layoutInflater) as V
+        Protector.protect {
+            val superclass = javaClass.genericSuperclass as ParameterizedType
+            val subclass = superclass.actualTypeArguments[0] as Class<*>
+            val method = subclass.getDeclaredMethod("inflate", LayoutInflater::class.java)
+            method.invoke(null, layoutInflater) as V
+        }
     }
     protected val loadingDialog by lazy { CustomLoadingDialog(supportFragmentManager) }
 

@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
+import com.bonepeople.android.shade.Protector
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -16,12 +17,14 @@ abstract class ViewBindingRecyclerAdapter<V : ViewBinding, D> : RecyclerView.Ada
     protected abstract val list: List<D>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val superclass = javaClass.genericSuperclass as ParameterizedType
-        val subclass = superclass.actualTypeArguments[0] as Class<*>
-        val method = subclass.getDeclaredMethod("inflate", LayoutInflater::class.java, ViewGroup::class.java, Boolean::class.javaPrimitiveType)
-        val binding = method.invoke(null, LayoutInflater.from(parent.context), parent, false) as V
-        onCreateView(binding)
-        return DataHolder(binding)
+        Protector.protect {
+            val superclass = javaClass.genericSuperclass as ParameterizedType
+            val subclass = superclass.actualTypeArguments[0] as Class<*>
+            val method = subclass.getDeclaredMethod("inflate", LayoutInflater::class.java, ViewGroup::class.java, Boolean::class.javaPrimitiveType)
+            val binding = method.invoke(null, LayoutInflater.from(parent.context), parent, false) as V
+            onCreateView(binding)
+            return DataHolder(binding)
+        }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
