@@ -38,7 +38,7 @@ object CrashHandler : Thread.UncaughtExceptionHandler {
                     launch {
                         val exceptionInfo = makeExceptionInfo(exception)
                         val json = AppGson.toJson(exceptionInfo)
-                        Protector.save("shade.exception", 1, "崩溃异常", json)
+                        Protector.c5("shade.exception", 1, "崩溃异常", json)
                     }
                 }
             }
