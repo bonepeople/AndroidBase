@@ -1,9 +1,11 @@
 package com.bonepeople.android.base
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
@@ -27,6 +29,11 @@ abstract class ViewBindingFragment<V : ViewBinding> : Fragment(), CoroutineScope
             viewLifecycleOwner.lifecycle.addObserver(CoroutineLifecycleObserver(it))
         }
     }
+    private val onBackListener = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            onBackPressed()
+        }
+    }
 
     @Suppress("UNCHECKED_CAST")
     protected val views: V by lazy {
@@ -47,6 +54,16 @@ abstract class ViewBindingFragment<V : ViewBinding> : Fragment(), CoroutineScope
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initView()
         initData(savedInstanceState)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        requireActivity().onBackPressedDispatcher.addCallback(this, onBackListener)
+    }
+
+    open fun onBackPressed() {
+        onBackListener.isEnabled = false
+        requireActivity().onBackPressed()
     }
 
     /**
