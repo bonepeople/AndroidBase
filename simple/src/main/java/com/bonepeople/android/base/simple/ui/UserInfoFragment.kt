@@ -14,7 +14,8 @@ class UserInfoFragment : ViewBindingFragment<FragmentUserInfoBinding>() {
     override fun initView() {
         views.titleView.textViewTitleName.text = "UserManager"
         views.buttonLogin.singleClick {
-            val userInfo = UserInfo().apply { id = AppRandom.randomInt(1..100).toString();name = "Jack" }
+            UserManager.token = AppRandom.randomString(16)
+            val userInfo = UserInfo().apply { id = AppRandom.randomInt(1..100).toString();name = AppRandom.randomString(4) }
             UserManager.login(userInfo)
         }
         views.buttonLogout.singleClick { UserManager.logout() }
@@ -27,6 +28,7 @@ class UserInfoFragment : ViewBindingFragment<FragmentUserInfoBinding>() {
 
     private fun updateView() {
         views.textViewStatus.text = UserManager.isLogin.toString()
+        views.textViewToken.text = UserManager.token
         views.textViewId.text = UserManager.userId
         views.textViewName.text = UserManager.userInfo.name
     }
