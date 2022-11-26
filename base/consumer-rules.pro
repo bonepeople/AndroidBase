@@ -5,7 +5,9 @@
 }
 
 #BaseUserManager
--keepclassmembernames class com.bonepeople.android.base.manager.BaseUserManager
+-keepclassmembers class * extends com.bonepeople.android.base.manager.BaseUserManager{
+ <init>(...);
+}
 
 #ViewBindingRecyclerAdapter
 -keepclassmembers class * extends com.bonepeople.android.base.ViewBindingRecyclerAdapter{

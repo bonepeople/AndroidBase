@@ -5,7 +5,10 @@ import com.bonepeople.android.widget.util.AppGson
 import com.bonepeople.android.widget.util.AppStorage
 import java.lang.reflect.ParameterizedType
 
+@Suppress("UNCHECKED_CAST")
 abstract class BaseUserManager<D> {
+    private val userClass: Class<*> = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0] as Class<*>
+    private val defaultUserInfo: D = userClass.newInstance() as D
     var token: String = USER_TOKEN
         get() {
             if (field == USER_TOKEN) {
@@ -20,13 +23,8 @@ abstract class BaseUserManager<D> {
     val userId: String
         get() = AppStorage.getString(USER_ID)
     val userInfo: D
-        get() {
-            return kotlin.runCatching {
-                val superclass = javaClass.genericSuperclass as ParameterizedType
-                val subclass = superclass.actualTypeArguments[0] as Class<*>
-                AppGson.gson.fromJson<D>(AppStorage.getString(USER_INFO), subclass)
-            }.getOrNull() ?: defaultUserInfo
-        }
+        get() = AppGson.gson.fromJson<D>(AppStorage.getString(USER_INFO), userClass) ?: defaultUserInfo
+
     val isLogin: Boolean
         get() {
             return userId.isNotBlank()
@@ -52,7 +50,6 @@ abstract class BaseUserManager<D> {
         }
     }
 
-    abstract val defaultUserInfo: D
     abstract fun resolveUserId(userInfo: D): String
 
     companion object {
