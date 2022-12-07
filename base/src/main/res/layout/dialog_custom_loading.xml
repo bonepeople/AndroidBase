@@ -10,6 +10,7 @@
     <ProgressBar
         android:layout_width="80dp"
         android:layout_height="80dp"
+        android:indeterminateTint="?android:attr/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
