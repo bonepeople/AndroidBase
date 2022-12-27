@@ -25,11 +25,18 @@ class StandardActivity : ViewBindingActivity<ActivityStandardBinding>() {
             fragment = getFragment(fragmentKey)
             supportFragmentManager.beginTransaction().add(views.fragmentContainerViewActivity.id, fragment, fragmentKey).commit()
         }
+        onInit?.invoke(savedInstanceState)
+    }
+
+    override fun setStatusBar() {
+        statusBar?.invoke(this) ?: run { super.setStatusBar() }
     }
 
     companion object {
         private const val FRAGMENT_KEY = "FRAGMENT_KEY"
         private val fragmentContainer = HashMap<String, Fragment>()
+        var statusBar: (StandardActivity.() -> Unit)? = null
+        var onInit: ((savedInstanceState: Bundle?) -> Unit)? = null
 
         /**
          * 通过[startActivity]方法打开一个新的页面并加载提供的[Fragment]
