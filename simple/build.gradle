@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+    namespace 'com.bonepeople.android.base.simple'
     compileSdk rootProject.androidConfig.compileSdk
 
     defaultConfig {
