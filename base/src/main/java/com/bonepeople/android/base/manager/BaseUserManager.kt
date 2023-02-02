@@ -23,7 +23,7 @@ abstract class BaseUserManager<D> {
     val userId: String
         get() = AppStorage.getString(USER_ID)
     val userInfo: D
-        get() = AppGson.gson.fromJson<D>(AppStorage.getString(USER_INFO), userClass) ?: defaultUserInfo
+        get() = AppGson.defaultGson.fromJson<D>(AppStorage.getString(USER_INFO), userClass) ?: defaultUserInfo
 
     val isLogin: Boolean
         get() {
