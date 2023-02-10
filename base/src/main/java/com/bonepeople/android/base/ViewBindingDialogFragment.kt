@@ -9,7 +9,9 @@ import androidx.annotation.CallSuper
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.viewbinding.ViewBinding
+import com.bonepeople.android.base.databinding.DialogContainerBinding
 import com.bonepeople.android.shade.Protector
+import com.bonepeople.android.widget.util.gone
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -19,18 +21,26 @@ import java.lang.reflect.ParameterizedType
  */
 abstract class ViewBindingDialogFragment<V : ViewBinding>(private val manager: FragmentManager) : DialogFragment() {
     private var closing = false
+    private val container by lazy { DialogContainerBinding.inflate(layoutInflater) }
 
     @Suppress("UNCHECKED_CAST")
     protected val views by lazy {
         Protector.protect {
             val superclass = javaClass.genericSuperclass as ParameterizedType
             val subclass = superclass.actualTypeArguments[0] as Class<*>
-            val method = subclass.getDeclaredMethod("inflate", LayoutInflater::class.java)
-            method.invoke(null, layoutInflater) as V
+            val method = subclass.getDeclaredMethod("inflate", LayoutInflater::class.java, ViewGroup::class.java, Boolean::class.javaPrimitiveType)
+            method.invoke(null, layoutInflater, container.root, true) as V
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View = views.root
+    override fun onCreateView(inflater: LayoutInflater, group: ViewGroup?, savedInstanceState: Bundle?): View {
+        val params = views.root.layoutParams
+        if (params.width != ViewGroup.LayoutParams.MATCH_PARENT)
+            container.viewHorizontal.gone()
+        if (params.height != ViewGroup.LayoutParams.MATCH_PARENT)
+            container.viewVertical.gone()
+        return container.root
+    }
 
     @CallSuper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,7 +56,7 @@ abstract class ViewBindingDialogFragment<V : ViewBinding>(private val manager: F
     }
 
     override fun onDestroyView() {
-        (views.root.parent as? ViewGroup)?.removeView(views.root)
+        (container.root.parent as? ViewGroup)?.removeView(container.root)
         super.onDestroyView()
     }
 
