@@ -42,7 +42,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'com.github.bonepeople:Shade:1.2.3'
 
-    api 'com.github.bonepeople:AndroidWidget:1.4.6'
+    api 'com.github.bonepeople:AndroidWidget:1.4.7'
 
     // ImmersionBar https://github.com/gyf-dev/ImmersionBar
     api 'com.geyifeng.immersionbar:immersionbar:3.2.2'
