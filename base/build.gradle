@@ -42,14 +42,14 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'com.github.bonepeople:Shade:1.2.3'
 
-    api 'com.github.bonepeople:AndroidWidget:1.4.7'
+    api 'com.github.bonepeople:AndroidWidget:1.4.8'
 
     // ImmersionBar https://github.com/gyf-dev/ImmersionBar
     api 'com.geyifeng.immersionbar:immersionbar:3.2.2'
     api 'com.geyifeng.immersionbar:immersionbar-ktx:3.2.2'
 
     // Paging https://developer.android.google.cn/topic/libraries/architecture/paging/v3-overview
-    implementation("androidx.paging:paging-runtime-ktx:3.0.1")
+    implementation("androidx.paging:paging-runtime-ktx:3.1.1")
 
     // AppStartup https://developer.android.google.cn/topic/libraries/app-startup?hl=zh-cn
     implementation "androidx.startup:startup-runtime:1.1.1"
