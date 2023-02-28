@@ -1,5 +1,7 @@
 package com.bonepeople.android.base.example.adapter
 
+import androidx.recyclerview.widget.DiffUtil
+
 class SimpleData {
     var id = 1
     var name = ""
@@ -23,5 +25,15 @@ class SimpleData {
         result = 31 * result + name.hashCode()
         result = 31 * result + value.hashCode()
         return result
+    }
+
+    object Comparator : DiffUtil.ItemCallback<SimpleData>() {
+        override fun areItemsTheSame(oldItem: SimpleData, newItem: SimpleData): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: SimpleData, newItem: SimpleData): Boolean {
+            return oldItem == newItem
+        }
     }
 }
