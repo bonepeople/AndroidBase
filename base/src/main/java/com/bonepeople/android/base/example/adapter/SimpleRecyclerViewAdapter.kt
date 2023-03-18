@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bonepeople.android.base.databinding.ItemSimpleListBinding
-import com.bonepeople.android.widget.util.singleClick
+import com.bonepeople.android.widget.util.AppView.singleClick
 
 class SimpleRecyclerViewAdapter(private val list: ArrayList<SimpleData>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

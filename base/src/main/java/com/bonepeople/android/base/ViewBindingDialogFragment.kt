@@ -11,7 +11,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.viewbinding.ViewBinding
 import com.bonepeople.android.base.databinding.DialogContainerBinding
 import com.bonepeople.android.shade.Protector
-import com.bonepeople.android.widget.util.gone
+import com.bonepeople.android.widget.util.AppView.gone
 import java.lang.reflect.ParameterizedType
 
 /**

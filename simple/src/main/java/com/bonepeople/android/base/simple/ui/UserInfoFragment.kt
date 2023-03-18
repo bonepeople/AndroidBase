@@ -8,7 +8,7 @@ import com.bonepeople.android.base.simple.databinding.FragmentUserInfoBinding
 import com.bonepeople.android.base.simple.global.UserManager
 import com.bonepeople.android.localbroadcastutil.LocalBroadcastHelper
 import com.bonepeople.android.widget.util.AppRandom
-import com.bonepeople.android.widget.util.singleClick
+import com.bonepeople.android.widget.util.AppView.singleClick
 
 class UserInfoFragment : ViewBindingFragment<FragmentUserInfoBinding>() {
     override fun initView() {

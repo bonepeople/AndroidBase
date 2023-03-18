@@ -8,8 +8,8 @@ import com.bonepeople.android.base.ViewBindingActivity
 import com.bonepeople.android.base.databinding.ActivitySimpleBinding
 import com.bonepeople.android.localbroadcastutil.LocalBroadcastHelper
 import com.bonepeople.android.widget.ActivityHolder
-import com.bonepeople.android.widget.util.show
-import com.bonepeople.android.widget.util.singleClick
+import com.bonepeople.android.widget.util.AppView.show
+import com.bonepeople.android.widget.util.AppView.singleClick
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

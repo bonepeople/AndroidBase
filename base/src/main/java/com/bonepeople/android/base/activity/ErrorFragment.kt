@@ -3,8 +3,8 @@ package com.bonepeople.android.base.activity
 import android.os.Bundle
 import com.bonepeople.android.base.ViewBindingFragment
 import com.bonepeople.android.base.databinding.FragmentErrorBinding
-import com.bonepeople.android.widget.util.show
-import com.bonepeople.android.widget.util.singleClick
+import com.bonepeople.android.widget.util.AppView.show
+import com.bonepeople.android.widget.util.AppView.singleClick
 
 class ErrorFragment : ViewBindingFragment<FragmentErrorBinding>() {
     override fun initView() {

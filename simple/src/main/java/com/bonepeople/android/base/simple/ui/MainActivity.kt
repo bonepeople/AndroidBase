@@ -4,7 +4,7 @@ import android.os.Bundle
 import com.bonepeople.android.base.ViewBindingActivity
 import com.bonepeople.android.base.activity.StandardActivity
 import com.bonepeople.android.base.simple.databinding.ActivityMainBinding
-import com.bonepeople.android.widget.util.singleClick
+import com.bonepeople.android.widget.util.AppView.singleClick
 
 class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
     override fun initView() {

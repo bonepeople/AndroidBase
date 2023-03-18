@@ -7,7 +7,7 @@ import com.bonepeople.android.base.simple.adapter.ProductListAdapter
 import com.bonepeople.android.base.simple.data.ProductInfo
 import com.bonepeople.android.base.simple.databinding.FragmentProductListBinding
 import com.bonepeople.android.widget.util.AppRandom
-import com.bonepeople.android.widget.util.singleClick
+import com.bonepeople.android.widget.util.AppView.singleClick
 import com.bonepeople.android.widget.view.LinearItemDecoration
 import kotlinx.coroutines.launch
 

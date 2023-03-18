@@ -20,13 +20,13 @@ import java.lang.reflect.ParameterizedType
 abstract class ViewBindingRefreshAdapter<V : ViewBinding, D>(diff: DiffUtil.ItemCallback<D>) : ListAdapter<D, RecyclerView.ViewHolder>(diff) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        Protector.protect {
+        return Protector.protect {
             val superclass = javaClass.genericSuperclass as ParameterizedType
             val subclass = superclass.actualTypeArguments[0] as Class<*>
             val method = subclass.getDeclaredMethod("inflate", LayoutInflater::class.java, ViewGroup::class.java, Boolean::class.javaPrimitiveType)
             val binding = method.invoke(null, LayoutInflater.from(parent.context), parent, false) as V
             onCreateView(binding)
-            return DataHolder(binding)
+            DataHolder(binding)
         }
     }
 
