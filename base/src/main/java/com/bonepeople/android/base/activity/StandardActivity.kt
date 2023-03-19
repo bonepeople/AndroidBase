@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import com.bonepeople.android.base.ViewBindingActivity
+import com.bonepeople.android.base.viewbinding.ViewBindingActivity
 import com.bonepeople.android.base.databinding.ActivityStandardBinding
 import com.bonepeople.android.shade.Protector
 import com.bonepeople.android.widget.ActivityHolder

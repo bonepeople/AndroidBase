@@ -10,11 +10,11 @@
 }
 
 #ViewBindingRecyclerAdapter
--keepclassmembers class * extends com.bonepeople.android.base.ViewBindingRecyclerAdapter{
+-keepclassmembers class * extends com.bonepeople.android.base.viewbinding.ViewBindingRecyclerAdapter{
  <init>(...);
 }
 
 #ViewBindingRefreshAdapter
--keepclassmembers class * extends com.bonepeople.android.base.ViewBindingRefreshAdapter{
+-keepclassmembers class * extends com.bonepeople.android.base.viewbinding.ViewBindingRefreshAdapter{
  <init>(...);
 }

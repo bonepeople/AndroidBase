@@ -1,4 +1,4 @@
-package com.bonepeople.android.base
+package com.bonepeople.android.base.viewbinding
 
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle

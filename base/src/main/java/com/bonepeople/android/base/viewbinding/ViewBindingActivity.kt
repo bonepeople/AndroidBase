@@ -1,4 +1,4 @@
-package com.bonepeople.android.base
+package com.bonepeople.android.base.viewbinding
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.MotionEvent
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
+import com.bonepeople.android.base.CoroutineLifecycleObserver
 import com.bonepeople.android.base.view.CustomLoadingDialog
 import com.bonepeople.android.shade.Protector
 import com.bonepeople.android.widget.util.AppKeyboard

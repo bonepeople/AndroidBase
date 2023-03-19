@@ -1,6 +1,6 @@
 package com.bonepeople.android.base.simple.adapter
 
-import com.bonepeople.android.base.ViewBindingRecyclerAdapter
+import com.bonepeople.android.base.viewbinding.ViewBindingRecyclerAdapter
 import com.bonepeople.android.base.simple.data.ProductInfo
 import com.bonepeople.android.base.simple.databinding.ItemProductListBinding
 

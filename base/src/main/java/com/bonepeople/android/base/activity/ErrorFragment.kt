@@ -1,7 +1,7 @@
 package com.bonepeople.android.base.activity
 
 import android.os.Bundle
-import com.bonepeople.android.base.ViewBindingFragment
+import com.bonepeople.android.base.viewbinding.ViewBindingFragment
 import com.bonepeople.android.base.databinding.FragmentErrorBinding
 import com.bonepeople.android.widget.util.AppView.show
 import com.bonepeople.android.widget.util.AppView.singleClick

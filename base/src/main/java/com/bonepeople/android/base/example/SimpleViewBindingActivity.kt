@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import com.bonepeople.android.base.ViewBindingActivity
+import com.bonepeople.android.base.viewbinding.ViewBindingActivity
 import com.bonepeople.android.base.databinding.ActivitySimpleBinding
 import com.bonepeople.android.localbroadcastutil.LocalBroadcastHelper
 import com.bonepeople.android.widget.ActivityHolder

@@ -1,4 +1,4 @@
-package com.bonepeople.android.base
+package com.bonepeople.android.base.viewbinding
 
 import android.content.Context
 import android.os.Bundle
@@ -9,6 +9,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import com.bonepeople.android.base.CoroutineLifecycleObserver
 import com.bonepeople.android.base.view.CustomLoadingDialog
 import com.bonepeople.android.shade.Protector
 import kotlinx.coroutines.CoroutineScope

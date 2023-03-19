@@ -2,7 +2,7 @@ package com.bonepeople.android.base.simple.ui
 
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bonepeople.android.base.ViewBindingFragment
+import com.bonepeople.android.base.viewbinding.ViewBindingFragment
 import com.bonepeople.android.base.simple.adapter.ProductListAdapter
 import com.bonepeople.android.base.simple.data.ProductInfo
 import com.bonepeople.android.base.simple.databinding.FragmentProductListBinding
