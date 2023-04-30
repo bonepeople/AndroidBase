@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 
 class ProductListFragment : ViewBindingFragment<FragmentProductListBinding>() {
     override fun initView() {
-        views.titleView.textViewTitleName.text = "ProductList"
+        views.titleView.views.textViewTitleName.text = "ProductList"
         views.buttonRefresh.singleClick { updateView() }
         views.recyclerView.layoutManager = LinearLayoutManager(activity)
         views.recyclerView.addItemDecoration(LinearItemDecoration(1f).setPadding(20f, 20f).setColor(0xFFCCCCCC.toInt()))

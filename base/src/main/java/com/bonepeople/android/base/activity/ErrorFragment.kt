@@ -8,11 +8,11 @@ import com.bonepeople.android.widget.util.AppView.singleClick
 
 class ErrorFragment : ViewBindingFragment<FragmentErrorBinding>() {
     override fun initView() {
-        views.titleView.imageViewTitleBack.run {
-            singleClick { requireActivity().onBackPressed() }
+        views.titleView.views.imageViewTitleBack.run {
+            singleClick { onBackPressed() }
             show()
         }
-        views.titleView.textViewTitleName.text = "Error"
+        views.titleView.views.textViewTitleName.text = "Error"
     }
 
     override fun initData(savedInstanceState: Bundle?) {

@@ -12,7 +12,7 @@ import com.bonepeople.android.widget.util.AppView.singleClick
 
 class UserInfoFragment : ViewBindingFragment<FragmentUserInfoBinding>() {
     override fun initView() {
-        views.titleView.textViewTitleName.text = "UserManager"
+        views.titleView.views.textViewTitleName.text = "UserManager"
         views.buttonLogin.singleClick {
             UserManager.token = AppRandom.randomString(16)
             val userInfo = UserInfo().apply { id = AppRandom.randomInt(1..100).toString();name = AppRandom.randomString(4) }

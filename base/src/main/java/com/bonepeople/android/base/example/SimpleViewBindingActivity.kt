@@ -17,11 +17,11 @@ class SimpleViewBindingActivity : ViewBindingActivity<ActivitySimpleBinding>() {
     private var currentIndex = 1
 
     override fun initView() {
-        views.titleView.imageViewTitleBack.run {
+        views.titleView.views.imageViewTitleBack.run {
             singleClick { onBackPressed() }
             show()
         }
-        views.titleView.textViewTitleName.text = "SimpleActivity"
+        views.titleView.views.textViewTitleName.text = "SimpleActivity"
         views.buttonSubmit.singleClick { submit() }
     }
 

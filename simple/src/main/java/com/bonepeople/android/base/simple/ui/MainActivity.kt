@@ -8,7 +8,7 @@ import com.bonepeople.android.widget.util.AppView.singleClick
 
 class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
     override fun initView() {
-        views.titleView.textViewTitleName.text = "BaseTestActivity"
+        views.titleView.views.textViewTitleName.text = "BaseTestActivity"
         views.buttonUserManager.singleClick { StandardActivity.open(UserInfoFragment()) }
         views.buttonProductList.singleClick { StandardActivity.open(ProductListFragment()) }
     }
