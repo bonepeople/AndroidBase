@@ -8,7 +8,7 @@ import com.bonepeople.android.base.viewbinding.ViewBindingActivity
 import com.bonepeople.android.base.databinding.ActivitySimpleBinding
 import com.bonepeople.android.localbroadcastutil.LocalBroadcastHelper
 import com.bonepeople.android.widget.ActivityHolder
-import com.bonepeople.android.widget.util.AppView.show
+import com.bonepeople.android.widget.util.AppToast
 import com.bonepeople.android.widget.util.AppView.singleClick
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -17,11 +17,9 @@ class SimpleViewBindingActivity : ViewBindingActivity<ActivitySimpleBinding>() {
     private var currentIndex = 1
 
     override fun initView() {
-        views.titleView.views.imageViewTitleBack.run {
-            singleClick { onBackPressed() }
-            show()
-        }
-        views.titleView.views.textViewTitleName.text = "SimpleActivity"
+        views.titleView.onBackClick { onBackPressed() }
+        views.titleView.title = "SimpleActivity"
+        views.titleView.onActionClick { AppToast.show("Click Action") }
         views.buttonSubmit.singleClick { submit() }
     }
 
