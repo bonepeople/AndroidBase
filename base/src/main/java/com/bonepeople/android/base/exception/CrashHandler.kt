@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.content.FileProvider
 import androidx.startup.Initializer
+import com.bonepeople.android.shade.EarthTime
 import com.bonepeople.android.shade.Protector
 import com.bonepeople.android.widget.ApplicationHolder
 import com.bonepeople.android.widget.util.AppGson
@@ -24,6 +25,7 @@ import java.util.*
  * + 可用于java全局未捕获异常的捕获处理，也可以用于对异常信息的封装
  * + 可调用[setCrashAction]方法设置捕获后的操作
  */
+@Suppress("UNUSED")
 object CrashHandler : Thread.UncaughtExceptionHandler {
     private var defaultHandler: Thread.UncaughtExceptionHandler? = null
     private var crashAction: suspend (message: String, exception: Throwable) -> Unit = CrashHandler::defaultCrashAction
@@ -96,7 +98,7 @@ object CrashHandler : Thread.UncaughtExceptionHandler {
      */
     fun makeExceptionInfo(exception: Throwable, withStack: Boolean = true): ExceptionInfo {
         return ExceptionInfo().apply {
-            timestamp = System.currentTimeMillis()
+            timestamp = EarthTime.now()
             time = AppTime.getDateTimeString(timestamp)
             this.thread = Thread.currentThread().name
             appVersion = "${ApplicationHolder.getVersionCode()}(${ApplicationHolder.getVersionName()})"
