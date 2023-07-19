@@ -83,5 +83,5 @@ abstract class ViewBindingActivity<V : ViewBinding> : AppCompatActivity(), Corou
      * 初始化数据
      * + 会在onCreate中被调用
      */
-    protected abstract fun initData(savedInstanceState: Bundle?)
+    protected open fun initData(savedInstanceState: Bundle?) {}
 }

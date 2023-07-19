@@ -77,5 +77,5 @@ abstract class ViewBindingFragment<V : ViewBinding> : Fragment(), CoroutineScope
      * 初始化数据
      * + 会在onViewCreated中被调用
      */
-    protected abstract fun initData(savedInstanceState: Bundle?)
+    protected open fun initData(savedInstanceState: Bundle?) {}
 }
