@@ -43,7 +43,7 @@ dependencies {
     implementation 'com.github.bonepeople:Shade:1.3.3'
 
     // com.github.bonepeople:AndroidWidget:publish-SNAPSHOT
-    api 'com.github.bonepeople:AndroidWidget:1.5.5'
+    api 'com.github.bonepeople:AndroidWidget:1.5.7'
 
     // ImmersionBar https://github.com/gyf-dev/ImmersionBar
     api 'com.geyifeng.immersionbar:immersionbar:3.2.2'
