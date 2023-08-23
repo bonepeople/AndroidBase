@@ -39,7 +39,11 @@ abstract class ViewBindingActivity<V : ViewBinding> : AppCompatActivity(), Corou
             method.invoke(null, layoutInflater) as V
         }
     }
-    protected val loadingDialog by lazy { CustomLoadingDialog(supportFragmentManager) }
+    protected val loadingDialog: CustomLoadingDialog by lazy {
+        val tag = "ViewBindingActivity.loadingDialog"
+        val dialog: CustomLoadingDialog = supportFragmentManager.findFragmentByTag(tag) as? CustomLoadingDialog ?: CustomLoadingDialog()
+        dialog.apply { setFragmentManagerAndTag(supportFragmentManager, tag) }
+    }
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
