@@ -1,38 +1,28 @@
 package com.bonepeople.android.base.simple.ui
 
-import android.os.Bundle
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bonepeople.android.base.viewbinding.ViewBindingFragment
 import com.bonepeople.android.base.simple.adapter.ProductListAdapter
-import com.bonepeople.android.base.simple.data.ProductInfo
+import com.bonepeople.android.base.viewbinding.ViewBindingFragment
 import com.bonepeople.android.base.simple.databinding.FragmentProductListBinding
-import com.bonepeople.android.widget.util.AppRandom
+import com.bonepeople.android.base.util.FlowExtension.observeWithLifecycle
 import com.bonepeople.android.widget.util.AppView.singleClick
 import com.bonepeople.android.widget.view.LinearItemDecoration
-import kotlinx.coroutines.launch
 
 class ProductListFragment : ViewBindingFragment<FragmentProductListBinding>() {
+    private val viewModel: ProductListViewModel by viewModels()
+
     override fun initView() {
         views.titleView.title = "ProductList"
-        views.buttonRefresh.singleClick { updateView() }
+        viewModel.showLoading.observeWithLifecycle(viewLifecycleOwner) {
+            if (it) loadingDialog.show() else loadingDialog.dismiss()
+        }
+        views.buttonRefresh.singleClick { viewModel.updateData() }
+        viewModel.countText.observeWithLifecycle(viewLifecycleOwner) { views.textViewCount.text = it }
         views.recyclerView.layoutManager = LinearLayoutManager(activity)
         views.recyclerView.addItemDecoration(LinearItemDecoration(1f).setPadding(20f, 20f).setColor(0xFFCCCCCC.toInt()))
-    }
-
-    override fun initData(savedInstanceState: Bundle?) {
-        updateView()
-    }
-
-    private fun updateView() {
-        launch {
-            loadingDialog.show()
-            val count = AppRandom.randomInt(1..30)
-            val list = (1..count).map {
-                ProductInfo().apply { name = AppRandom.randomString(5) }
-            }
-            views.textViewCount.text = "count:$count"
-            views.recyclerView.adapter = ProductListAdapter(list)
-            loadingDialog.dismiss()
+        viewModel.listData.observeWithLifecycle(viewLifecycleOwner) {
+            views.recyclerView.adapter = ProductListAdapter(it)
         }
     }
 }

@@ -10,5 +10,6 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
         views.titleView.title = "BaseTestActivity"
         views.buttonUserManager.singleClick { StandardActivity.open(UserInfoFragment()) }
         views.buttonProductList.singleClick { StandardActivity.open(ProductListFragment()) }
+        views.buttonTest.singleClick { StandardActivity.open(TestFragment()) }
     }
 }

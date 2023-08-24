@@ -36,6 +36,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="测试ViewBindingRecyclerAdapter" />
+
+            <Button
+                android:id="@+id/buttonTest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="通用测试" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
