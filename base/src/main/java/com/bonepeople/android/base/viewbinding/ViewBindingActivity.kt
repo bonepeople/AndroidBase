@@ -42,7 +42,7 @@ abstract class ViewBindingActivity<V : ViewBinding> : AppCompatActivity(), Corou
     protected val loadingDialog: CustomLoadingDialog by lazy {
         val tag = "ViewBindingActivity.loadingDialog"
         val dialog: CustomLoadingDialog = supportFragmentManager.findFragmentByTag(tag) as? CustomLoadingDialog ?: CustomLoadingDialog()
-        dialog.apply { setFragmentManagerAndTag(supportFragmentManager, tag) }
+        dialog.also { it.setFragmentManagerAndTag(supportFragmentManager, tag) }
     }
 
     @CallSuper
