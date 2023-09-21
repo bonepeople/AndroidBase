@@ -16,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 import java.util.*
@@ -60,30 +61,29 @@ object CrashHandler : Thread.UncaughtExceptionHandler {
      * 默认处理方式
      */
     suspend fun defaultCrashAction(message: String, exception: Throwable) {
-        coroutineScope {
-            launch(Dispatchers.IO) {
-                //输出错误日志到控制台
-                AppLog.error(message, exception)
-                //收集错误信息并生成日志内容
-                val exceptionInfo = makeExceptionInfo(exception)
-                val webContent = GsonBuilder().setPrettyPrinting().create().toJson(exceptionInfo)
-                //将错误日志写到缓存目录
-                val path = File(ApplicationHolder.app.cacheDir, "crashReport")
-                path.mkdirs()
-                val file = File(path, "error_${exceptionInfo.timestamp}.txt")
-                FileOutputStream(file).use {
-                    it.write(webContent.toByteArray())
-                }
-                //通过浏览器展示日志内容
-                val authority = ApplicationHolder.app.packageName + ".crash.provider"
-                val uri = FileProvider.getUriForFile(ApplicationHolder.app, authority, file)
-                Intent(Intent.ACTION_VIEW).let {
-                    it.data = uri
-                    it.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    kotlin.runCatching {
-                        ApplicationHolder.app.startActivity(it)
-                    }
+        if (!ApplicationHolder.debug) return
+        withContext(Dispatchers.IO) {
+            //输出错误日志到控制台
+            AppLog.error(message, exception)
+            //收集错误信息并生成日志内容
+            val exceptionInfo = makeExceptionInfo(exception)
+            val webContent = GsonBuilder().setPrettyPrinting().create().toJson(exceptionInfo)
+            //将错误日志写到缓存目录
+            val path = File(ApplicationHolder.app.cacheDir, "crashReport")
+            path.mkdirs()
+            val file = File(path, "error_${exceptionInfo.timestamp}.txt")
+            FileOutputStream(file).use {
+                it.write(webContent.toByteArray())
+            }
+            //通过浏览器展示日志内容
+            val authority = ApplicationHolder.app.packageName + ".crash.provider"
+            val uri = FileProvider.getUriForFile(ApplicationHolder.app, authority, file)
+            Intent(Intent.ACTION_VIEW).let {
+                it.data = uri
+                it.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                kotlin.runCatching {
+                    ApplicationHolder.app.startActivity(it)
                 }
             }
         }
