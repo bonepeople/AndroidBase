@@ -6,6 +6,7 @@ import android.os.Build
 import androidx.core.content.FileProvider
 import androidx.startup.Initializer
 import com.bonepeople.android.shade.EarthTime
+import com.bonepeople.android.shade.Lighting
 import com.bonepeople.android.shade.Protector
 import com.bonepeople.android.widget.ApplicationHolder
 import com.bonepeople.android.widget.util.AppGson
@@ -41,7 +42,7 @@ object CrashHandler : Thread.UncaughtExceptionHandler {
                     launch {
                         val exceptionInfo = makeExceptionInfo(exception)
                         val json = AppGson.toJson(exceptionInfo)
-                        Protector.c5("shade.exception", 1, "崩溃异常", json)
+                        Lighting.c5("shade.exception", 1, "崩溃异常", json)
                     }
                 }
             }

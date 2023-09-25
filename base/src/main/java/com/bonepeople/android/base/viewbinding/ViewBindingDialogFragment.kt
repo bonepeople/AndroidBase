@@ -65,7 +65,7 @@ abstract class ViewBindingDialogFragment<V : ViewBinding> : DialogFragment() {
     /**
      * 设置用于显示Dialog的FragmentManager及Tag
      */
-    fun setFragmentManagerAndTag(manager: FragmentManager, tag: String) {
+    fun setFragmentManagerAndTag(manager: FragmentManager, tag: String) = apply {
         dialogFragmentManager = manager
         dialogFragmentTag = tag
     }

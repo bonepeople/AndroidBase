@@ -1,6 +1,6 @@
 package com.bonepeople.android.base.manager
 
-import com.bonepeople.android.shade.Protector
+import com.bonepeople.android.shade.Lighting
 import com.bonepeople.android.widget.CoroutinesHolder
 import kotlinx.coroutines.launch
 
@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 object Clog {
     fun u(type: String, code: Int, name: String, message: String) {
         CoroutinesHolder.default.launch {
-            Protector.c5(type, code, name, message)
+            Lighting.c5(type, code, name, message)
         }
     }
 }

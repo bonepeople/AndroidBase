@@ -51,7 +51,7 @@ abstract class ViewBindingBottomSheetDialogFragment<V : ViewBinding> : BottomShe
     /**
      * 设置用于显示Dialog的FragmentManager及Tag
      */
-    fun setFragmentManagerAndTag(manager: FragmentManager, tag: String) {
+    fun setFragmentManagerAndTag(manager: FragmentManager, tag: String) = apply {
         dialogFragmentManager = manager
         dialogFragmentTag = tag
     }
