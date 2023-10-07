@@ -3,6 +3,7 @@ package com.bonepeople.android.base.viewbinding
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
+import android.view.View
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
@@ -60,7 +61,7 @@ abstract class ViewBindingActivity<V : ViewBinding> : AppCompatActivity(), Corou
     @CallSuper
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         if (ev?.action == MotionEvent.ACTION_DOWN) {
-            if (AppKeyboard.needHideKeyboard(currentFocus, ev)) {
+            if (needHideKeyboard(currentFocus, ev)) {
                 AppKeyboard.hideKeyboard(this, currentFocus)
             }
         }
@@ -75,6 +76,13 @@ abstract class ViewBindingActivity<V : ViewBinding> : AppCompatActivity(), Corou
         immersionBar {
             keyboardEnable(true)
         }
+    }
+
+    /**
+     * 判断是否需要隐藏键盘
+     */
+    open var needHideKeyboard: (focusedView: View?, motionEvent: MotionEvent) -> Boolean = { focusedView, motionEvent ->
+        AppKeyboard.needHideKeyboard(focusedView, motionEvent)
     }
 
     /**
