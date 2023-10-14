@@ -28,10 +28,10 @@ abstract class ViewBindingRecyclerAdapter<V : ViewBinding, D> : RecyclerView.Ada
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        onBindViewHolder(holder, position, mutableListOf())
+        onBindViewHolder(holder, position, listOf())
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: List<Any>) {
         val views = (holder as DataHolder<V>).binding
         val data = list[position]
         onBindView(views, data, position, payloads)
@@ -52,7 +52,7 @@ abstract class ViewBindingRecyclerAdapter<V : ViewBinding, D> : RecyclerView.Ada
      * @param position 当前视图的位置
      * @param payloads 局部刷新标志
      */
-    protected abstract fun onBindView(views: V, data: D, position: Int, payloads: MutableList<Any>)
+    protected abstract fun onBindView(views: V, data: D, position: Int, payloads: List<Any>)
 
     private class DataHolder<V : ViewBinding>(val binding: V) : RecyclerView.ViewHolder(binding.root)
 }

@@ -31,10 +31,10 @@ abstract class ViewBindingRefreshAdapter<V : ViewBinding, D>(diff: DiffUtil.Item
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        onBindViewHolder(holder, position, mutableListOf())
+        onBindViewHolder(holder, position, listOf())
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: List<Any>) {
         val views = (holder as DataHolder<V>).binding
         val data = getItem(position)
         onBindView(views, data, position, payloads)
@@ -70,7 +70,7 @@ abstract class ViewBindingRefreshAdapter<V : ViewBinding, D>(diff: DiffUtil.Item
      * @param position 当前视图的位置
      * @param payloads 局部刷新标志，该标志需要通过[DiffUtil.ItemCallback.getChangePayload]方法设置
      */
-    protected abstract fun onBindView(views: V, data: D, position: Int, payloads: MutableList<Any>)
+    protected abstract fun onBindView(views: V, data: D, position: Int, payloads: List<Any>)
 
     private class DataHolder<V : ViewBinding>(val binding: V) : RecyclerView.ViewHolder(binding.root)
 }

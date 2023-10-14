@@ -59,8 +59,8 @@ abstract class ViewBindingActivity<V : ViewBinding> : AppCompatActivity(), Corou
      * 分发触摸事件，在分发的同时判断是否需要隐藏软键盘并执行响应操作
      */
     @CallSuper
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        if (ev?.action == MotionEvent.ACTION_DOWN) {
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        if (ev.action == MotionEvent.ACTION_DOWN) {
             if (needHideKeyboard(currentFocus, ev)) {
                 AppKeyboard.hideKeyboard(this, currentFocus)
             }
