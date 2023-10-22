@@ -48,7 +48,7 @@ abstract class ViewBindingFragment<V : ViewBinding> : Fragment(), CoroutineScope
     protected val loadingDialog: CustomLoadingDialog by lazy {
         val tag = "ViewBindingFragment.loadingDialog"
         val dialog: CustomLoadingDialog = childFragmentManager.findFragmentByTag(tag) as? CustomLoadingDialog ?: CustomLoadingDialog()
-        dialog.also { it.setFragmentManagerAndTag(childFragmentManager, tag) }
+        dialog.also { it.setManagerAndTag(childFragmentManager, tag) }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

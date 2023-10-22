@@ -65,7 +65,7 @@ abstract class ViewBindingDialogFragment<V : ViewBinding> : DialogFragment() {
     /**
      * 设置用于显示Dialog的FragmentManager及Tag
      */
-    fun setFragmentManagerAndTag(manager: FragmentManager, tag: String) = apply {
+    fun setManagerAndTag(manager: FragmentManager, tag: String) {
         dialogFragmentManager = manager
         dialogFragmentTag = tag
     }
@@ -73,7 +73,7 @@ abstract class ViewBindingDialogFragment<V : ViewBinding> : DialogFragment() {
     /**
      * 显示Dialog
      * + 对于已经显示的Dialog，重复调用此函数不会进行任何操作
-     * + 在显示之前需要调用[setFragmentManagerAndTag]方法设置FragmentManager
+     * + 在显示之前需要调用[setManagerAndTag]方法设置FragmentManager
      */
     @CallSuper
     open fun show() {
