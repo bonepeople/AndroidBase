@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.annotation.ColorInt
 import com.bonepeople.android.base.databinding.ViewTitleBinding
-import com.bonepeople.android.dimensionutil.DimensionUtil
+import com.bonepeople.android.widget.util.AppDensity
 import com.bonepeople.android.widget.util.AppView.show
 import com.bonepeople.android.widget.util.AppView.singleClick
 
@@ -49,7 +49,7 @@ class TitleView(context: Context, attrs: AttributeSet?) : LinearLayout(context, 
                 views.imageViewTitleBack.imageTintList = ColorStateList.valueOf(it)
                 views.imageViewTitleAction.imageTintList = ColorStateList.valueOf(it)
             }
-            titleBarHeight?.let { views.constraintLayoutTitle.layoutParams.height = DimensionUtil.getPx(it) }
+            titleBarHeight?.let { views.constraintLayoutTitle.layoutParams.height = AppDensity.getPx(it) }
             defaultTitleText?.let { views.textViewTitleName.text = it }
         }
     }

@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/titleViewBackground">
 
-    <com.bonepeople.android.dimensionutil.StatusBarHolder
+    <com.bonepeople.android.widget.view.StatusBarHolder
         android:id="@+id/statusBarHolder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
             android:layout_height="@dimen/titleBarHeight"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/description_title_back"
-            android:padding="10dp"
+            android:padding="16dp"
             android:src="@drawable/icon_back"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -59,7 +59,7 @@
             android:layout_height="@dimen/titleBarHeight"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/description_title_action"
-            android:padding="10dp"
+            android:padding="16dp"
             android:src="@drawable/icon_more"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
