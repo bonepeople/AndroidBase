@@ -7,7 +7,6 @@ import androidx.core.content.FileProvider
 import androidx.startup.Initializer
 import com.bonepeople.android.shade.EarthTime
 import com.bonepeople.android.shade.Lighting
-import com.bonepeople.android.shade.Protector
 import com.bonepeople.android.widget.ApplicationHolder
 import com.bonepeople.android.widget.util.AppGson
 import com.bonepeople.android.widget.util.AppLog
@@ -106,6 +105,10 @@ object CrashHandler : Thread.UncaughtExceptionHandler {
             osVersion = "${Build.VERSION.SDK_INT}(Android_${Build.VERSION.RELEASE})"
             manufacturer = Build.MANUFACTURER
             model = Build.MODEL
+            systemAbi = AppGson.toJson(Build.SUPPORTED_ABIS)
+            kotlin.runCatching {
+                appAbi = System.getProperty("os.arch") ?: "unknown"
+            }
             this.message = exception.message ?: ""
             if (withStack) {
                 stack.add(exception.toString())

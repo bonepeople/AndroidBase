@@ -26,6 +26,12 @@ class ExceptionInfo {
     @SerializedName("model")
     var model = ""
 
+    @SerializedName("systemAbi")
+    var systemAbi = ""
+
+    @SerializedName("appAbi")
+    var appAbi = "unknown"
+
     @SerializedName("message")
     var message = ""
 
