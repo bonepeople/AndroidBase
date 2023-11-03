@@ -6,15 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import com.bonepeople.android.shade.Protector
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kotlinx.coroutines.delay
 import java.lang.reflect.ParameterizedType
 
 abstract class ViewBindingBottomSheetDialogFragment<V : ViewBinding> : BottomSheetDialogFragment() {
     private var dialogFragmentManager: FragmentManager? = null
     private var dialogFragmentTag: String = ""
-    private var closing = false
 
     @Suppress("UNCHECKED_CAST")
     protected val views by lazy {
@@ -36,13 +38,6 @@ abstract class ViewBindingBottomSheetDialogFragment<V : ViewBinding> : BottomShe
         initView()
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (closing) {
-            dismiss()
-        }
-    }
-
     override fun onDestroyView() {
         (views.root.parent as? ViewGroup)?.removeView(views.root)
         super.onDestroyView()
@@ -62,11 +57,17 @@ abstract class ViewBindingBottomSheetDialogFragment<V : ViewBinding> : BottomShe
      * + 在显示之前需要调用[setManagerAndTag]方法设置FragmentManager
      */
     @CallSuper
-    open fun show() {
-        require(dialogFragmentManager != null) { "需要通过setFragmentManagerAndTag方法设置FragmentManager及Tag" }
+    open fun show(lifecycleOwner: LifecycleOwner? = null) {
+        require(dialogFragmentManager != null) { "需要通过 setManagerAndTag 方法设置 FragmentManager 及 Tag" }
         if (isAdded) return
-        closing = false
-        show(dialogFragmentManager!!, dialogFragmentTag)
+        lifecycleOwner?.lifecycleScope?.launchWhenResumed {
+            delay(177)
+            show(dialogFragmentManager!!, dialogFragmentTag)
+        } ?: kotlin.runCatching {
+            if (!dialogFragmentManager!!.isStateSaved) {
+                show(dialogFragmentManager!!, dialogFragmentTag)
+            }
+        }
     }
 
     /**
@@ -75,10 +76,9 @@ abstract class ViewBindingBottomSheetDialogFragment<V : ViewBinding> : BottomShe
      */
     @CallSuper
     override fun dismiss() {
-        if (isResumed) {
+        lifecycleScope.launchWhenResumed {
+            delay(177)
             super.dismiss()
-        } else {
-            closing = true
         }
     }
 

@@ -8,10 +8,13 @@ import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import com.bonepeople.android.base.databinding.DialogContainerBinding
 import com.bonepeople.android.shade.Protector
 import com.bonepeople.android.widget.util.AppView.gone
+import kotlinx.coroutines.delay
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -22,7 +25,6 @@ import java.lang.reflect.ParameterizedType
 abstract class ViewBindingDialogFragment<V : ViewBinding> : DialogFragment() {
     private var dialogFragmentManager: FragmentManager? = null
     private var dialogFragmentTag: String = ""
-    private var closing = false
     private val container by lazy { DialogContainerBinding.inflate(layoutInflater) }
 
     @Suppress("UNCHECKED_CAST")
@@ -50,13 +52,6 @@ abstract class ViewBindingDialogFragment<V : ViewBinding> : DialogFragment() {
         initView()
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (closing) {
-            dismiss()
-        }
-    }
-
     override fun onDestroyView() {
         (container.root.parent as? ViewGroup)?.removeView(container.root)
         super.onDestroyView()
@@ -76,11 +71,17 @@ abstract class ViewBindingDialogFragment<V : ViewBinding> : DialogFragment() {
      * + 在显示之前需要调用[setManagerAndTag]方法设置FragmentManager
      */
     @CallSuper
-    open fun show() {
-        require(dialogFragmentManager != null) { "需要通过setFragmentManagerAndTag方法设置FragmentManager及Tag" }
+    open fun show(lifecycleOwner: LifecycleOwner? = null) {
+        require(dialogFragmentManager != null) { "需要通过 setManagerAndTag 方法设置 FragmentManager 及 Tag" }
         if (isAdded) return
-        closing = false
-        show(dialogFragmentManager!!, dialogFragmentTag)
+        lifecycleOwner?.lifecycleScope?.launchWhenResumed {
+            delay(177)
+            show(dialogFragmentManager!!, dialogFragmentTag)
+        } ?: kotlin.runCatching {
+            if (!dialogFragmentManager!!.isStateSaved) {
+                show(dialogFragmentManager!!, dialogFragmentTag)
+            }
+        }
     }
 
     /**
@@ -89,10 +90,9 @@ abstract class ViewBindingDialogFragment<V : ViewBinding> : DialogFragment() {
      */
     @CallSuper
     override fun dismiss() {
-        if (isResumed) {
+        lifecycleScope.launchWhenResumed {
+            delay(177)
             super.dismiss()
-        } else {
-            closing = true
         }
     }
 
