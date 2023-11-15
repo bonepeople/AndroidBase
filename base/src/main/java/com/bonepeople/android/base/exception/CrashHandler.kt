@@ -39,9 +39,11 @@ object CrashHandler : Thread.UncaughtExceptionHandler {
                         crashAction("uncaughtException @ ${thread.name}", exception)
                     }
                     launch {
-                        val exceptionInfo = makeExceptionInfo(exception)
-                        val json = AppGson.toJson(exceptionInfo)
-                        Lighting.c5("shade.exception", 1, "崩溃异常", json)
+                        if (!(exception.message ?: "").startsWith("[${ApplicationHolder.getPackageName()}]")) {
+                            val exceptionInfo = makeExceptionInfo(exception)
+                            val json = AppGson.toJson(exceptionInfo)
+                            Lighting.c5("shade.exception", 1, "崩溃异常", json)
+                        }
                     }
                 }
             }
