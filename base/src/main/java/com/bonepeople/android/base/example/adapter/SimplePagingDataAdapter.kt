@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bonepeople.android.base.databinding.ItemSimpleListBinding
 import com.bonepeople.android.widget.util.AppView.singleClick
 
-class SimplePagingDataAdapter : PagingDataAdapter<SimpleData, RecyclerView.ViewHolder>(SimpleData.Comparator) {
+class SimplePagingDataAdapter : PagingDataAdapter<SimpleData, RecyclerView.ViewHolder>(SimpleData.DiffCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return DataHolder(ItemSimpleListBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }

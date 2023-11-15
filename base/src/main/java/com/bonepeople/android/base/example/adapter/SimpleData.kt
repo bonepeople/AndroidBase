@@ -27,7 +27,7 @@ class SimpleData {
         return result
     }
 
-    object Comparator : DiffUtil.ItemCallback<SimpleData>() {
+    object DiffCallback : DiffUtil.ItemCallback<SimpleData>() {
         override fun areItemsTheSame(oldItem: SimpleData, newItem: SimpleData): Boolean {
             return oldItem.id == newItem.id
         }
