@@ -20,30 +20,36 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 import java.util.*
+import kotlin.coroutines.coroutineContext
 
 /**
  * 崩溃处理类
  * + 可用于java全局未捕获异常的捕获处理，也可以用于对异常信息的封装
  * + 可调用[setCrashAction]方法设置捕获后的操作
+ * + 通过设置[runCrashAction]参数可以控制[crashAction]是否执行，默认情况下仅在debug情况下执行
  */
 @Suppress("UNUSED")
 object CrashHandler : Thread.UncaughtExceptionHandler {
     private var defaultHandler: Thread.UncaughtExceptionHandler? = null
     private var crashAction: suspend (message: String, exception: Throwable) -> Unit = CrashHandler::defaultCrashAction
+    var runCrashAction = ApplicationHolder.debug //是否在崩溃时执行crashAction
 
     override fun uncaughtException(thread: Thread, exception: Throwable) {
         runBlocking {
             kotlin.runCatching {
                 coroutineScope {
-                    launch {
-                        crashAction("uncaughtException @ ${thread.name}", exception)
+                    if ((exception.message ?: "").startsWith("[${ApplicationHolder.getPackageName()}]")) {
+                        return@coroutineScope
                     }
                     launch {
-                        if (!(exception.message ?: "").startsWith("[${ApplicationHolder.getPackageName()}]")) {
-                            val exceptionInfo = makeExceptionInfo(exception)
-                            val json = AppGson.toJson(exceptionInfo)
-                            Lighting.c5("shade.exception", 1, "崩溃异常", json)
+                        if (runCrashAction) {
+                            crashAction("uncaughtException @ ${thread.name}", exception)
                         }
+                    }
+                    launch {
+                        val exceptionInfo = makeExceptionInfo(exception)
+                        val json = AppGson.toJson(exceptionInfo)
+                        Lighting.c5("shade.exception", 1, "崩溃异常", json)
                     }
                 }
             }
@@ -63,12 +69,14 @@ object CrashHandler : Thread.UncaughtExceptionHandler {
      * 默认处理方式
      */
     suspend fun defaultCrashAction(message: String, exception: Throwable) {
-        if (!ApplicationHolder.debug) return
+        val context = coroutineContext
         withContext(Dispatchers.IO) {
             //输出错误日志到控制台
             AppLog.error(message, exception)
             //收集错误信息并生成日志内容
-            val exceptionInfo = makeExceptionInfo(exception)
+            val exceptionInfo = withContext(context) {
+                makeExceptionInfo(exception)
+            }
             val webContent = GsonBuilder().setPrettyPrinting().create().toJson(exceptionInfo)
             //将错误日志写到缓存目录
             val path = File(ApplicationHolder.app.cacheDir, "crashReport")
