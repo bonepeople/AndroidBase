@@ -12,6 +12,10 @@ import kotlinx.coroutines.flow.*
 @Suppress("UNUSED")
 object FlowExtension {
     fun <T> Flow<T>.observeWithLifecycle(owner: LifecycleOwner, activeState: Lifecycle.State = Lifecycle.State.STARTED, action: suspend (T) -> Unit): Job {
+        return flowWithLifecycle(owner.lifecycle, activeState).onEach(action).launchIn(owner.lifecycleScope)
+    }
+
+    fun <T> StateFlow<T>.observeWithLifecycle(owner: LifecycleOwner, activeState: Lifecycle.State = Lifecycle.State.STARTED, action: suspend (T) -> Unit): Job {
         return flowWithLifecycle(owner.lifecycle, activeState).distinctUntilChanged().onEach(action).launchIn(owner.lifecycleScope)
     }
 
