@@ -5,11 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import com.bonepeople.android.shade.Protector
+import com.bonepeople.android.widget.ActivityHolder
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.delay
 import java.lang.reflect.ParameterizedType
@@ -55,9 +57,15 @@ abstract class ViewBindingBottomSheetDialogFragment<V : ViewBinding> : BottomShe
      * 显示Dialog
      * + 对于已经显示的Dialog，重复调用此函数不会进行任何操作
      * + 在显示之前需要调用[setManagerAndTag]方法设置FragmentManager
+     * @param lifecycleOwner 用于处理Dialog显示时机的生命周期对象，通常情况下在界面退到后台后无法展示Dialog，传入此参数可以确保界面回到前台时正常展示Dialog
      */
     @CallSuper
     open fun show(lifecycleOwner: LifecycleOwner? = null) {
+        if (dialogFragmentManager == null) {
+            (ActivityHolder.getTopActivity() as? FragmentActivity)?.let {
+                dialogFragmentManager = it.supportFragmentManager
+            }
+        }
         require(dialogFragmentManager != null) { "需要通过 setManagerAndTag 方法设置 FragmentManager 及 Tag" }
         if (isAdded) return
         lifecycleOwner?.lifecycleScope?.launchWhenResumed {
