@@ -62,7 +62,7 @@ abstract class ViewBindingActivity<V : ViewBinding> : AppCompatActivity(), Corou
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         if (ev.action == MotionEvent.ACTION_DOWN) {
             if (needHideKeyboard(currentFocus, ev)) {
-                AppKeyboard.hideKeyboard(this, currentFocus)
+                AppKeyboard.hideKeyboard()
             }
         }
         return super.dispatchTouchEvent(ev)
