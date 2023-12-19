@@ -32,6 +32,13 @@ class StandardActivity : ViewBindingActivity<ActivityStandardBinding>() {
         statusBar?.invoke(this) ?: run { super.setStatusBar() }
     }
 
+    override fun toString(): String {
+        val hash = System.identityHashCode(this).toString(16)
+        val fragmentKey = Protector.protect { intent.getStringExtra(FRAGMENT_KEY) ?: "default_key" }
+        val fragment = supportFragmentManager.findFragmentByTag(fragmentKey)
+        return "StandardActivity@$hash => $fragment"
+    }
+
     companion object {
         private const val FRAGMENT_KEY = "FRAGMENT_KEY"
         private val fragmentContainer = HashMap<String, Fragment>()
