@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
@@ -76,6 +77,7 @@ abstract class ViewBindingBottomSheetDialogFragment<V : ViewBinding> : BottomShe
      */
     @CallSuper
     override fun dismiss() {
+        if (lifecycle.currentState == Lifecycle.State.INITIALIZED) return
         lifecycleScope.launchWhenResumed {
             delay(177)
             super.dismiss()

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
@@ -90,6 +91,7 @@ abstract class ViewBindingDialogFragment<V : ViewBinding> : DialogFragment() {
      */
     @CallSuper
     override fun dismiss() {
+        if (lifecycle.currentState == Lifecycle.State.INITIALIZED) return
         lifecycleScope.launchWhenResumed {
             delay(177)
             super.dismiss()
