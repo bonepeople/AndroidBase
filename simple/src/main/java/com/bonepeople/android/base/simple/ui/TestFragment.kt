@@ -22,10 +22,10 @@ class TestFragment : ViewBindingFragment<FragmentTestBinding>() {
                 kotlin.runCatching {
                     test()
                 }.getOrElse {
-                    AppLog.error("测试异常：", it)
+                    AppLog.defaultLog.error("测试异常：", it)
                 }
             }.let {
-                AppLog.debug("测试耗时：${AppTime.getTimeString(it)}s")
+                AppLog.defaultLog.debug("测试耗时：${AppTime.getTimeString(it)}s")
             }
             loadingDialog.dismiss()
         }

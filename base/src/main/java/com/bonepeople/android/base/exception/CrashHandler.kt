@@ -72,7 +72,7 @@ object CrashHandler : Thread.UncaughtExceptionHandler {
         val context = coroutineContext
         withContext(Dispatchers.IO) {
             //输出错误日志到控制台
-            AppLog.error(message, exception)
+            AppLog.defaultLog.error(message, exception)
             //收集错误信息并生成日志内容
             val exceptionInfo = withContext(context) {
                 makeExceptionInfo(exception)

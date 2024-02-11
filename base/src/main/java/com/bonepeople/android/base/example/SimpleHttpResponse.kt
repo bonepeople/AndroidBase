@@ -37,7 +37,7 @@ class SimpleHttpResponse<R> {
         }.onFailure {
             code = FAILURE
             msg = it.message.toString()
-            AppLog.error("com.bonepeople.android.base.example.SimpleHttpResponse.onSuccess", it)
+            AppLog.defaultLog.error("onSuccess error", it)
             AppToast.show(it.message)
         }
     }
@@ -50,7 +50,7 @@ class SimpleHttpResponse<R> {
                 action(code, msg)
             }
         }.onFailure {
-            AppLog.error("com.bonepeople.android.base.example.SimpleHttpResponse.onFailure", it)
+            AppLog.defaultLog.error("onFailure error", it)
             AppToast.show(it.message)
         }
     }
