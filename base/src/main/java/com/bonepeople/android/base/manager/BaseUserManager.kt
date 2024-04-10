@@ -6,7 +6,6 @@ import com.bonepeople.android.base.util.CoroutineExtension.launchOnIO
 import com.bonepeople.android.localbroadcastutil.LocalBroadcastUtil
 import com.bonepeople.android.widget.util.AppData
 import com.bonepeople.android.widget.util.AppGson
-import com.bonepeople.android.widget.util.AppStorage
 import kotlinx.coroutines.runBlocking
 import java.lang.reflect.ParameterizedType
 
@@ -23,13 +22,13 @@ abstract class BaseUserManager<D> {
                     object : DataMigrateInfo {
                         override val range: IntRange = 0..1
                         override val action: suspend () -> Unit = {
-                            field.putString(USER_TOKEN, AppStorage.getString(USER_TOKEN))
-                            field.putString(USER_ID, AppStorage.getString(USER_ID))
-                            field.putString(USER_INFO, AppStorage.getString(USER_INFO))
+                            field.putString(USER_TOKEN, AppData.default.getString(USER_TOKEN))
+                            field.putString(USER_ID, AppData.default.getString(USER_ID))
+                            field.putString(USER_INFO, AppData.default.getString(USER_INFO))
                             launchOnIO {
-                                AppStorage.remove(USER_TOKEN)
-                                AppStorage.remove(USER_ID)
-                                AppStorage.remove(USER_INFO)
+                                AppData.default.remove(USER_TOKEN)
+                                AppData.default.remove(USER_ID)
+                                AppData.default.remove(USER_INFO)
                             }
                         }
                     },
