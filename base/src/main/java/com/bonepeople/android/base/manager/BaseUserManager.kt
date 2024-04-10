@@ -1,8 +1,8 @@
 package com.bonepeople.android.base.manager
 
 import com.bonepeople.android.localbroadcastutil.LocalBroadcastUtil
+import com.bonepeople.android.widget.util.AppData
 import com.bonepeople.android.widget.util.AppGson
-import com.bonepeople.android.widget.util.AppStorage
 import java.lang.reflect.ParameterizedType
 
 @Suppress("UNCHECKED_CAST")
@@ -12,18 +12,18 @@ abstract class BaseUserManager<D> {
     var token: String = USER_TOKEN
         get() {
             if (field == USER_TOKEN) {
-                field = AppStorage.getString(USER_TOKEN)
+                field = AppData.default.getStringSync(USER_TOKEN)
             }
             return field
         }
         set(value) {
-            AppStorage.putString(USER_TOKEN, value)
+            AppData.default.putStringSync(USER_TOKEN, value)
             field = value
         }
     val userId: String
-        get() = AppStorage.getString(USER_ID)
+        get() = AppData.default.getStringSync(USER_ID)
     val userInfo: D
-        get() = AppGson.defaultGson.fromJson<D>(AppStorage.getString(USER_INFO), userClass) ?: defaultUserInfo
+        get() = AppGson.defaultGson.fromJson<D>(AppData.default.getStringSync(USER_INFO), userClass) ?: defaultUserInfo
 
     val isLogin: Boolean
         get() {
@@ -32,8 +32,8 @@ abstract class BaseUserManager<D> {
 
     fun login(newInfo: D) {
         val login = !isLogin
-        AppStorage.putString(USER_INFO, AppGson.toJson(newInfo))
-        AppStorage.putString(USER_ID, resolveUserId(newInfo))
+        AppData.default.putStringSync(USER_INFO, AppGson.toJson(newInfo))
+        AppData.default.putStringSync(USER_ID, resolveUserId(newInfo))
         if (login) {
             LocalBroadcastUtil.sendBroadcast(BroadcastAction.USER_LOGIN)
         } else {
@@ -44,8 +44,8 @@ abstract class BaseUserManager<D> {
     fun logout() {
         if (isLogin) {
             token = ""
-            AppStorage.putString(USER_INFO, "")
-            AppStorage.putString(USER_ID, resolveUserId(defaultUserInfo))
+            AppData.default.putStringSync(USER_INFO, "")
+            AppData.default.putStringSync(USER_ID, resolveUserId(defaultUserInfo))
             LocalBroadcastUtil.sendBroadcast(BroadcastAction.USER_LOGOUT)
         }
     }
