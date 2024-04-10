@@ -36,9 +36,6 @@ class TitleView(context: Context, attrs: AttributeSet?) : LinearLayout(context, 
         views.imageViewTitleAction.show()
     }
 
-    /**
-     * 应用配置信息
-     */
     fun applyConfig(config: Config) {
         config.run {
             titleViewBackground?.let { views.root.background = it }
@@ -58,41 +55,18 @@ class TitleView(context: Context, attrs: AttributeSet?) : LinearLayout(context, 
         var defaultConfig: Config = Config()
     }
 
-    /**
-     * 配置信息
-     * + 可用于保存并统一设置样式
-     */
     class Config {
-        /**
-         * 整体背景
-         */
         var titleViewBackground: Drawable? = null
 
-        /**
-         * 状态栏背景
-         */
         var statusBarBackground: Drawable? = null
 
-        /**
-         * 标题栏背景
-         */
         var titleBarBackground: Drawable? = null
 
-        /**
-         * 标题文字和图标的颜色
-         */
         @ColorInt
         var titleColor: Int? = null
 
-        /**
-         * 标题栏高度
-         * + 同样会影响按钮大小
-         */
         var titleBarHeight: Float? = null
 
-        /**
-         * 标题栏默认文案
-         */
         var defaultTitleText: String? = null
     }
 }

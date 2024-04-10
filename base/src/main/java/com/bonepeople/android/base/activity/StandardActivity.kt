@@ -1,6 +1,5 @@
 package com.bonepeople.android.base.activity
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -45,9 +44,6 @@ class StandardActivity : ViewBindingActivity<ActivityStandardBinding>() {
         var statusBar: (StandardActivity.() -> Unit)? = null
         var onInit: ((savedInstanceState: Bundle?) -> Unit)? = null
 
-        /**
-         * 通过[startActivity]方法打开一个新的页面并加载提供的[Fragment]
-         */
         fun open(fragment: Fragment) = ActivityHolder.getTopActivity()?.let {
             val fragmentKey = UUID.randomUUID().toString()
             fragmentContainer[fragmentKey] = fragment
@@ -57,10 +53,6 @@ class StandardActivity : ViewBindingActivity<ActivityStandardBinding>() {
             }
         }
 
-        /**
-         * 通过[startActivityForResult]方法打开一个新的页面并加载提供的[Fragment]
-         * @return 返回[IntentResult]，用于处理[Activity]返回的结果
-         */
         fun call(fragment: Fragment): IntentResult {
             val activity = ActivityHolder.getTopActivity()
             return if (activity == null) {

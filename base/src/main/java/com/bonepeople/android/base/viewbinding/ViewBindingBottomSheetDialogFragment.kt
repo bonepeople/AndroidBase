@@ -44,22 +44,14 @@ abstract class ViewBindingBottomSheetDialogFragment<V : ViewBinding> : BottomShe
         super.onDestroyView()
     }
 
-    /**
-     * 设置用于显示Dialog的FragmentManager及Tag
-     */
     fun setManagerAndTag(manager: FragmentManager, tag: String) {
         dialogFragmentManager = manager
         dialogFragmentTag = tag
     }
 
-    /**
-     * 显示Dialog
-     * + 对于已经显示的Dialog，重复调用此函数不会进行任何操作
-     * + 在显示之前需要调用[setManagerAndTag]方法设置FragmentManager
-     */
     @CallSuper
     open fun show(lifecycleOwner: LifecycleOwner? = null) {
-        require(dialogFragmentManager != null) { "需要通过 setManagerAndTag 方法设置 FragmentManager 及 Tag" }
+        require(dialogFragmentManager != null) { "need setManagerAndTag" }
         if (isAdded) return
         lifecycleOwner?.lifecycleScope?.launchWhenResumed {
             delay(177)
@@ -71,10 +63,6 @@ abstract class ViewBindingBottomSheetDialogFragment<V : ViewBinding> : BottomShe
         }
     }
 
-    /**
-     * 关闭Dialog
-     * + 调用此函数的时候会对Dialog状态进行判断，未在前台的时候暂时不关闭，待界面返回前台的时候关闭
-     */
     @CallSuper
     override fun dismiss() {
         if (lifecycle.currentState == Lifecycle.State.INITIALIZED) return
@@ -84,9 +72,5 @@ abstract class ViewBindingBottomSheetDialogFragment<V : ViewBinding> : BottomShe
         }
     }
 
-    /**
-     * 初始化界面
-     * + 会在onViewCreated中被调用
-     */
     protected abstract fun initView()
 }
