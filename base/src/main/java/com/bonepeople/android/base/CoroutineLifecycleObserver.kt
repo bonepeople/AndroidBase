@@ -6,6 +6,7 @@ import androidx.lifecycle.LifecycleOwner
 import kotlinx.coroutines.cancel
 import kotlin.coroutines.CoroutineContext
 
+@Deprecated("CoroutineLifecycleObserver will no longer be supported. This class will be removed from version 1.7.0.")
 class CoroutineLifecycleObserver(private val coroutineContext: CoroutineContext) : LifecycleEventObserver {
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
         if (event == Lifecycle.Event.ON_DESTROY) {

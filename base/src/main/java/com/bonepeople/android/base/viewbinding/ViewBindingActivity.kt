@@ -6,6 +6,7 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import com.bonepeople.android.base.CoroutineLifecycleObserver
 import com.bonepeople.android.base.view.CustomLoadingDialog
@@ -13,23 +14,37 @@ import com.bonepeople.android.shade.Protector
 import com.bonepeople.android.widget.util.AppKeyboard
 import com.gyf.immersionbar.ktx.immersionBar
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import java.lang.reflect.ParameterizedType
 import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 
 /**
  * Activity抽象类
- * + 包含自动实例化的ViewBinding、协程作用域和一个基础的LoadingDialog。
+ * + 包含自动实例化的ViewBinding和一个基础的LoadingDialog。
  * + 泛型参数中需要传入当前界面的ViewBinding，该ViewBinding会在界面初始化的时候实例化并加载到页面中，之后以views变量的方式供子类使用。
- * + 协程和LoadingDialog采用懒加载，不使用不会占用资源。
+ * + LoadingDialog采用懒加载，不使用不会占用资源。
  */
 abstract class ViewBindingActivity<V : ViewBinding> : AppCompatActivity(), CoroutineScope {
+    @Deprecated("CoroutineScope will no longer be supported. This method will be removed from version 1.7.0.")
     override val coroutineContext: CoroutineContext by lazy {
         (Dispatchers.Main + Job()).also {
             lifecycle.addObserver(CoroutineLifecycleObserver(it))
         }
     }
+
+    @Deprecated(
+        message = "Use lifecycleScope.launch(context, start, block) instead. This method will be removed from version 1.7.0.",
+        replaceWith = ReplaceWith("lifecycleScope.launch(context, start, block)", "androidx.lifecycle.lifecycleScope", "kotlinx.coroutines.launch")
+    )
+    fun launch(
+        context: CoroutineContext = EmptyCoroutineContext,
+        start: CoroutineStart = CoroutineStart.DEFAULT,
+        block: suspend CoroutineScope.() -> Unit
+    ) = lifecycleScope.launch(context, start, block)
 
     @Suppress("UNCHECKED_CAST")
     protected val views: V by lazy {
