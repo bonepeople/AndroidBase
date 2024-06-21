@@ -1,5 +1,6 @@
 package com.bonepeople.android.base.simple.ui
 
+import androidx.lifecycle.lifecycleScope
 import com.bonepeople.android.base.viewbinding.ViewBindingFragment
 import com.bonepeople.android.base.simple.databinding.FragmentTestBinding
 import com.bonepeople.android.widget.util.AppLog
@@ -16,7 +17,7 @@ class TestFragment : ViewBindingFragment<FragmentTestBinding>() {
     }
 
     private fun startTest() {
-        launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             loadingDialog.show()
             measureTimeMillis {
                 kotlin.runCatching {

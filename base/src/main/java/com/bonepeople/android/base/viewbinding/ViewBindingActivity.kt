@@ -7,23 +7,13 @@ import android.view.View
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
-import com.bonepeople.android.base.CoroutineLifecycleObserver
 import com.bonepeople.android.base.view.CustomLoadingDialog
 import com.bonepeople.android.shade.Protector
 import com.bonepeople.android.widget.util.AppKeyboard
 import com.gyf.immersionbar.ktx.immersionBar
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import java.lang.reflect.ParameterizedType
-import kotlin.coroutines.CoroutineContext
 
-abstract class ViewBindingActivity<V : ViewBinding> : AppCompatActivity(), CoroutineScope {
-    override val coroutineContext: CoroutineContext by lazy {
-        (Dispatchers.Main + Job()).also {
-            lifecycle.addObserver(CoroutineLifecycleObserver(it))
-        }
-    }
+abstract class ViewBindingActivity<V : ViewBinding> : AppCompatActivity() {
 
     @Suppress("UNCHECKED_CAST")
     protected val views: V by lazy {

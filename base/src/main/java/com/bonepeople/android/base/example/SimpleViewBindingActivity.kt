@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.lifecycle.lifecycleScope
 import com.bonepeople.android.base.viewbinding.ViewBindingActivity
 import com.bonepeople.android.base.databinding.ActivitySimpleBinding
 import com.bonepeople.android.localbroadcastutil.LocalBroadcastHelper
@@ -29,7 +30,7 @@ class SimpleViewBindingActivity : ViewBindingActivity<ActivitySimpleBinding>() {
         savedInstanceState?.let {
             currentIndex = it.getInt(CURRENT_INDEX)
         }
-        launch {
+        lifecycleScope.launch {
             loadingDialog.show()
             //fetchData
             updateData()

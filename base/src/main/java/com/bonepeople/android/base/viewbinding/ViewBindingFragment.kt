@@ -9,21 +9,11 @@ import androidx.activity.OnBackPressedCallback
 import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import com.bonepeople.android.base.CoroutineLifecycleObserver
 import com.bonepeople.android.base.view.CustomLoadingDialog
 import com.bonepeople.android.shade.Protector
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import java.lang.reflect.ParameterizedType
-import kotlin.coroutines.CoroutineContext
 
-abstract class ViewBindingFragment<V : ViewBinding> : Fragment(), CoroutineScope {
-    override val coroutineContext: CoroutineContext by lazy {
-        (Dispatchers.Main + Job()).also {
-            viewLifecycleOwner.lifecycle.addObserver(CoroutineLifecycleObserver(it))
-        }
-    }
+abstract class ViewBindingFragment<V : ViewBinding> : Fragment() {
     private val onBackListener = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             onBackPressed()
