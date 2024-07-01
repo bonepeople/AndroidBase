@@ -7,7 +7,6 @@ plugins {
 android {
     namespace 'com.bonepeople.android.base'
     compileSdk rootProject.androidConfig.compileSdk
-
     defaultConfig {
         minSdk rootProject.androidConfig.minSdk
         targetSdk rootProject.androidConfig.targetSdk
@@ -15,25 +14,28 @@ android {
 
         consumerProguardFiles "consumer-rules.pro"
     }
-
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
     buildFeatures {
         viewBinding true
+        buildConfig true
+    }
+    // Document https://developer.android.com/build/publish-library/configure-pub-variants
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+        }
     }
 }
 
@@ -58,15 +60,16 @@ dependencies {
     implementation "androidx.startup:startup-runtime:1.1.1"
 }
 
-afterEvaluate {
-    publishing {
-        publications {
-            release(MavenPublication) {
+// Document https://developer.android.com/build/publish-library/upload-library
+publishing {
+    publications {
+        release(MavenPublication) {
+            afterEvaluate {
                 from components.release
-                groupId = rootProject.publishConfig.groupId
-                artifactId = rootProject.publishConfig.artifactId
-                version = rootProject.publishConfig.publishVersion
             }
+            groupId = rootProject.publishConfig.groupId
+            artifactId = rootProject.publishConfig.artifactId
+            version = rootProject.publishConfig.publishVersion
         }
     }
 }

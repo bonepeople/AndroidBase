@@ -6,7 +6,6 @@ plugins {
 android {
     namespace 'com.bonepeople.android.base.simple'
     compileSdk rootProject.androidConfig.compileSdk
-
     defaultConfig {
         applicationId "com.bonepeople.android.base.simple"
         minSdk rootProject.androidConfig.minSdk
@@ -14,7 +13,6 @@ android {
         versionCode rootProject.androidConfig.versionCode
         versionName rootProject.androidConfig.versionName
     }
-
     signingConfigs {
         release {
             storeFile file('app.jks')
@@ -23,7 +21,6 @@ android {
             keyPassword '53N2P8DXjmVZBlOBNjELP9EDOyPVLrEB'
         }
     }
-
     buildTypes {
         debug {
             minifyEnabled false
@@ -37,16 +34,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
     buildFeatures {
         viewBinding true
     }
