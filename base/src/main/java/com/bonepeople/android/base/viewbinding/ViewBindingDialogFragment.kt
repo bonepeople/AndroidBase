@@ -11,9 +11,9 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import androidx.shade.Protector
 import androidx.viewbinding.ViewBinding
 import com.bonepeople.android.base.databinding.DialogContainerBinding
-import com.bonepeople.android.shade.Protector
 import com.bonepeople.android.widget.util.AppView.gone
 import kotlinx.coroutines.delay
 import java.lang.reflect.ParameterizedType

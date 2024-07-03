@@ -3,8 +3,8 @@ package com.bonepeople.android.base.viewbinding
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import androidx.shade.Protector
 import androidx.viewbinding.ViewBinding
-import com.bonepeople.android.shade.Protector
 import java.lang.reflect.ParameterizedType
 
 /**

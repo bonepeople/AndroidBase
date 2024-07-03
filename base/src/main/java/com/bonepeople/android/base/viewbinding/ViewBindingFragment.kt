@@ -9,10 +9,10 @@ import androidx.activity.OnBackPressedCallback
 import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.shade.Protector
 import androidx.viewbinding.ViewBinding
 import com.bonepeople.android.base.CoroutineLifecycleObserver
 import com.bonepeople.android.base.view.CustomLoadingDialog
-import com.bonepeople.android.shade.Protector
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers

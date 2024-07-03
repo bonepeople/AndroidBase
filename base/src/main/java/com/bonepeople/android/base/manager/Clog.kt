@@ -1,6 +1,6 @@
 package com.bonepeople.android.base.manager
 
-import com.bonepeople.android.shade.Lighting
+import androidx.shade.Lighting
 import com.bonepeople.android.widget.CoroutinesHolder
 import kotlinx.coroutines.launch
 
