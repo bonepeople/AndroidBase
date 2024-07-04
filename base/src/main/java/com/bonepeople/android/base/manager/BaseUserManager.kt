@@ -1,27 +1,47 @@
 package com.bonepeople.android.base.manager
 
+import androidx.shade.migrate.DataMigrateInfo
+import androidx.shade.migrate.DataMigrateUtil
+import com.bonepeople.android.base.util.CoroutineExtension.launchOnIO
 import com.bonepeople.android.localbroadcastutil.LocalBroadcastUtil
 import com.bonepeople.android.widget.util.AppData
 import com.bonepeople.android.widget.util.AppGson
 import com.bonepeople.android.widget.util.AppStorage
+import kotlinx.coroutines.runBlocking
 import java.lang.reflect.ParameterizedType
 
 @Suppress("UNCHECKED_CAST")
 abstract class BaseUserManager<D> {
     private val userClass: Class<*> = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0] as Class<*>
     private val defaultUserInfo: D = userClass.newInstance() as D
-    private val userData = AppData.create("com.bonepeople.android.base.manager.BaseUserManager")
-
-    @Deprecated("Since AppStorage has been deprecated, replace its usage with AppData. This property will be removed from version 1.7.0.")
-    private val userStorage = AppStorage
+    private val userData by lazy {
+        val field = AppData.create("com.bonepeople.android.base.manager.BaseUserManager")
+        runBlocking {
+            DataMigrateUtil.migrate(
+                dataId = "com.bonepeople.android.base.manager.BaseUserManager",
+                migrateList = listOf(
+                    object : DataMigrateInfo {
+                        override val range: IntRange = 0..1
+                        override val action: suspend () -> Unit = {
+                            field.putString(USER_TOKEN, AppStorage.getString(USER_TOKEN))
+                            field.putString(USER_ID, AppStorage.getString(USER_ID))
+                            field.putString(USER_INFO, AppStorage.getString(USER_INFO))
+                            launchOnIO {
+                                AppStorage.remove(USER_TOKEN)
+                                AppStorage.remove(USER_ID)
+                                AppStorage.remove(USER_INFO)
+                            }
+                        }
+                    },
+                )
+            )
+        }
+        field
+    }
     var token: String = USER_TOKEN
         get() {
             if (field == USER_TOKEN) {
-                field = userData.getStringSync(USER_TOKEN).ifEmpty {
-                    val data = userStorage.getString(USER_TOKEN)
-                    userData.putStringSync(USER_TOKEN, data)
-                    data
-                }
+                field = userData.getStringSync(USER_TOKEN)
             }
             return field
         }
@@ -30,17 +50,9 @@ abstract class BaseUserManager<D> {
             field = value
         }
     val userId: String
-        get() = userData.getStringSync(USER_ID).ifEmpty {
-            val data = userStorage.getString(USER_ID)
-            userData.putStringSync(USER_ID, data)
-            data
-        }
+        get() = userData.getStringSync(USER_ID)
     val userInfo: D
-        get() = AppGson.defaultGson.fromJson<D>(userData.getStringSync(USER_INFO).ifEmpty {
-            val data = userStorage.getString(USER_INFO)
-            userData.putStringSync(USER_INFO, data)
-            data
-        }, userClass) ?: defaultUserInfo
+        get() = AppGson.defaultGson.fromJson<D>(userData.getStringSync(USER_INFO), userClass) ?: defaultUserInfo
 
     val isLogin: Boolean
         get() {
