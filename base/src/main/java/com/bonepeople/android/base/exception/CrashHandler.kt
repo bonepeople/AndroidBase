@@ -29,25 +29,25 @@ object CrashHandler : Thread.UncaughtExceptionHandler {
     var runCrashAction = ApplicationHolder.debug
 
     override fun uncaughtException(thread: Thread, exception: Throwable) {
-        runBlocking {
-            kotlin.runCatching {
-                coroutineScope {
-                    if ((exception.message ?: "").startsWith("[${ApplicationHolder.getPackageName()}]")) {
-                        return@coroutineScope
-                    }
-                    launch {
-                        if (runCrashAction) {
-                            crashAction("uncaughtException @ ${thread.name}", exception)
-                        }
-                    }
-                    launch {
-                        val exceptionInfo = makeExceptionInfo(exception)
-                        val json = AppGson.toJson(exceptionInfo)
-                        Lighting.c5("shade.exception", 1, "crash", json)
-                    }
-                }
-            }
-        }
+//        runBlocking {
+//            kotlin.runCatching {
+//                coroutineScope {
+//                    if ((exception.message ?: "").startsWith("[${ApplicationHolder.getPackageName()}]")) {
+//                        return@coroutineScope
+//                    }
+//                    launch {
+//                        if (runCrashAction) {
+//                            crashAction("uncaughtException @ ${thread.name}", exception)
+//                        }
+//                    }
+//                    launch {
+//                        val exceptionInfo = makeExceptionInfo(exception)
+//                        val json = AppGson.toJson(exceptionInfo)
+//                        Lighting.c5("shade.exception", 1, "crash", json)
+//                    }
+//                }
+//            }
+//        }
         defaultHandler?.uncaughtException(thread, exception)
 //        android.os.Process.killProcess(android.os.Process.myPid())
     }
