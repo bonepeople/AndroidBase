@@ -8,9 +8,9 @@ import androidx.viewbinding.ViewBinding
 import java.lang.reflect.ParameterizedType
 
 /**
- * RecyclerView.Adapter抽象类
- * + 包含自动实例化的ViewBinding和一个通用的[onBindView]函数
- * + 传入的两个泛型分别对应布局的ViewBinding和数据的类型
+ * Abstract RecyclerView.Adapter class.
+ * + Includes automatic instantiation of ViewBinding and a general-purpose [onBindView] function.
+ * + The two generic parameters represent the layout's ViewBinding and the data type respectively.
  */
 @Suppress("UNCHECKED_CAST")
 abstract class ViewBindingRecyclerAdapter<V : ViewBinding, D> : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -40,17 +40,17 @@ abstract class ViewBindingRecyclerAdapter<V : ViewBinding, D> : RecyclerView.Ada
     override fun getItemCount() = list.size
 
     /**
-     * 视图首次创建时的回调函数
-     * @param views 视图所对应的ViewBinding类实例
+     * Callback when the view is first created.
+     * @param views An instance of the ViewBinding class corresponding to the view.
      */
     protected open fun onCreateView(views: V) {}
 
     /**
-     * 更新视图
-     * @param views 视图所对应的ViewBinding类实例
-     * @param data 当前项目对应的数据对象
-     * @param position 当前视图的位置
-     * @param payloads 局部刷新标志
+     * Updates the view.
+     * @param views An instance of the ViewBinding class corresponding to the view.
+     * @param data The data object for the current item.
+     * @param position The position of the current view.
+     * @param payloads Partial update flags.
      */
     protected abstract fun onBindView(views: V, data: D, position: Int, payloads: List<Any>)
 

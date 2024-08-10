@@ -19,9 +19,9 @@ import kotlinx.coroutines.delay
 import java.lang.reflect.ParameterizedType
 
 /**
- * 通用的DialogFragment
- * + 根据DialogFragment的使用特性对展示和隐藏进行了封装，符合常规使用逻辑，并且避免了部分异常情况
- * + 添加了ViewBinding的支持，方便用户实现简单的Dialog
+ * A general-purpose DialogFragment.
+ * + Encapsulates the display and dismissal logic based on DialogFragment behavior to match common usage patterns and avoid potential issues.
+ * + Supports ViewBinding for easier implementation of simple dialogs.
  */
 abstract class ViewBindingDialogFragment<V : ViewBinding> : DialogFragment() {
     private var dialogFragmentManager: FragmentManager? = null
@@ -59,7 +59,7 @@ abstract class ViewBindingDialogFragment<V : ViewBinding> : DialogFragment() {
     }
 
     /**
-     * 设置用于显示Dialog的FragmentManager及Tag
+     * Sets the FragmentManager and tag used to display the dialog.
      */
     fun setManagerAndTag(manager: FragmentManager, tag: String) {
         dialogFragmentManager = manager
@@ -67,13 +67,13 @@ abstract class ViewBindingDialogFragment<V : ViewBinding> : DialogFragment() {
     }
 
     /**
-     * 显示Dialog
-     * + 对于已经显示的Dialog，重复调用此函数不会进行任何操作
-     * + 在显示之前需要调用[setManagerAndTag]方法设置FragmentManager
+     * Displays the dialog.
+     * + If the dialog is already shown, calling this method again has no effect.
+     * + Must call [setManagerAndTag] before displaying.
      */
     @CallSuper
     open fun show(lifecycleOwner: LifecycleOwner? = null) {
-        require(dialogFragmentManager != null) { "需要通过 setManagerAndTag 方法设置 FragmentManager 及 Tag" }
+        require(dialogFragmentManager != null) { "FragmentManager and tag must be set using setManagerAndTag before calling show." }
         if (isAdded) return
         lifecycleOwner?.lifecycleScope?.launchWhenResumed {
             delay(177)
@@ -86,8 +86,8 @@ abstract class ViewBindingDialogFragment<V : ViewBinding> : DialogFragment() {
     }
 
     /**
-     * 关闭Dialog
-     * + 调用此函数的时候会对Dialog状态进行判断，未在前台的时候暂时不关闭，待界面返回前台的时候关闭
+     * Dismisses the dialog.
+     * + If the dialog is not in the foreground, it will wait until the UI is resumed before dismissing.
      */
     @CallSuper
     override fun dismiss() {
@@ -99,8 +99,8 @@ abstract class ViewBindingDialogFragment<V : ViewBinding> : DialogFragment() {
     }
 
     /**
-     * 初始化界面
-     * + 会在onViewCreated中被调用
+     * Initializes the view.
+     * + Called in onViewCreated.
      */
     protected abstract fun initView()
 }

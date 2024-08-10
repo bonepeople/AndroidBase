@@ -23,10 +23,11 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
 /**
- * Activity抽象类
- * + 包含自动实例化的ViewBinding和一个基础的LoadingDialog。
- * + 泛型参数中需要传入当前界面的ViewBinding，该ViewBinding会在界面初始化的时候实例化并加载到页面中，之后以views变量的方式供子类使用。
- * + LoadingDialog采用懒加载，不使用不会占用资源。
+ * Abstract Activity class
+ * + Includes automatically instantiated ViewBinding and a basic LoadingDialog.
+ * + The generic parameter should specify the ViewBinding of the current screen. This ViewBinding will be instantiated and loaded during initialization,
+ *   and can be accessed via the `views` variable in subclasses.
+ * + LoadingDialog uses lazy initialization, so it won’t consume resources if not used.
  */
 abstract class ViewBindingActivity<V : ViewBinding> : AppCompatActivity(), CoroutineScope {
     @Deprecated("CoroutineScope will no longer be supported. This method will be removed from version 1.7.0.")
@@ -71,7 +72,7 @@ abstract class ViewBindingActivity<V : ViewBinding> : AppCompatActivity(), Corou
     }
 
     /**
-     * 分发触摸事件，在分发的同时判断是否需要隐藏软键盘并执行响应操作
+     * Dispatches touch events. Also checks if the keyboard should be hidden and performs the corresponding action.
      */
     @CallSuper
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
@@ -84,8 +85,8 @@ abstract class ViewBindingActivity<V : ViewBinding> : AppCompatActivity(), Corou
     }
 
     /**
-     * 默认使用ImmersionBar将状态栏设置为透明状态
-     * + 需要修改默认样式的时候请重写该函数
+     * Sets the status bar to transparent using ImmersionBar by default.
+     * + Override this method to customize the default style.
      */
     protected open fun setStatusBar() {
         immersionBar {
@@ -94,21 +95,21 @@ abstract class ViewBindingActivity<V : ViewBinding> : AppCompatActivity(), Corou
     }
 
     /**
-     * 判断是否需要隐藏键盘
+     * Determines whether the keyboard should be hidden.
      */
     open var needHideKeyboard: (focusedView: View?, motionEvent: MotionEvent) -> Boolean = { focusedView, motionEvent ->
         AppKeyboard.needHideKeyboard(focusedView, motionEvent)
     }
 
     /**
-     * 初始化界面
-     * + 会在onCreate中被调用
+     * Initializes the view.
+     * + Called in onCreate.
      */
     protected abstract fun initView()
 
     /**
-     * 初始化数据
-     * + 会在onCreate中被调用
+     * Initializes data.
+     * + Called in onCreate.
      */
     protected open fun initData(savedInstanceState: Bundle?) {}
 }

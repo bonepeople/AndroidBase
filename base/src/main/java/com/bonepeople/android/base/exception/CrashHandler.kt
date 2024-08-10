@@ -23,16 +23,17 @@ import java.util.*
 import kotlin.coroutines.coroutineContext
 
 /**
- * 崩溃处理类
- * + 可用于java全局未捕获异常的捕获处理，也可以用于对异常信息的封装
- * + 可调用[setCrashAction]方法设置捕获后的操作
- * + 通过设置[runCrashAction]参数可以控制[crashAction]是否执行，默认情况下仅在debug情况下执行
+ * Crash handling utility
+ *
+ * + Captures global uncaught Java exceptions and wraps exception info
+ * + Use [setCrashAction] to define the behavior after a crash is caught
+ * + The [runCrashAction] flag controls whether [crashAction] is executed; by default, it's enabled only in debug mode
  */
 @Suppress("UNUSED")
 object CrashHandler : Thread.UncaughtExceptionHandler {
     private var defaultHandler: Thread.UncaughtExceptionHandler? = null
     private var crashAction: suspend (message: String, exception: Throwable) -> Unit = CrashHandler::defaultCrashAction
-    var runCrashAction = ApplicationHolder.debug //是否在崩溃时执行crashAction
+    var runCrashAction = ApplicationHolder.debug  // Whether to execute crashAction on crash
 
     override fun uncaughtException(thread: Thread, exception: Throwable) {
         runBlocking {
@@ -49,7 +50,7 @@ object CrashHandler : Thread.UncaughtExceptionHandler {
                     launch {
                         val exceptionInfo = makeExceptionInfo(exception)
                         val json = AppGson.toJson(exceptionInfo)
-                        Lighting.c5("shade.exception", 1, "崩溃异常", json)
+                        Lighting.c5("shade.exception", 1, "Crash Exception", json)
                     }
                 }
             }
@@ -59,33 +60,33 @@ object CrashHandler : Thread.UncaughtExceptionHandler {
     }
 
     /**
-     * 设置捕获全局异常后的处理逻辑
+     * Sets the action to perform when a global exception is caught
      */
     fun setCrashAction(action: suspend (message: String, exception: Throwable) -> Unit) {
         crashAction = action
     }
 
     /**
-     * 默认处理方式
+     * Default crash action handler
      */
     suspend fun defaultCrashAction(message: String, exception: Throwable) {
         val context = coroutineContext
         withContext(Dispatchers.IO) {
-            //输出错误日志到控制台
+            // Log the exception to console
             AppLog.defaultLog.error(message, exception)
-            //收集错误信息并生成日志内容
+            // Collect exception details
             val exceptionInfo = withContext(context) {
                 makeExceptionInfo(exception)
             }
             val webContent = GsonBuilder().setPrettyPrinting().create().toJson(exceptionInfo)
-            //将错误日志写到缓存目录
+            // Save crash log to app cache directory
             val path = File(ApplicationHolder.app.cacheDir, "crashReport")
             path.mkdirs()
             val file = File(path, "error_${exceptionInfo.timestamp}.txt")
             FileOutputStream(file).use {
                 it.write(webContent.toByteArray())
             }
-            //通过浏览器展示日志内容
+            // Open crash log in browser
             val authority = ApplicationHolder.app.packageName + ".crash.provider"
             val uri = FileProvider.getUriForFile(ApplicationHolder.app, authority, file)
             Intent(Intent.ACTION_VIEW).let {
@@ -100,11 +101,12 @@ object CrashHandler : Thread.UncaughtExceptionHandler {
     }
 
     /**
-     * 获取异常的数据信息
-     * + 会获取当前线程的名称存储为异常线程
-     * @param exception 需要处理的异常
-     * @param withStack 是否包括调用栈信息，默认包含
-     * @return 提取异常信息及当前环境信息并封装的数据类，后续可以在[ExceptionInfo.extra]中放入额外数据
+     * Generates a detailed crash report
+     *
+     * + Includes current thread name as crash thread
+     * @param exception The caught exception
+     * @param withStack Whether to include stack trace (default: true)
+     * @return An [ExceptionInfo] data object containing crash and environment info
      */
     fun makeExceptionInfo(exception: Throwable, withStack: Boolean = true): ExceptionInfo {
         return ExceptionInfo().apply {
@@ -138,7 +140,7 @@ object CrashHandler : Thread.UncaughtExceptionHandler {
     }
 
     /**
-     * ExceptionHandler的初始化逻辑
+     * CrashHandler initializer for app startup
      */
     class StartUp : Initializer<CrashHandler> {
         override fun create(context: Context): CrashHandler {

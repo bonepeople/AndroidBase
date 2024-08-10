@@ -15,7 +15,7 @@ import java.util.*
 class StandardActivity : ViewBindingActivity<ActivityStandardBinding>() {
 
     override fun initView() {
-
+        // Initialize views here if needed
     }
 
     override fun initData(savedInstanceState: Bundle?) {
@@ -46,7 +46,7 @@ class StandardActivity : ViewBindingActivity<ActivityStandardBinding>() {
         var onInit: ((savedInstanceState: Bundle?) -> Unit)? = null
 
         /**
-         * 通过[startActivity]方法打开一个新的页面并加载提供的[Fragment]
+         * Opens a new page via [startActivity] and loads the given [Fragment]
          */
         fun open(fragment: Fragment) = ActivityHolder.getTopActivity()?.let {
             val fragmentKey = UUID.randomUUID().toString()
@@ -58,8 +58,8 @@ class StandardActivity : ViewBindingActivity<ActivityStandardBinding>() {
         }
 
         /**
-         * 通过[startActivityForResult]方法打开一个新的页面并加载提供的[Fragment]
-         * @return 返回[IntentResult]，用于处理[Activity]返回的结果
+         * Opens a new page via [startActivityForResult] and loads the given [Fragment]
+         * @return [IntentResult] for handling the result returned from the [Activity]
          */
         fun call(fragment: Fragment): IntentResult {
             val activity = ActivityHolder.getTopActivity()

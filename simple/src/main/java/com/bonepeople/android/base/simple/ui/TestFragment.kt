@@ -12,7 +12,7 @@ import kotlin.system.measureTimeMillis
 
 class TestFragment : ViewBindingFragment<FragmentTestBinding>() {
     override fun initView() {
-        views.titleView.title = "测试"
+        views.titleView.title = "Test"
         views.buttonTest.singleClick { startTest() }
     }
 
@@ -23,10 +23,10 @@ class TestFragment : ViewBindingFragment<FragmentTestBinding>() {
                 kotlin.runCatching {
                     test()
                 }.getOrElse {
-                    AppLog.defaultLog.error("测试异常：", it)
+                    AppLog.defaultLog.error("Test error：", it)
                 }
             }.let {
-                AppLog.defaultLog.debug("测试耗时：${AppTime.getTimeString(it)}s")
+                AppLog.defaultLog.debug("Test time：${AppTime.getTimeString(it)}s")
             }
             loadingDialog.dismiss()
         }

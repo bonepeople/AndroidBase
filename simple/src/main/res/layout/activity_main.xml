@@ -29,19 +29,19 @@
                 android:id="@+id/buttonUserManager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="测试UserManager" />
+                android:text="Test UserManager" />
 
             <Button
                 android:id="@+id/buttonProductList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="测试ViewBindingRecyclerAdapter" />
+                android:text="Test ViewBindingRecyclerAdapter" />
 
             <Button
                 android:id="@+id/buttonTest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="通用测试" />
+                android:text="Test" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

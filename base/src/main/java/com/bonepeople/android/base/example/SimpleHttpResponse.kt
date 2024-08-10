@@ -19,7 +19,7 @@ class SimpleHttpResponse<R> {
     fun checkLoginState() = apply {
         if (code in 20..29) {
             // BaseUserManager.logout()
-            AppToast.show("登陆信息已过期，请重新登陆")
+            AppToast.show("The login information has expired, please log in again")
             logout = true
         }
     }

@@ -23,10 +23,11 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
 /**
- * Fragment抽象类
- * + 包含自动实例化的ViewBinding和一个基础的LoadingDialog。
- * + 泛型参数中需要传入当前界面的ViewBinding，该ViewBinding会在界面初始化的时候实例化并加载到页面中，之后以views变量的方式供子类使用。
- * + LoadingDialog采用懒加载，不使用不会占用资源。
+ * Abstract Fragment class.
+ * + Includes automatic instantiation of ViewBinding and a basic LoadingDialog.
+ * + The generic parameter requires the ViewBinding of the current screen. This ViewBinding will be instantiated and loaded during initialization,
+ *   and is available via the `views` property for use in subclasses.
+ * + The LoadingDialog is lazily loaded and does not consume resources if unused.
  */
 abstract class ViewBindingFragment<V : ViewBinding> : Fragment(), CoroutineScope {
     @Deprecated("CoroutineScope will no longer be supported. This method will be removed from version 1.7.0.")
@@ -88,14 +89,14 @@ abstract class ViewBindingFragment<V : ViewBinding> : Fragment(), CoroutineScope
     }
 
     /**
-     * 初始化界面
-     * + 会在onViewCreated中被调用
+     * Initializes the UI.
+     * + Called in onViewCreated.
      */
     protected abstract fun initView()
 
     /**
-     * 初始化数据
-     * + 会在onViewCreated中被调用
+     * Initializes the data.
+     * + Called in onViewCreated.
      */
     protected open fun initData(savedInstanceState: Bundle?) {}
 }

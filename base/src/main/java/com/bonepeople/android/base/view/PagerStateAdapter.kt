@@ -12,11 +12,11 @@ import com.bonepeople.android.widget.util.AppView.gone
 import com.bonepeople.android.widget.util.AppView.show
 
 /**
- * 分页加载的状态指示器
+ * State indicator for paginated loading
  *
- * 分页加载时在RecyclerView中添加一个item，用于展示加载状态
- * + 通常会配合[androidx.paging.PagingDataAdapter.withLoadStateHeaderAndFooter]使用
- * + 官方的显示逻辑有问题，作为header时不要设置[noMoreMessage]
+ * Adds an item to RecyclerView to display loading state during pagination.
+ * + Commonly used with [androidx.paging.PagingDataAdapter.withLoadStateHeaderAndFooter]
+ * + The official behavior has issues — avoid setting [noMoreMessage] when used as a header
  */
 @Suppress("UNUSED")
 class PagerStateAdapter(var loadMessage: String = "Loading...", var noMoreMessage: String? = null, var errorMessage: String? = null) : LoadStateAdapter<RecyclerView.ViewHolder>() {
@@ -28,14 +28,16 @@ class PagerStateAdapter(var loadMessage: String = "Loading...", var noMoreMessag
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, loadState: LoadState) {
         (holder as StateViewHolder).binding.let { views ->
-            if (customView != null) {//设置了自定义View
-                //出现多个ViewHolder的时候需要通过customView.parent方式移除引用，否则会出现重复加载的异常
+            if (customView != null) {
+                // If a custom view is set
+                // When multiple ViewHolders exist, we must remove the customView from its previous parent to avoid duplicate attachment exceptions
                 (customView?.parent as? FrameLayout)?.removeAllViews()
                 views.frameLayoutContainer.removeAllViews()
                 views.frameLayoutContainer.addView(customView)
                 views.frameLayoutContainer.show()
                 views.textViewStatus.gone()
-            } else {//没有设置自定义View
+            } else {
+                // If no custom view is set, show default text view
                 views.frameLayoutContainer.gone()
                 views.textViewStatus.show()
                 views.textViewStatus.text = when (loadState) {
@@ -57,8 +59,8 @@ class PagerStateAdapter(var loadMessage: String = "Loading...", var noMoreMessag
     }
 
     /**
-     * 设置用于展示加载状态的自定义View
-     * + 未设置的情况下会使用默认的TextView显示加载状态
+     * Sets a custom view to display loading state
+     * + If not set, a default TextView will be used
      */
     fun setView(view: View? = null) = apply {
         customView = view

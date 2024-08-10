@@ -37,7 +37,7 @@ class TitleView(context: Context, attrs: AttributeSet?) : LinearLayout(context, 
     }
 
     /**
-     * 应用配置信息
+     * Apply configuration settings
      */
     fun applyConfig(config: Config) {
         config.run {
@@ -59,39 +59,39 @@ class TitleView(context: Context, attrs: AttributeSet?) : LinearLayout(context, 
     }
 
     /**
-     * 配置信息
-     * + 可用于保存并统一设置样式
+     * Configuration holder
+     * + Can be used to save and apply unified styles
      */
     class Config {
         /**
-         * 整体背景
+         * Background of the entire title view
          */
         var titleViewBackground: Drawable? = null
 
         /**
-         * 状态栏背景
+         * Background for the status bar area
          */
         var statusBarBackground: Drawable? = null
 
         /**
-         * 标题栏背景
+         * Background for the title bar
          */
         var titleBarBackground: Drawable? = null
 
         /**
-         * 标题文字和图标的颜色
+         * Text and icon color in the title bar
          */
         @ColorInt
         var titleColor: Int? = null
 
         /**
-         * 标题栏高度
-         * + 同样会影响按钮大小
+         * Height of the title bar
+         * + Also affects the button sizes
          */
         var titleBarHeight: Float? = null
 
         /**
-         * 标题栏默认文案
+         * Default text shown in the title bar
          */
         var defaultTitleText: String? = null
     }
