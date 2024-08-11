@@ -1,8 +1,8 @@
-package com.bonepeople.android.base.simple.ui
+package com.bonepeople.android.base.sample.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bonepeople.android.base.simple.data.ProductInfo
+import com.bonepeople.android.base.sample.data.ProductInfo
 import com.bonepeople.android.base.util.CoroutineExtension.launchOnDefault
 import com.bonepeople.android.widget.util.AppRandom
 import kotlinx.coroutines.delay

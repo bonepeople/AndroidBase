@@ -1,8 +1,8 @@
-package com.bonepeople.android.base.simple.ui
+package com.bonepeople.android.base.sample.ui
 
 import androidx.lifecycle.lifecycleScope
+import com.bonepeople.android.base.sample.databinding.FragmentTestBinding
 import com.bonepeople.android.base.viewbinding.ViewBindingFragment
-import com.bonepeople.android.base.simple.databinding.FragmentTestBinding
 import com.bonepeople.android.widget.util.AppLog
 import com.bonepeople.android.widget.util.AppTime
 import com.bonepeople.android.widget.util.AppView.singleClick

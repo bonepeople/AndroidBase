@@ -1,8 +1,8 @@
-package com.bonepeople.android.base.simple.ui
+package com.bonepeople.android.base.sample.ui
 
 import com.bonepeople.android.base.viewbinding.ViewBindingActivity
 import com.bonepeople.android.base.activity.StandardActivity
-import com.bonepeople.android.base.simple.databinding.ActivityMainBinding
+import com.bonepeople.android.base.sample.databinding.ActivityMainBinding
 import com.bonepeople.android.widget.util.AppView.singleClick
 
 class MainActivity : ViewBindingActivity<ActivityMainBinding>() {

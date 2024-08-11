@@ -1,8 +1,8 @@
-package com.bonepeople.android.base.simple.adapter
+package com.bonepeople.android.base.sample.adapter
 
 import com.bonepeople.android.base.viewbinding.ViewBindingRecyclerAdapter
-import com.bonepeople.android.base.simple.data.ProductInfo
-import com.bonepeople.android.base.simple.databinding.ItemProductListBinding
+import com.bonepeople.android.base.sample.data.ProductInfo
+import com.bonepeople.android.base.sample.databinding.ItemProductListBinding
 
 class ProductListAdapter(override val list: List<ProductInfo>) : ViewBindingRecyclerAdapter<ItemProductListBinding, ProductInfo>() {
     override fun onBindView(views: ItemProductListBinding, data: ProductInfo, position: Int, payloads: List<Any>) {
