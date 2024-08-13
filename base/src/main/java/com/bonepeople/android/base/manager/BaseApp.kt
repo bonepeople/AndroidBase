@@ -6,7 +6,7 @@ import com.bonepeople.android.widget.util.AppData
 import com.bonepeople.android.widget.util.AppLog
 
 abstract class BaseApp : Application() {
-    private val build = "20240724-191142"
+    private val build = "20240813-192738"
     protected abstract val appName: String
 
     override fun onCreate() {
