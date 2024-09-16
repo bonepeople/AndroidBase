@@ -2,7 +2,7 @@ package com.bonepeople.android.base.util
 
 import kotlinx.coroutines.*
 
-@Suppress("UNUSED")
+@Suppress("Unused")
 object CoroutineExtension {
     fun CoroutineScope.launchOnMain(start: CoroutineStart = CoroutineStart.DEFAULT, block: suspend CoroutineScope.() -> Unit): Job {
         return launch(Dispatchers.Main, start, block)

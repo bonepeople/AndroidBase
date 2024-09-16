@@ -4,7 +4,7 @@ import androidx.shade.Lighting
 import com.bonepeople.android.widget.CoroutinesHolder
 import kotlinx.coroutines.launch
 
-@Suppress("UNUSED")
+@Suppress("Unused")
 object Clog {
     fun u(type: String, code: Int, name: String, message: String) {
         CoroutinesHolder.default.launch {

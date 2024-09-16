@@ -29,7 +29,7 @@ import kotlin.coroutines.coroutineContext
  * + Use [setCrashAction] to define the behavior after a crash is caught
  * + The [runCrashAction] flag controls whether [crashAction] is executed; by default, it's enabled only in debug mode
  */
-@Suppress("UNUSED")
+@Suppress("Unused")
 object CrashHandler : Thread.UncaughtExceptionHandler {
     private var defaultHandler: Thread.UncaughtExceptionHandler? = null
     private var crashAction: suspend (message: String, exception: Throwable) -> Unit = CrashHandler::defaultCrashAction
