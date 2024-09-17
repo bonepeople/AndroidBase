@@ -1,8 +1,7 @@
-package com.bonepeople.android.base.sample.ui
+package com.bonepeople.android.base.sample.module.recycleradapter
 
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bonepeople.android.base.sample.adapter.ProductListAdapter
 import com.bonepeople.android.base.sample.databinding.FragmentProductListBinding
 import com.bonepeople.android.base.viewbinding.ViewBindingFragment
 import com.bonepeople.android.base.util.FlowExtension.observeWithLifecycle
