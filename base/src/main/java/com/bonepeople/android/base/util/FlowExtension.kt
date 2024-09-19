@@ -17,7 +17,7 @@ object FlowExtension {
     }
 
     fun <T> StateFlow<T>.observeWithLifecycle(owner: LifecycleOwner, activeState: Lifecycle.State = Lifecycle.State.STARTED, action: suspend (T) -> Unit): Job {
-        return flowWithLifecycle(owner.lifecycle, activeState).distinctUntilChanged().onEach(action).launchIn(owner.lifecycleScope)
+        return flowWithLifecycle(owner.lifecycle, activeState).distinctUntilChanged().conflate().onEach(action).launchIn(owner.lifecycleScope)
     }
 
     @ExperimentalCoroutinesApi

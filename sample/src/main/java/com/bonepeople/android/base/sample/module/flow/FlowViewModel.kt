@@ -8,13 +8,13 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class FlowViewModel : ViewModel() {
-    val executeTime = MutableStateFlow(1000L)
+    val executeTime = MutableStateFlow(2000L)
     val value1 = MutableStateFlow(0)
-    private val emitTime = 500L
+    private val emitTime = 550L
 
     fun emit1() {
         viewModelScope.launchOnIO {
-            listOf(1, 2, 3, 3, 3, 4, 5, 5, 6).forEach {
+            listOf(1, 2, 3, 3, 3, 4, 5, 5, 6, 7, 8, 9).forEach {
                 AppLog.defaultLog.verbose("emit-$it")
                 value1.value = it
                 delay(emitTime)
