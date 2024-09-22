@@ -6,21 +6,12 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import androidx.shade.Protector
 import androidx.viewbinding.ViewBinding
-import com.bonepeople.android.base.CoroutineLifecycleObserver
 import com.bonepeople.android.base.view.CustomLoadingDialog
 import com.bonepeople.android.widget.util.AppKeyboard
 import com.gyf.immersionbar.ktx.immersionBar
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import java.lang.reflect.ParameterizedType
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 
 /**
  * Abstract Activity class
@@ -29,24 +20,7 @@ import kotlin.coroutines.EmptyCoroutineContext
  *   and can be accessed via the `views` variable in subclasses.
  * + LoadingDialog uses lazy initialization, so it won’t consume resources if not used.
  */
-abstract class ViewBindingActivity<V : ViewBinding> : AppCompatActivity(), CoroutineScope {
-    @Deprecated("CoroutineScope will no longer be supported. This method will be removed from version 1.7.0.")
-    override val coroutineContext: CoroutineContext by lazy {
-        (Dispatchers.Main + Job()).also {
-            lifecycle.addObserver(CoroutineLifecycleObserver(it))
-        }
-    }
-
-    @Deprecated(
-        message = "Use lifecycleScope.launch(context, start, block) instead. This method will be removed from version 1.7.0.",
-        replaceWith = ReplaceWith("lifecycleScope.launch(context, start, block)", "androidx.lifecycle.lifecycleScope", "kotlinx.coroutines.launch")
-    )
-    fun launch(
-        context: CoroutineContext = EmptyCoroutineContext,
-        start: CoroutineStart = CoroutineStart.DEFAULT,
-        block: suspend CoroutineScope.() -> Unit
-    ) = lifecycleScope.launch(context, start, block)
-
+abstract class ViewBindingActivity<V : ViewBinding> : AppCompatActivity() {
     @Suppress("UNCHECKED_CAST")
     protected val views: V by lazy {
         Protector.protect {
