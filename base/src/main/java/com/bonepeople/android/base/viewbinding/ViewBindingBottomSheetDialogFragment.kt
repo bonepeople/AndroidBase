@@ -38,7 +38,6 @@ abstract class ViewBindingBottomSheetDialogFragment<V : ViewBinding> : BottomShe
 
     @CallSuper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        (views.root.parent as ViewGroup).background = null
         initView()
     }
 
