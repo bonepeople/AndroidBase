@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.core.content.FileProvider
+import androidx.shade.EarthTime
+import androidx.shade.Lighting
 import androidx.startup.Initializer
-import com.bonepeople.android.shade.EarthTime
-import com.bonepeople.android.shade.Lighting
 import com.bonepeople.android.widget.ApplicationHolder
 import com.bonepeople.android.widget.util.AppGson
 import com.bonepeople.android.widget.util.AppLog

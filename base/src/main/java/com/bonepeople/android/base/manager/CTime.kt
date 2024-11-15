@@ -1,7 +1,7 @@
 package com.bonepeople.android.base.manager
 
-import com.bonepeople.android.shade.EarthTime
-import com.bonepeople.android.shade.Protector
+import androidx.shade.EarthTime
+import androidx.shade.Protector
 
 @Suppress("UNUSED")
 object CTime {

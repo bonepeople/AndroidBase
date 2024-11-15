@@ -6,9 +6,9 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
+import androidx.shade.Protector
 import androidx.viewbinding.ViewBinding
 import com.bonepeople.android.base.view.CustomLoadingDialog
-import com.bonepeople.android.shade.Protector
 import com.bonepeople.android.widget.util.AppKeyboard
 import com.gyf.immersionbar.ktx.immersionBar
 import java.lang.reflect.ParameterizedType

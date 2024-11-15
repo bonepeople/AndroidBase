@@ -9,9 +9,9 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import androidx.shade.Protector
 import androidx.viewbinding.ViewBinding
 import com.bonepeople.android.base.R
-import com.bonepeople.android.shade.Protector
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.delay
 import java.lang.reflect.ParameterizedType
