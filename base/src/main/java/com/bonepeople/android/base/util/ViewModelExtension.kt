@@ -6,6 +6,8 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelStorage.getExtra
 import androidx.lifecycle.ViewModelStorage.putExtraIfAbsent
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import java.io.Closeable
 
 @Suppress("Unused")
@@ -20,12 +22,11 @@ object ViewModelExtension {
 
     private class LifecycleOwnerHolder : LifecycleOwner, Closeable {
         private val registry = LifecycleRegistry(this)
-        private var active = true
 
         init {
-            registry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
-            registry.handleLifecycleEvent(Lifecycle.Event.ON_START)
-            registry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
+            MainScope().launch {
+                registry.currentState = Lifecycle.State.RESUMED
+            }
         }
 
         override fun getLifecycle(): Lifecycle {
@@ -33,12 +34,7 @@ object ViewModelExtension {
         }
 
         override fun close() {
-            if (active) {
-                active = false
-                registry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-                registry.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
-                registry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-            }
+            registry.currentState = Lifecycle.State.DESTROYED
         }
     }
 }
