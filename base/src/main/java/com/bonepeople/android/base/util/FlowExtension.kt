@@ -1,5 +1,6 @@
 package com.bonepeople.android.base.util
 
+import android.widget.CompoundButton
 import android.widget.EditText
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Lifecycle
@@ -43,6 +44,26 @@ object FlowExtension {
             if (!lock) {
                 lock = true
                 editText.setText(it)
+                lock = false
+            }
+        }
+    }
+
+    fun MutableStateFlow<Boolean>.bindCompoundButton(owner: LifecycleOwner, switch: CompoundButton, changeAction: (Boolean) -> Unit = {}) {
+        var lock = false
+        switch.setOnCheckedChangeListener { _, isChecked ->
+            if (!lock) {
+                lock = true
+                this.value = isChecked
+                changeAction(isChecked)
+                lock = false
+            }
+        }
+        observeWithLifecycle(owner) {
+            if (!lock) {
+                lock = true
+                switch.isChecked = it
+                changeAction(it)
                 lock = false
             }
         }
