@@ -22,15 +22,12 @@ object ViewModelExtension {
 
     private class LifecycleOwnerHolder : LifecycleOwner, Closeable {
         private val registry = LifecycleRegistry(this)
+        override val lifecycle: Lifecycle = registry
 
         init {
             MainScope().launch {
                 registry.currentState = Lifecycle.State.RESUMED
             }
-        }
-
-        override fun getLifecycle(): Lifecycle {
-            return registry
         }
 
         override fun close() {
