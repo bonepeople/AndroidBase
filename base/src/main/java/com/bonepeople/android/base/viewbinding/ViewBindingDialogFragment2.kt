@@ -68,7 +68,6 @@ abstract class ViewBindingDialogFragment2<V : ViewBinding> : DialogFragment() {
      * + If the dialog is already shown, calling this method again has no effect.
      * + Must call [setManagerAndTag] before displaying.
      */
-    @CallSuper
     open fun show() {
         require(dialogFragmentManager != null) { "FragmentManager and tag must be set using setManagerAndTag before calling show." }
         show(dialogFragmentManager!!, dialogFragmentTag)
