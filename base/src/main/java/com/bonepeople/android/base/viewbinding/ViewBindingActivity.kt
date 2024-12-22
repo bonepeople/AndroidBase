@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.shade.Protector
 import androidx.viewbinding.ViewBinding
 import com.bonepeople.android.base.view.CustomLoadingDialog
+import com.bonepeople.android.base.view.SimpleLoadingDialog
 import com.bonepeople.android.widget.util.AppKeyboard
 import com.gyf.immersionbar.ktx.immersionBar
 import java.lang.reflect.ParameterizedType
@@ -30,9 +31,18 @@ abstract class ViewBindingActivity<V : ViewBinding> : AppCompatActivity() {
             method.invoke(null, layoutInflater) as V
         }
     }
+    @Deprecated(
+        message = "Please migrate to simpleLoadingDialog and control its state with StateFlow/LiveData and Lifecycle.",
+        replaceWith = ReplaceWith("simpleLoadingDialog")
+    )
     protected val loadingDialog: CustomLoadingDialog by lazy {
         val tag = "ViewBindingActivity.loadingDialog"
         val dialog: CustomLoadingDialog = supportFragmentManager.findFragmentByTag(tag) as? CustomLoadingDialog ?: CustomLoadingDialog()
+        dialog.also { it.setManagerAndTag(supportFragmentManager, tag) }
+    }
+    protected val simpleLoadingDialog: SimpleLoadingDialog by lazy {
+        val tag = "ViewBindingActivity.simpleLoadingDialog"
+        val dialog: SimpleLoadingDialog = supportFragmentManager.findFragmentByTag(tag) as? SimpleLoadingDialog ?: SimpleLoadingDialog()
         dialog.also { it.setManagerAndTag(supportFragmentManager, tag) }
     }
 

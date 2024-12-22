@@ -31,11 +31,11 @@ class SimpleViewBindingActivity : ViewBindingActivity<ActivitySimpleBinding>() {
             currentIndex = it.getInt(CURRENT_INDEX)
         }
         lifecycleScope.launch {
-            loadingDialog.show()
+            simpleLoadingDialog.show()
             //fetchData
             updateData()
             delay(2000)
-            loadingDialog.dismiss()
+            simpleLoadingDialog.dismiss()
         }
     }
 

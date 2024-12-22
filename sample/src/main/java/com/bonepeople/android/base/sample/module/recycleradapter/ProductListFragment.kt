@@ -14,7 +14,7 @@ class ProductListFragment : ViewBindingFragment<FragmentProductListBinding>() {
     override fun initView() {
         views.titleView.title = "ProductList"
         viewModel.showLoading.observeWithLifecycle(viewLifecycleOwner) {
-            if (it) loadingDialog.show() else loadingDialog.dismiss()
+            if (it) simpleLoadingDialog.show() else simpleLoadingDialog.dismiss()
         }
         views.buttonRefresh.singleClick { viewModel.updateData() }
         viewModel.countText.observeWithLifecycle(viewLifecycleOwner) { views.textViewCount.text = it }

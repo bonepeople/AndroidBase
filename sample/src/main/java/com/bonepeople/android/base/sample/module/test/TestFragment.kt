@@ -18,7 +18,7 @@ class TestFragment : ViewBindingFragment<FragmentTestBinding>() {
 
     private fun startTest() {
         viewLifecycleOwner.lifecycleScope.launch {
-            loadingDialog.show()
+            simpleLoadingDialog.show()
             measureTimeMillis {
                 kotlin.runCatching {
                     test()
@@ -28,7 +28,7 @@ class TestFragment : ViewBindingFragment<FragmentTestBinding>() {
             }.let {
                 AppLog.defaultLog.debug("Test time：${AppTime.getTimeString(it)}s")
             }
-            loadingDialog.dismiss()
+            simpleLoadingDialog.dismiss()
         }
     }
 

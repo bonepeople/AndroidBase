@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.shade.Protector
 import androidx.viewbinding.ViewBinding
 import com.bonepeople.android.base.view.CustomLoadingDialog
+import com.bonepeople.android.base.view.SimpleLoadingDialog
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -36,9 +37,18 @@ abstract class ViewBindingFragment<V : ViewBinding> : Fragment() {
             method.invoke(null, layoutInflater) as V
         }
     }
+    @Deprecated(
+        message = "Please migrate to simpleLoadingDialog and control its state with StateFlow/LiveData and Lifecycle.",
+        replaceWith = ReplaceWith("simpleLoadingDialog")
+    )
     protected val loadingDialog: CustomLoadingDialog by lazy {
         val tag = "ViewBindingFragment.loadingDialog"
         val dialog: CustomLoadingDialog = childFragmentManager.findFragmentByTag(tag) as? CustomLoadingDialog ?: CustomLoadingDialog()
+        dialog.also { it.setManagerAndTag(childFragmentManager, tag) }
+    }
+    protected val simpleLoadingDialog: SimpleLoadingDialog by lazy {
+        val tag = "ViewBindingFragment.simpleLoadingDialog"
+        val dialog: SimpleLoadingDialog = childFragmentManager.findFragmentByTag(tag) as? SimpleLoadingDialog ?: SimpleLoadingDialog()
         dialog.also { it.setManagerAndTag(childFragmentManager, tag) }
     }
 
