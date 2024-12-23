@@ -8,4 +8,8 @@ class SimpleLoadingDialog : ViewBindingDialogFragment2<DialogSimpleLoadingBindin
         views.root
         isCancelable = false
     }
+
+    fun switchShow(showing: Boolean) {
+        if (showing) show() else dismiss()
+    }
 }
