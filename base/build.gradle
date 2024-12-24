@@ -56,7 +56,7 @@ dependencies {
     api 'androidx.fragment:fragment-ktx:1.6.2'
 
     // com.github.bonepeople:AndroidWidget:publish-SNAPSHOT
-    api 'com.github.bonepeople:AndroidWidget:1.7.1'
+    api 'com.github.bonepeople:AndroidWidget:1.7.3'
 
     // ImmersionBar https://github.com/gyf-dev/ImmersionBar
     api 'com.geyifeng.immersionbar:immersionbar:3.2.2'
