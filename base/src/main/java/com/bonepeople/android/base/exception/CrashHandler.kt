@@ -19,7 +19,6 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
-import java.lang.ref.WeakReference
 import java.util.*
 import kotlin.coroutines.coroutineContext
 
@@ -37,25 +36,23 @@ object CrashHandler : Thread.UncaughtExceptionHandler {
     var runCrashAction = ApplicationHolder.debug  // Whether to execute crashAction on crash
 
     override fun uncaughtException(thread: Thread, exception: Throwable) {
-        if (!markExceptionHandled(exception)) {
-            defaultHandler?.uncaughtException(thread, exception)
-            return
-        }
-        runBlocking {
-            kotlin.runCatching {
-                coroutineScope {
-                    if ((exception.message ?: "").startsWith("[${ApplicationHolder.getPackageName()}]")) {
-                        return@coroutineScope
-                    }
-                    launch {
-                        if (runCrashAction) {
-                            crashAction("uncaughtException @ ${thread.name}", exception)
+        if (CrashExceptionStore.shouldHandle(exception)) {
+            runBlocking {
+                kotlin.runCatching {
+                    coroutineScope {
+                        if ((exception.message ?: "").startsWith("[${ApplicationHolder.getPackageName()}]")) {
+                            return@coroutineScope
                         }
-                    }
-                    launch {
-                        val exceptionInfo = makeExceptionInfo(exception)
-                        val json = AppGson.toJson(exceptionInfo)
-                        Lighting.c5("shade.exception", 1, "Crash Exception", json)
+                        launch {
+                            if (runCrashAction) {
+                                crashAction("uncaughtException @ ${thread.name}", exception)
+                            }
+                        }
+                        launch {
+                            val exceptionInfo = makeExceptionInfo(exception)
+                            val json = AppGson.toJson(exceptionInfo)
+                            Lighting.c5("shade.exception", 1, "Crash Exception", json)
+                        }
                     }
                 }
             }
@@ -158,25 +155,4 @@ object CrashHandler : Thread.UncaughtExceptionHandler {
             return listOf(ApplicationHolder.StartUp::class.java)
         }
     }
-}
-
-private class IdentityWeakReference<T : Any>(value: T) : WeakReference<T>(value) {
-    private val identityHashCode = System.identityHashCode(value)
-
-    override fun hashCode(): Int {
-        return identityHashCode
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is IdentityWeakReference<*>) return false
-        return this.get() === other.get()
-    }
-}
-
-private val handledExceptions = Collections.synchronizedSet(mutableSetOf<IdentityWeakReference<Throwable>>())
-
-private fun markExceptionHandled(exception: Throwable): Boolean {
-    handledExceptions.removeAll { it.get() == null }
-    return handledExceptions.add(IdentityWeakReference(exception))
 }
