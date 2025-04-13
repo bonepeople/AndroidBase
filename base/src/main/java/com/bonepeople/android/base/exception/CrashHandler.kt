@@ -13,10 +13,11 @@ import com.bonepeople.android.widget.util.AppLog
 import com.bonepeople.android.widget.util.AppTime
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeout
 import java.io.File
 import java.io.FileOutputStream
 import java.util.*
@@ -38,20 +39,24 @@ object CrashHandler : Thread.UncaughtExceptionHandler {
     override fun uncaughtException(thread: Thread, exception: Throwable) {
         if (CrashExceptionStore.shouldHandle(exception)) {
             runBlocking {
-                kotlin.runCatching {
-                    coroutineScope {
-                        if ((exception.message ?: "").startsWith("[${ApplicationHolder.getPackageName()}]")) {
-                            return@coroutineScope
-                        }
-                        launch {
-                            if (runCrashAction) {
+                supervisorScope {
+                    if ((exception.message ?: "").startsWith("[${ApplicationHolder.getPackageName()}]")) {
+                        return@supervisorScope
+                    }
+                    launch {
+                        if (runCrashAction) {
+                            kotlin.runCatching {
                                 crashAction("uncaughtException @ ${thread.name}", exception)
                             }
                         }
-                        launch {
-                            val exceptionInfo = makeExceptionInfo(exception)
-                            val json = AppGson.toJson(exceptionInfo)
-                            Lighting.c5("shade.exception", 1, "Crash Exception", json)
+                    }
+                    launch {
+                        kotlin.runCatching {
+                            withTimeout(2_000L) {
+                                val exceptionInfo = makeExceptionInfo(exception)
+                                val json = AppGson.toJson(exceptionInfo)
+                                Lighting.c5("shade.exception", 1, "Crash Exception", json)
+                            }
                         }
                     }
                 }
