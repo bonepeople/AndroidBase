@@ -30,3 +30,23 @@
 -dontwarn org.openjsse.javax.net.ssl.SSLSocket
 -dontwarn org.openjsse.net.ssl.OpenJSSE
 -dontwarn org.slf4j.impl.StaticLoggerBinder
+
+#解决Activity混淆问题
+-keep,allowobfuscation class com.bonepeople.android.base.viewbinding.ViewBindingActivity { *; }
+#解决StandardActivity混淆问题
+-keep,allowobfuscation class com.bonepeople.android.base.activity.StandardActivity$Companion { *; }
+#解决UserManager混淆问题
+-keep,allowobfuscation class com.bonepeople.android.base.manager.BaseUserManager { *; }
+-keep,allowobfuscation class * extends com.bonepeople.android.base.manager.BaseUserManager { *; }
+
+
+
+
+
+-keep,allowobfuscation class com.bonepeople.android.base.viewbinding.ViewBindingFragment { *; }
+-keep,allowobfuscation class * extends com.bonepeople.android.base.viewbinding.ViewBindingFragment { *; }
+
+-keep,allowobfuscation class com.bonepeople.android.base.viewbinding.ViewBindingRecyclerAdapter { *; }
+
+
+
