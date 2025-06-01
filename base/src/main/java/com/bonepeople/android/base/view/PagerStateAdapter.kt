@@ -18,7 +18,7 @@ import com.bonepeople.android.widget.util.AppView.show
  * + Commonly used with [androidx.paging.PagingDataAdapter.withLoadStateHeaderAndFooter]
  * + The official behavior has issues — avoid setting [noMoreMessage] when used as a header
  */
-@Suppress("UNUSED")
+@Suppress("Unused")
 class PagerStateAdapter(var loadMessage: String = "Loading...", var noMoreMessage: String? = null, var errorMessage: String? = null) : LoadStateAdapter<RecyclerView.ViewHolder>() {
     private var customView: View? = null
 
