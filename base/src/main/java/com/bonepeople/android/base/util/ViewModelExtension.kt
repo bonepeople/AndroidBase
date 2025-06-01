@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelStorage.getExtra
 import androidx.lifecycle.ViewModelStorage.putExtraIfAbsent
 import java.io.Closeable
 
-@Suppress("unused")
+@Suppress("Unused")
 object ViewModelExtension {
     private const val LIFECYCLE_KEY = "com.bonepeople.android.base.util.ViewModelExtension.LIFECYCLE_KEY"
 
