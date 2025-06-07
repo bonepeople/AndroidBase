@@ -3,6 +3,7 @@ package com.bonepeople.android.base.sample.module.main
 import com.bonepeople.android.base.viewbinding.ViewBindingActivity
 import com.bonepeople.android.base.activity.StandardActivity
 import com.bonepeople.android.base.sample.databinding.ActivityMainBinding
+import com.bonepeople.android.base.sample.module.flow.FlowFragment
 import com.bonepeople.android.base.sample.module.recycleradapter.ProductListFragment
 import com.bonepeople.android.base.sample.module.test.TestFragment
 import com.bonepeople.android.base.sample.module.usermanager.UserInfoFragment
@@ -13,6 +14,7 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
         views.titleView.title = "BaseTestActivity"
         views.buttonUserManager.singleClick { StandardActivity.open(UserInfoFragment()) }
         views.buttonProductList.singleClick { StandardActivity.open(ProductListFragment()) }
+        views.buttonFlow.singleClick { StandardActivity.open(FlowFragment()) }
         views.buttonTest.singleClick { StandardActivity.open(TestFragment()) }
     }
 }
