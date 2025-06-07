@@ -1,4 +1,4 @@
-package com.bonepeople.android.base.sample.ui
+package com.bonepeople.android.base.sample.module.test
 
 import androidx.lifecycle.lifecycleScope
 import com.bonepeople.android.base.sample.databinding.FragmentTestBinding

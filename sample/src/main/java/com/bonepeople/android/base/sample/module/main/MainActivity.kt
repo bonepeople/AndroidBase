@@ -1,8 +1,11 @@
-package com.bonepeople.android.base.sample.ui
+package com.bonepeople.android.base.sample.module.main
 
 import com.bonepeople.android.base.viewbinding.ViewBindingActivity
 import com.bonepeople.android.base.activity.StandardActivity
 import com.bonepeople.android.base.sample.databinding.ActivityMainBinding
+import com.bonepeople.android.base.sample.module.recycleradapter.ProductListFragment
+import com.bonepeople.android.base.sample.module.test.TestFragment
+import com.bonepeople.android.base.sample.module.usermanager.UserInfoFragment
 import com.bonepeople.android.widget.util.AppView.singleClick
 
 class MainActivity : ViewBindingActivity<ActivityMainBinding>() {

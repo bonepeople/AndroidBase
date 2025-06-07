@@ -1,4 +1,4 @@
-package com.bonepeople.android.base.sample.data
+package com.bonepeople.android.base.sample.global.data
 
 import com.google.gson.annotations.SerializedName
 

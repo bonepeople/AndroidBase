@@ -1,11 +1,11 @@
-package com.bonepeople.android.base.sample.ui
+package com.bonepeople.android.base.sample.module.usermanager
 
 import android.os.Bundle
 import com.bonepeople.android.base.viewbinding.ViewBindingFragment
 import com.bonepeople.android.base.manager.BroadcastAction
-import com.bonepeople.android.base.sample.data.UserInfo
 import com.bonepeople.android.base.sample.databinding.FragmentUserInfoBinding
 import com.bonepeople.android.base.sample.global.UserManager
+import com.bonepeople.android.base.sample.global.data.UserInfo
 import com.bonepeople.android.localbroadcastutil.LocalBroadcastHelper
 import com.bonepeople.android.widget.util.AppRandom
 import com.bonepeople.android.widget.util.AppView.singleClick
