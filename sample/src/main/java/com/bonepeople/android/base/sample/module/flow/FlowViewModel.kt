@@ -8,9 +8,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class FlowViewModel : ViewModel() {
-    val executeTime = MutableStateFlow(1000L)
+    val executeTime = MutableStateFlow(3000L)
     val value1 = MutableStateFlow(0)
-    private val emitTime = 500L
+    private val emitTime = 200L
 
     fun emit1() {
         viewModelScope.launchOnIO {
