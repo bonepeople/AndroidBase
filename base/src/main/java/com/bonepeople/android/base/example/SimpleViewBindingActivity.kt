@@ -5,8 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
-import com.bonepeople.android.base.viewbinding.ViewBindingActivity
 import com.bonepeople.android.base.databinding.ActivitySimpleBinding
+import com.bonepeople.android.base.viewbinding.ViewBindingActivity2
 import com.bonepeople.android.localbroadcastutil.LocalBroadcastHelper
 import com.bonepeople.android.widget.ActivityHolder
 import com.bonepeople.android.widget.util.AppToast
@@ -14,7 +14,7 @@ import com.bonepeople.android.widget.util.AppView.singleClick
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class SimpleViewBindingActivity : ViewBindingActivity<ActivitySimpleBinding>() {
+class SimpleViewBindingActivity : ViewBindingActivity2<ActivitySimpleBinding>() {
     private var currentIndex = 1
 
     override fun initView() {

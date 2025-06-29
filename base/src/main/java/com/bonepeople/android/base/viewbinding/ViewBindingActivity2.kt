@@ -5,10 +5,9 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.CallSuper
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.shade.Protector
 import androidx.viewbinding.ViewBinding
-import com.bonepeople.android.base.view.CustomLoadingDialog
 import com.bonepeople.android.base.view.SimpleLoadingDialog
 import com.bonepeople.android.widget.util.AppKeyboard
 import com.gyf.immersionbar.ktx.immersionBar
@@ -16,16 +15,12 @@ import java.lang.reflect.ParameterizedType
 
 /**
  * Abstract Activity class
- * + Includes automatically instantiated ViewBinding and a basic LoadingDialog.
+ * + Includes automatically instantiated ViewBinding and a simple LoadingDialog.
  * + The generic parameter should specify the ViewBinding of the current screen. This ViewBinding will be instantiated and loaded during initialization,
  *   and can be accessed via the `views` variable in subclasses.
- * + LoadingDialog uses lazy initialization, so it won’t consume resources if not used.
+ * + simpleLoadingDialog uses lazy initialization, so it won’t consume resources if not used.
  */
-@Deprecated(
-    message = "ViewBindingActivity is deprecated and will be removed in 1.9.0. Please migrate to ViewBindingActivity2.",
-    replaceWith = ReplaceWith("ViewBindingActivity2<V>")
-)
-abstract class ViewBindingActivity<V : ViewBinding> : AppCompatActivity() {
+abstract class ViewBindingActivity2<V : ViewBinding> : FragmentActivity() {
     @Suppress("UNCHECKED_CAST")
     protected val views: V by lazy {
         Protector.protect {
@@ -34,15 +29,6 @@ abstract class ViewBindingActivity<V : ViewBinding> : AppCompatActivity() {
             val method = subclass.getDeclaredMethod("inflate", LayoutInflater::class.java)
             method.invoke(null, layoutInflater) as V
         }
-    }
-    @Deprecated(
-        message = "Please migrate to simpleLoadingDialog and control its state with StateFlow/LiveData and Lifecycle.",
-        replaceWith = ReplaceWith("simpleLoadingDialog")
-    )
-    protected val loadingDialog: CustomLoadingDialog by lazy {
-        val tag = "ViewBindingActivity.loadingDialog"
-        val dialog: CustomLoadingDialog = supportFragmentManager.findFragmentByTag(tag) as? CustomLoadingDialog ?: CustomLoadingDialog()
-        dialog.also { it.setManagerAndTag(supportFragmentManager, tag) }
     }
     protected val simpleLoadingDialog: SimpleLoadingDialog by lazy {
         val tag = "ViewBindingActivity.simpleLoadingDialog"

@@ -1,15 +1,15 @@
 package com.bonepeople.android.base.sample.module.main
 
-import com.bonepeople.android.base.viewbinding.ViewBindingActivity
 import com.bonepeople.android.base.activity.StandardActivity
 import com.bonepeople.android.base.sample.databinding.ActivityMainBinding
 import com.bonepeople.android.base.sample.module.flow.FlowFragment
 import com.bonepeople.android.base.sample.module.recycleradapter.ProductListFragment
 import com.bonepeople.android.base.sample.module.test.TestFragment
 import com.bonepeople.android.base.sample.module.usermanager.UserInfoFragment
+import com.bonepeople.android.base.viewbinding.ViewBindingActivity2
 import com.bonepeople.android.widget.util.AppView.singleClick
 
-class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
+class MainActivity : ViewBindingActivity2<ActivityMainBinding>() {
     override fun initView() {
         views.titleView.title = "BaseTestActivity"
         views.buttonUserManager.singleClick { StandardActivity.open(UserInfoFragment()) }
