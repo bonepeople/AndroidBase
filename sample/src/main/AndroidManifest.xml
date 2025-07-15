@@ -14,14 +14,18 @@
             android:value="true" />
 
         <activity
-            android:name=".module.main.MainActivity"
-            android:exported="true"
-            android:launchMode="singleTask">
+            android:name=".module.start.StartActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".module.main.MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask" />
     </application>
 </manifest>
