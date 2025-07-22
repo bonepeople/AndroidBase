@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import com.bonepeople.android.base.sample.R
 import com.bonepeople.android.base.sample.databinding.ActivityStartBinding
-import com.bonepeople.android.base.sample.module.main.MainActivity
+import com.bonepeople.android.base.sample.module.home.HomeActivity
 import com.bonepeople.android.base.util.FlowExtension.observeWithLifecycle
 import com.bonepeople.android.base.viewbinding.ViewBindingActivity2
 import com.bonepeople.android.widget.ApplicationHolder
@@ -27,7 +27,7 @@ class StartActivity : ViewBindingActivity2<ActivityStartBinding>() {
         viewModel.pageState.observeWithLifecycle(this) { pageState ->
             when (pageState) {
                 StartViewModel.PageState.Init, StartViewModel.PageState.Loading -> Unit
-                StartViewModel.PageState.Finish -> navigateToMain()
+                StartViewModel.PageState.Finish -> navigateToHome()
                 StartViewModel.PageState.Error -> AppToast.show(getString(R.string.start_init_error))
             }
         }
@@ -37,8 +37,8 @@ class StartActivity : ViewBindingActivity2<ActivityStartBinding>() {
         viewModel.init()
     }
 
-    private fun navigateToMain() {
-        MainActivity.open()
+    private fun navigateToHome() {
+        HomeActivity.open()
         finishAfterTransition()
     }
 }

@@ -1,11 +1,11 @@
-package com.bonepeople.android.base.sample.module.main
+package com.bonepeople.android.base.sample.module.home
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import com.bonepeople.android.base.activity.StandardActivity
-import com.bonepeople.android.base.sample.databinding.ActivityMainBinding
+import com.bonepeople.android.base.sample.databinding.ActivityHomeBinding
 import com.bonepeople.android.base.sample.module.flow.FlowFragment
 import com.bonepeople.android.base.sample.module.recycleradapter.ProductListFragment
 import com.bonepeople.android.base.sample.module.test.TestFragment
@@ -16,7 +16,7 @@ import com.bonepeople.android.widget.util.AppView.singleClick
 import kotlinx.coroutines.launch
 
 /** Sample entry page and Activity code structure reference. */
-class MainActivity : ViewBindingActivity2<ActivityMainBinding>() {
+class HomeActivity : ViewBindingActivity2<ActivityHomeBinding>() {
     private var currentIndex = 1
 
     override fun initView() {
@@ -99,7 +99,7 @@ class MainActivity : ViewBindingActivity2<ActivityMainBinding>() {
         /** Opens this Activity from other pages; call directly to navigate here. */
         fun open() {
             ActivityHolder.getTopActivity()?.let { activity: Activity ->
-                val intent = Intent(activity, MainActivity::class.java)
+                val intent = Intent(activity, HomeActivity::class.java)
                 // For singleTask: return to existing instance and clear Activities above it
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
                 activity.startActivity(intent)
