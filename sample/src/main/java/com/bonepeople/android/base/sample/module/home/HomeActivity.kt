@@ -3,6 +3,7 @@ package com.bonepeople.android.base.sample.module.home
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.lifecycleScope
 import com.bonepeople.android.base.activity.StandardActivity
 import com.bonepeople.android.base.sample.databinding.ActivityHomeBinding
@@ -20,12 +21,12 @@ class HomeActivity : ViewBindingActivity2<ActivityHomeBinding>() {
     private var currentIndex = 1
 
     override fun initView() {
-        // Handle back press; show a confirm dialog here if needed
-        // onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-        //     override fun handleOnBackPressed() {
-        //         finish()
-        //     }
-        // })
+        // Handle back press
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finishAndRemoveTask()
+            }
+        })
         // views.titleView.onBackClick { onBackPressedDispatcher.onBackPressed() }
         views.titleView.title = "BaseTestActivity"
         // views.titleView.onActionClick { AppToast.show("Click Action") }
