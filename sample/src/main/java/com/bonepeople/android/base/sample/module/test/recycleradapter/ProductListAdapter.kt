@@ -1,4 +1,4 @@
-package com.bonepeople.android.base.sample.module.recycleradapter
+package com.bonepeople.android.base.sample.module.test.recycleradapter
 
 import com.bonepeople.android.base.viewbinding.ViewBindingRecyclerAdapter
 import com.bonepeople.android.base.sample.databinding.ItemProductListBinding

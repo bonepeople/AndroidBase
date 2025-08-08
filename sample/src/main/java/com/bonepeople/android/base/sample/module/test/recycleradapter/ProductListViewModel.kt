@@ -1,4 +1,4 @@
-package com.bonepeople.android.base.sample.module.recycleradapter
+package com.bonepeople.android.base.sample.module.test.recycleradapter
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -1,4 +1,4 @@
-package com.bonepeople.android.base.sample.module.usermanager
+package com.bonepeople.android.base.sample.module.test.usermanager
 
 import android.os.Bundle
 import com.bonepeople.android.base.viewbinding.ViewBindingFragment

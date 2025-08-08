@@ -7,10 +7,10 @@ import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.lifecycleScope
 import com.bonepeople.android.base.activity.StandardActivity
 import com.bonepeople.android.base.sample.databinding.ActivityHomeBinding
-import com.bonepeople.android.base.sample.module.flow.FlowFragment
-import com.bonepeople.android.base.sample.module.recycleradapter.ProductListFragment
 import com.bonepeople.android.base.sample.module.test.TestFragment
-import com.bonepeople.android.base.sample.module.usermanager.UserInfoFragment
+import com.bonepeople.android.base.sample.module.test.flow.FlowFragment
+import com.bonepeople.android.base.sample.module.test.recycleradapter.ProductListFragment
+import com.bonepeople.android.base.sample.module.test.usermanager.UserInfoFragment
 import com.bonepeople.android.base.viewbinding.ViewBindingActivity2
 import com.bonepeople.android.widget.ActivityHolder
 import com.bonepeople.android.widget.util.AppView.singleClick

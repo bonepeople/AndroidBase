@@ -1,4 +1,4 @@
-package com.bonepeople.android.base.sample.module.flow
+package com.bonepeople.android.base.sample.module.test.flow
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
