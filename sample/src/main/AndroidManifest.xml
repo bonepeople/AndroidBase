@@ -15,7 +15,8 @@
 
         <activity
             android:name=".module.start.StartActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.AndroidBase.Start">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -2,6 +2,7 @@ package com.bonepeople.android.base.sample.module.start
 
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.bonepeople.android.base.sample.R
 import com.bonepeople.android.base.sample.databinding.ActivityStartBinding
 import com.bonepeople.android.base.sample.module.home.HomeActivity
@@ -13,6 +14,13 @@ import com.gyf.immersionbar.ktx.immersionBar
 
 class StartActivity : ViewBindingActivity2<ActivityStartBinding>() {
     private val viewModel: StartViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen().apply {
+            setOnExitAnimationListener { splashScreenView -> splashScreenView.remove() }
+        }
+        super.onCreate(savedInstanceState)
+    }
 
     override fun setStatusBar() {
         immersionBar {
