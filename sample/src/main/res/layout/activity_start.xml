@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/start_background"
+    android:background="@color/background"
     tools:context=".module.start.StartActivity">
 
     <LinearLayout
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="@string/app_name"
-            android:textColor="@color/white"
+            android:textColor="@color/textTitle"
             android:textSize="32sp"
             android:textStyle="bold" />
 
@@ -50,7 +50,7 @@
             android:gravity="center"
             android:paddingHorizontal="32dp"
             android:text="@string/start_tagline"
-            android:textColor="@color/start_text_secondary"
+            android:textColor="@color/textSecondary"
             android:textSize="15sp" />
     </LinearLayout>
 
@@ -59,7 +59,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
-        android:textColor="@color/start_text_secondary"
+        android:textColor="@color/textHint"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
