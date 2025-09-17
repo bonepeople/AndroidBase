@@ -1,6 +1,7 @@
 package com.bonepeople.android.base.sample.module.start
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.bonepeople.android.base.sample.R
@@ -43,6 +44,16 @@ class StartActivity : ViewBindingActivity2<ActivityStartBinding>() {
 
     override fun initData(savedInstanceState: Bundle?) {
         viewModel.init()
+        playBrandAnimation()
+    }
+
+    private fun playBrandAnimation() {
+        views.imageLogo.animate().alpha(1f).setDuration(600).withEndAction {
+            views.imageLogo.postDelayed({
+                views.textAppName.visibility = View.VISIBLE
+                views.textTagline.visibility = View.VISIBLE
+            }, 200)
+        }
     }
 
     private fun navigateToHome() {

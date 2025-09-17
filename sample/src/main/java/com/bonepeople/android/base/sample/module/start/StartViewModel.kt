@@ -21,7 +21,7 @@ class StartViewModel : ViewModel() {
                 pageState.value = PageState.Loading
                 coroutineScope {
                     launch {
-                        delay(1000)
+                        delay(2000)
                     }
                     launch {
                         UserManager.isLogin

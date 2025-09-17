@@ -9,8 +9,9 @@
 
     <LinearLayout
         android:id="@+id/layoutBrand"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -18,19 +19,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <FrameLayout
+        <ImageView
+            android:id="@+id/imageLogo"
             android:layout_width="96dp"
             android:layout_height="96dp"
-            android:background="@drawable/bg_start_icon">
-
-            <ImageView
-                android:id="@+id/imageLogo"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_gravity="center"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_launcher_foreground" />
-        </FrameLayout>
+            android:alpha="0"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_launcher_foreground"
+            tools:alpha="1" />
 
         <TextView
             android:id="@+id/textAppName"
@@ -40,7 +36,9 @@
             android:text="@string/app_name"
             android:textColor="@color/textTitle"
             android:textSize="32sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/textTagline"
@@ -51,7 +49,9 @@
             android:paddingHorizontal="32dp"
             android:text="@string/start_tagline"
             android:textColor="@color/textSecondary"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:visibility="gone"
+            tools:visibility="visible" />
     </LinearLayout>
 
     <TextView
