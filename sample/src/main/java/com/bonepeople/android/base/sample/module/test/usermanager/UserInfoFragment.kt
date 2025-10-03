@@ -1,11 +1,13 @@
 package com.bonepeople.android.base.sample.module.test.usermanager
 
 import android.os.Bundle
-import com.bonepeople.android.base.viewbinding.ViewBindingFragment
+import androidx.core.content.ContextCompat
 import com.bonepeople.android.base.manager.BroadcastAction
+import com.bonepeople.android.base.sample.R
 import com.bonepeople.android.base.sample.databinding.FragmentUserInfoBinding
 import com.bonepeople.android.base.sample.global.UserManager
 import com.bonepeople.android.base.sample.global.data.UserInfo
+import com.bonepeople.android.base.viewbinding.ViewBindingFragment
 import com.bonepeople.android.localbroadcastutil.LocalBroadcastHelper
 import com.bonepeople.android.widget.util.AppRandom
 import com.bonepeople.android.widget.util.AppView.singleClick
@@ -27,9 +29,12 @@ class UserInfoFragment : ViewBindingFragment<FragmentUserInfoBinding>() {
     }
 
     private fun updateView() {
-        views.textViewStatus.text = UserManager.isLogin.toString()
-        views.textViewToken.text = UserManager.token
-        views.textViewId.text = UserManager.userId
-        views.textViewName.text = UserManager.userInfo.name
+        val loggedIn = UserManager.isLogin
+        views.textViewStatus.text = if (loggedIn) "Logged in" else "Not logged in"
+        views.textViewStatus.setTextColor(ContextCompat.getColor(requireContext(), if (loggedIn) R.color.secondary else R.color.textSecondary))
+        views.textViewToken.text = UserManager.token.ifBlank { "—" }
+        views.textViewId.text = UserManager.userId.ifBlank { "—" }
+        views.textViewName.text = UserManager.userInfo.name.ifBlank { "—" }
+        views.buttonLogin.text = if (loggedIn) "Update" else "Login"
     }
 }
