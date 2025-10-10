@@ -25,7 +25,7 @@ class ProductListViewModel : ViewModel() {
             val list = (1..count).map {
                 ProductInfo().apply { name = AppRandom.randomString(5) }
             }
-            countText.value = "count:$count"
+            countText.value = "$count items"
             listData.value = list
             showLoading.value = false
         }
