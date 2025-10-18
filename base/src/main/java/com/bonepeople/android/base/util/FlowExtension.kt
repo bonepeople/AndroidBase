@@ -3,6 +3,7 @@ package com.bonepeople.android.base.util
 import android.widget.CompoundButton
 import android.widget.EditText
 import androidx.core.widget.doAfterTextChanged
+import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
@@ -49,23 +50,32 @@ object FlowExtension {
         }
     }
 
-    fun MutableStateFlow<Boolean>.bindCompoundButton(owner: LifecycleOwner, switch: CompoundButton, changeAction: (Boolean) -> Unit = {}) {
-        var lock = false
-        switch.setOnCheckedChangeListener { _, isChecked ->
-            if (!lock) {
-                lock = true
-                this.value = isChecked
-                changeAction(isChecked)
-                lock = false
+    fun MutableStateFlow<Boolean>.bindCompoundButton(owner: LifecycleOwner, button: CompoundButton, changeAction: suspend (Boolean) -> Unit = {}) {
+        var updatingFromFlow = false
+
+        button.setOnCheckedChangeListener { _, isChecked ->
+            if (updatingFromFlow) return@setOnCheckedChangeListener
+            if (value != isChecked) {
+                value = isChecked
             }
         }
-        observeWithLifecycle(owner) {
-            if (!lock) {
-                lock = true
-                switch.isChecked = it
-                changeAction(it)
-                lock = false
+
+        observeWithLifecycle(owner) { checked ->
+            try {
+                updatingFromFlow = true
+                if (button.isChecked != checked) {
+                    button.isChecked = checked
+                }
+            } finally {
+                updatingFromFlow = false
             }
+            changeAction(checked)
         }
+
+        owner.lifecycle.addObserver(object : DefaultLifecycleObserver {
+            override fun onDestroy(owner: LifecycleOwner) {
+                button.setOnCheckedChangeListener(null)
+            }
+        })
     }
 }
