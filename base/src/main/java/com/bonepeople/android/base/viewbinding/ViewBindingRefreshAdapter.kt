@@ -58,6 +58,13 @@ abstract class ViewBindingRefreshAdapter<V : ViewBinding, D>(diff: DiffUtil.Item
     }
 
     /**
+     * Gets the data item at the specified position.
+     * @param position The position of the item.
+     * @return The data item, or null if the position is out of bounds.
+     */
+    fun getItemOrNull(position: Int): D? = currentList.getOrNull(position)
+
+    /**
      * Callback when the view is first created.
      * @param views An instance of the ViewBinding class corresponding to the view.
      */
