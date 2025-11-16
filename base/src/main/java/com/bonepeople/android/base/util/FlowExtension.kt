@@ -8,12 +8,49 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import com.bonepeople.android.widget.CoroutinesHolder
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 @Suppress("Unused")
 object FlowExtension {
+    fun <T> Flow<T>.throttleLatest(periodMillis: Long): Flow<T> = channelFlow {
+        var pendingValue: T? = null
+        var throttleJob: Job? = null
+        fun startThrottle() {
+            throttleJob = launch {
+                delay(periodMillis)
+                val pending = pendingValue
+                pendingValue = null
+                if (pending != null) {
+                    send(pending)
+                    startThrottle()
+                } else {
+                    throttleJob = null
+                }
+            }
+        }
+        try {
+            collect { value ->
+                if (throttleJob == null) {
+                    send(value)
+                    startThrottle()
+                } else {
+                    pendingValue = value
+                }
+            }
+        } finally {
+            throttleJob?.cancel()
+        }
+    }
+
+    fun <T> StateFlow<T>.throttleLatest(periodMillis: Long): StateFlow<T> {
+        return (this as Flow<T>).throttleLatest(periodMillis).stateIn(CoroutinesHolder.default, SharingStarted.Eagerly, value)
+    }
+
     fun <T> Flow<T>.observeWithLifecycle(owner: LifecycleOwner, activeState: Lifecycle.State = Lifecycle.State.STARTED, action: suspend (T) -> Unit): Job {
         return flowWithLifecycle(owner.lifecycle, activeState).onEach(action).launchIn(owner.lifecycleScope)
     }
