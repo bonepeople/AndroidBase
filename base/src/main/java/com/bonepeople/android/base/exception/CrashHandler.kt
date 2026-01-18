@@ -15,6 +15,7 @@ import kotlinx.coroutines.withTimeout
  *
  * + Captures global uncaught Java exceptions and wraps exception info
  * + Use [setCrashActionWithThread] to define the behavior after a crash is caught and to customize the exception handling flow
+ * + Use [CrashReportStore.loadCrashReports] to retrieve reports persisted by the default crash action
  */
 @Suppress("Unused")
 object CrashHandler : Thread.UncaughtExceptionHandler {

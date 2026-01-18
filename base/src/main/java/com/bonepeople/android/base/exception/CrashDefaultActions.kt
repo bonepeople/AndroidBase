@@ -70,6 +70,7 @@ object CrashDefaultActions {
 
     /**
      * Saves a pretty-printed JSON crash report under [ApplicationHolder.app] cache (same path as legacy default).
+     * The persisted report can be retrieved through [CrashReportStore.loadCrashReports].
      *
      * @return the written file
      */
@@ -77,9 +78,7 @@ object CrashDefaultActions {
         return withContext(Dispatchers.IO) {
             val exceptionInfo = makeExceptionInfo(thread, exception)
             val webContent = GsonBuilder().setPrettyPrinting().create().toJson(exceptionInfo)
-            val path = File(ApplicationHolder.app.cacheDir, "crashReport")
-            path.mkdirs()
-            val file = File(path, "error_${exceptionInfo.timestamp}.txt")
+            val file = CrashReportStore.createCrashReportFile(exceptionInfo.timestamp)
             FileOutputStream(file).use {
                 it.write(webContent.toByteArray())
             }
