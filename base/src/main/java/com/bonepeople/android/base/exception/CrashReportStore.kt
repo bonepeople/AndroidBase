@@ -28,10 +28,7 @@ object CrashReportStore {
         }
     }
 
-    internal fun createCrashReportFile(timestamp: Long): File {
-        crashReportDirectory.mkdirs()
-        return File(crashReportDirectory, "error_$timestamp.txt")
-    }
+    internal fun createCrashReportFile(timestamp: Long): File = File(crashReportDirectory, "error_$timestamp.txt")
 
     private val crashReportDirectory: File
         get() = File(ApplicationHolder.app.cacheDir, "crashReport")
