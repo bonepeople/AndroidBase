@@ -1,14 +1,14 @@
 package com.bonepeople.android.base.sample.module.test.recycleradapter
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bonepeople.android.base.foundation.QuickViewModel
 import com.bonepeople.android.base.sample.global.data.ProductInfo
 import com.bonepeople.android.base.util.CoroutineExtension.launchOnDefault
 import com.bonepeople.android.widget.util.AppRandom
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class ProductListViewModel : ViewModel() {
+class ProductListViewModel : QuickViewModel() {
     val showLoading = MutableStateFlow(false)
     val countText = MutableStateFlow("")
     val listData = MutableStateFlow(emptyList<ProductInfo>())

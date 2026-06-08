@@ -1,17 +1,16 @@
 package com.bonepeople.android.base.sample.module.start
 
-import androidx.lifecycle.ViewModel
+import com.bonepeople.android.base.foundation.QuickViewModel
 import com.bonepeople.android.base.sample.global.UserManager
-import com.bonepeople.android.base.util.ViewModelExtension.initializeOnce
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class StartViewModel : ViewModel() {
+class StartViewModel : QuickViewModel() {
     val pageState: MutableStateFlow<PageState> = MutableStateFlow(PageState.Init)
 
-    fun init() = initializeOnce {
+    fun init() = initialize {
         runCatching {
             pageState.value = PageState.Loading
             coroutineScope {
