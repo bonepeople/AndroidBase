@@ -1,9 +1,9 @@
 package com.bonepeople.android.base.foundation
 
-import com.bonepeople.android.base.manager.BroadcastAction
-import com.bonepeople.android.localbroadcastutil.LocalBroadcastUtil
+import com.bonepeople.android.base.manager.UserStateEvent
 import com.bonepeople.android.widget.util.AppData
 import com.bonepeople.android.widget.util.AppGson
+import com.bonepeople.android.widget.util.event.AppEvent
 import java.lang.reflect.ParameterizedType
 
 @Suppress("UNCHECKED_CAST")
@@ -38,9 +38,9 @@ abstract class QuickUserManager<D> {
         userData.putStringSync(USER_INFO, AppGson.toJson(newInfo))
         userData.putStringSync(USER_ID, resolveUserId(newInfo))
         if (login) {
-            LocalBroadcastUtil.sendBroadcast(BroadcastAction.USER_LOGIN)
+            AppEvent.postAsync(UserStateEvent.LOGIN)
         } else {
-            LocalBroadcastUtil.sendBroadcast(BroadcastAction.USER_UPDATE)
+            AppEvent.postAsync(UserStateEvent.UPDATE)
         }
     }
 
@@ -49,7 +49,7 @@ abstract class QuickUserManager<D> {
             token = ""
             userData.putStringSync(USER_INFO, "")
             userData.putStringSync(USER_ID, resolveUserId(defaultUserInfo))
-            LocalBroadcastUtil.sendBroadcast(BroadcastAction.USER_LOGOUT)
+            AppEvent.postAsync(UserStateEvent.LOGOUT)
         }
     }
 

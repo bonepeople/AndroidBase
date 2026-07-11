@@ -11,11 +11,13 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.withResumed
 import androidx.shade.Protector
 import androidx.viewbinding.ViewBinding
 import com.bonepeople.android.base.databinding.DialogContainerBinding
 import com.bonepeople.android.widget.util.AppView.gone
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -75,13 +77,20 @@ abstract class ViewBindingDialogFragment<V : ViewBinding> : DialogFragment() {
     open fun show(lifecycleOwner: LifecycleOwner? = null) {
         require(dialogFragmentManager != null) { "FragmentManager and tag must be set using setManagerAndTag before calling show." }
         if (isAdded) return
-        lifecycleOwner?.lifecycleScope?.launchWhenResumed {
-            delay(177)
-            show(dialogFragmentManager!!, dialogFragmentTag)
-        } ?: kotlin.runCatching {
-            if (!dialogFragmentManager!!.isStateSaved) {
-                show(dialogFragmentManager!!, dialogFragmentTag)
+        val owner = lifecycleOwner
+        if (owner == null) {
+            kotlin.runCatching {
+                if (!dialogFragmentManager!!.isStateSaved) {
+                    show(dialogFragmentManager!!, dialogFragmentTag)
+                }
             }
+            return
+        }
+        owner.lifecycleScope.launch {
+            owner.withResumed {}
+            delay(177)
+            owner.withResumed {}
+            show(dialogFragmentManager!!, dialogFragmentTag)
         }
     }
 
@@ -92,8 +101,10 @@ abstract class ViewBindingDialogFragment<V : ViewBinding> : DialogFragment() {
     @CallSuper
     override fun dismiss() {
         if (lifecycle.currentState == Lifecycle.State.INITIALIZED) return
-        lifecycleScope.launchWhenResumed {
+        lifecycleScope.launch {
+            withResumed {}
             delay(177)
+            withResumed {}
             super.dismiss()
         }
     }

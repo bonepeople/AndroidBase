@@ -2,15 +2,15 @@ package com.bonepeople.android.base.sample.module.test.usermanager
 
 import android.os.Bundle
 import androidx.core.content.ContextCompat
-import com.bonepeople.android.base.manager.BroadcastAction
+import com.bonepeople.android.base.manager.UserStateEvent
 import com.bonepeople.android.base.sample.R
 import com.bonepeople.android.base.sample.databinding.FragmentUserInfoBinding
 import com.bonepeople.android.base.sample.global.UserManager
 import com.bonepeople.android.base.sample.global.data.UserInfo
 import com.bonepeople.android.base.viewbinding.ViewBindingFragment
-import com.bonepeople.android.localbroadcastutil.LocalBroadcastHelper
 import com.bonepeople.android.widget.util.AppRandom
 import com.bonepeople.android.widget.util.AppView.singleClick
+import com.bonepeople.android.widget.util.event.AppEvent
 
 class UserInfoFragment : ViewBindingFragment<FragmentUserInfoBinding>() {
     override fun initView() {
@@ -25,7 +25,11 @@ class UserInfoFragment : ViewBindingFragment<FragmentUserInfoBinding>() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        LocalBroadcastHelper.register(viewLifecycleOwner, BroadcastAction.USER_LOGIN, BroadcastAction.USER_LOGOUT, BroadcastAction.USER_UPDATE) { updateView() }
+        AppEvent.register(viewLifecycleOwner) { event ->
+            if (event is UserStateEvent) {
+                updateView()
+            }
+        }
     }
 
     private fun updateView() {

@@ -2,7 +2,7 @@ ext {
     androidConfig = [
             minSdk     : 23,
             targetSdk  : 33,
-            compileSdk : 33,
+            compileSdk : 34,
             versionCode: 44,
             versionName: "1.7.4",
     ]

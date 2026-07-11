@@ -21,11 +21,11 @@ object ViewModelExtension {
     val ViewModel.lifecycleOwner: LifecycleOwner
         get() {
             val lifecycleOwner: LifecycleOwner? = getExtra(LIFECYCLE_KEY)
-            return lifecycleOwner ?: putExtraIfAbsent(LIFECYCLE_KEY, LifecycleOwnerHolder())
+            return lifecycleOwner ?: putExtraIfAbsent(LIFECYCLE_KEY) { LifecycleOwnerHolder() }
         }
 
     fun ViewModel.initializeOnce(block: suspend () -> Unit) {
-        val initialized = putExtraIfAbsent(key = INITIALIZE_ONCE_KEY, value = AtomicBoolean(false))
+        val initialized = putExtraIfAbsent(INITIALIZE_ONCE_KEY) { AtomicBoolean(false) }
         if (!initialized.compareAndSet(false, true)) return
 
         viewModelScope.launchOnDefault {
