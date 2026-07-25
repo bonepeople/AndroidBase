@@ -82,7 +82,8 @@ class StandardActivity : ViewBindingActivity2<ActivityStandardBinding>() {
         fun open(
             fragment: Fragment,
             config: StandardActivityConfig = StandardActivityConfig.Empty,
-        ) = ActivityHolder.getTopActivity()?.let { activity ->
+        ) {
+            val activity = requireTopActivity()
             val requestKey = UUID.randomUUID().toString()
             requestContainer[requestKey] = LaunchRequest(fragment, config)
             try {
@@ -108,20 +109,22 @@ class StandardActivity : ViewBindingActivity2<ActivityStandardBinding>() {
             fragment: Fragment,
             config: StandardActivityConfig = StandardActivityConfig.Empty,
         ): IntentResult {
-            val activity = ActivityHolder.getTopActivity()
-            return if (activity == null) {
-                throw IllegalStateException("No Activity to call startActivityForResult")
-            } else {
-                val requestKey = UUID.randomUUID().toString()
-                requestContainer[requestKey] = LaunchRequest(fragment, config)
-                try {
-                    Intent(activity, StandardActivity::class.java).apply {
-                        putExtra(FRAGMENT_KEY, requestKey)
-                    }.launch()
-                } catch (throwable: Throwable) {
-                    requestContainer.remove(requestKey)
-                    throw throwable
-                }
+            val activity = requireTopActivity()
+            val requestKey = UUID.randomUUID().toString()
+            requestContainer[requestKey] = LaunchRequest(fragment, config)
+            return try {
+                Intent(activity, StandardActivity::class.java).apply {
+                    putExtra(FRAGMENT_KEY, requestKey)
+                }.launch()
+            } catch (throwable: Throwable) {
+                requestContainer.remove(requestKey)
+                throw throwable
+            }
+        }
+
+        private fun requireTopActivity(): Activity {
+            return checkNotNull(ActivityHolder.getTopActivity()) {
+                "No Activity available to launch StandardActivity"
             }
         }
     }
