@@ -10,72 +10,119 @@ import com.bonepeople.android.base.viewbinding.ViewBindingActivity2
 import com.bonepeople.android.widget.ActivityHolder
 import com.bonepeople.android.widget.activity.result.IntentResult
 import com.bonepeople.android.widget.activity.result.launch
-import java.util.*
+import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
 
 class StandardActivity : ViewBindingActivity2<ActivityStandardBinding>() {
+    private var requestKey: String? = null
+    private var launchRequest: LaunchRequest? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        val key = getRequestKey()
+        requestKey = key
+        launchRequest = requestContainer[key]
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun setStatusBar() {
+        launchRequest?.config?.statusBar?.invoke(this) ?: statusBar?.invoke(this) ?: super.setStatusBar()
+    }
 
     override fun initView() {
         // Initialize views here if needed
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        val fragmentKey = Protector.protect { intent.getStringExtra(FRAGMENT_KEY) ?: "default_key" }
-        var fragment = supportFragmentManager.findFragmentByTag(fragmentKey)
+        val key = requestKey ?: DEFAULT_KEY
+        var fragment = supportFragmentManager.findFragmentByTag(key)
         if (fragment == null) {
-            fragment = getFragment(fragmentKey)
-            supportFragmentManager.beginTransaction().add(views.fragmentContainerViewActivity.id, fragment, fragmentKey).commit()
+            fragment = launchRequest?.fragment ?: ErrorFragment()
+            launchRequest?.fragment = null
+            supportFragmentManager.beginTransaction().add(views.fragmentContainerViewActivity.id, fragment, key).commit()
         }
-        onInit?.invoke(savedInstanceState)
+        launchRequest?.config?.onInit?.invoke(this, savedInstanceState) ?: onInit?.invoke(savedInstanceState)
     }
 
-    override fun setStatusBar() {
-        statusBar?.invoke(this) ?: run { super.setStatusBar() }
+    override fun onDestroy() {
+        if (isFinishing) {
+            requestKey?.let(requestContainer::remove)
+        }
+        super.onDestroy()
     }
 
     override fun toString(): String {
         val hash = System.identityHashCode(this).toString(16)
-        val fragmentKey = Protector.protect { intent.getStringExtra(FRAGMENT_KEY) ?: "default_key" }
-        val fragment = supportFragmentManager.findFragmentByTag(fragmentKey)
+        val key = getRequestKey()
+        val fragment = supportFragmentManager.findFragmentByTag(key)
         return "StandardActivity@$hash => $fragment"
     }
 
+    private fun getRequestKey(): String {
+        return Protector.protect { intent.getStringExtra(FRAGMENT_KEY) ?: DEFAULT_KEY }
+    }
+
+    private class LaunchRequest(
+        var fragment: Fragment?,
+        val config: StandardActivityConfig,
+    )
+
     companion object {
         private const val FRAGMENT_KEY = "FRAGMENT_KEY"
-        private val fragmentContainer = HashMap<String, Fragment>()
+        private const val DEFAULT_KEY = "default_key"
+        private val requestContainer = ConcurrentHashMap<String, LaunchRequest>()
         var statusBar: (StandardActivity.() -> Unit)? = null
         var onInit: ((savedInstanceState: Bundle?) -> Unit)? = null
 
         /**
-         * Opens a new page via [startActivity] and loads the given [Fragment]
+         * Opens a new page via [startActivity], loads the given [Fragment], and applies [config] to this request only.
+         *
+         * The configuration is kept only in the current process and cannot be restored after process death.
          */
-        fun open(fragment: Fragment) = ActivityHolder.getTopActivity()?.let {
-            val fragmentKey = UUID.randomUUID().toString()
-            fragmentContainer[fragmentKey] = fragment
-            Intent(it, this::class.java.enclosingClass).run {
-                putExtra(FRAGMENT_KEY, fragmentKey)
-                it.startActivity(this)
+        @JvmOverloads
+        fun open(
+            fragment: Fragment,
+            config: StandardActivityConfig = StandardActivityConfig.Empty,
+        ) = ActivityHolder.getTopActivity()?.let { activity ->
+            val requestKey = UUID.randomUUID().toString()
+            requestContainer[requestKey] = LaunchRequest(fragment, config)
+            try {
+                Intent(activity, StandardActivity::class.java).run {
+                    putExtra(FRAGMENT_KEY, requestKey)
+                    activity.startActivity(this)
+                }
+            } catch (throwable: Throwable) {
+                requestContainer.remove(requestKey)
+                throw throwable
             }
         }
 
         /**
-         * Opens a new page via [startActivityForResult] and loads the given [Fragment]
+         * Opens a new page via [startActivityForResult], loads the given [Fragment], and applies [config] to this request only.
+         *
+         * The configuration is kept only in the current process and cannot be restored after process death.
+         *
          * @return [IntentResult] for handling the result returned from the [Activity]
          */
-        fun call(fragment: Fragment): IntentResult {
+        @JvmOverloads
+        fun call(
+            fragment: Fragment,
+            config: StandardActivityConfig = StandardActivityConfig.Empty,
+        ): IntentResult {
             val activity = ActivityHolder.getTopActivity()
             return if (activity == null) {
                 throw IllegalStateException("No Activity to call startActivityForResult")
             } else {
-                val fragmentKey = UUID.randomUUID().toString()
-                fragmentContainer[fragmentKey] = fragment
-                Intent(activity, this::class.java.enclosingClass).apply {
-                    putExtra(FRAGMENT_KEY, fragmentKey)
-                }.launch()
+                val requestKey = UUID.randomUUID().toString()
+                requestContainer[requestKey] = LaunchRequest(fragment, config)
+                try {
+                    Intent(activity, StandardActivity::class.java).apply {
+                        putExtra(FRAGMENT_KEY, requestKey)
+                    }.launch()
+                } catch (throwable: Throwable) {
+                    requestContainer.remove(requestKey)
+                    throw throwable
+                }
             }
-        }
-
-        private fun getFragment(fragmentKey: String): Fragment {
-            return fragmentContainer.remove(fragmentKey) ?: ErrorFragment()
         }
     }
 }
