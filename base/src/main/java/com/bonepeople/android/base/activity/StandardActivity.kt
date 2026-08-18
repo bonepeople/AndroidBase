@@ -21,6 +21,12 @@ class StandardActivity : ViewBindingActivity2<ActivityStandardBinding>() {
         val key = getRequestKey()
         requestKey = key
         launchRequest = requestContainer[key]
+        try {
+            launchRequest?.config?.beforeCreate?.invoke(this, savedInstanceState)
+        } catch (throwable: Throwable) {
+            requestContainer.remove(key)
+            throw throwable
+        }
         super.onCreate(savedInstanceState)
     }
 
