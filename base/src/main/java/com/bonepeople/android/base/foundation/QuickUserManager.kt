@@ -1,6 +1,7 @@
 package com.bonepeople.android.base.foundation
 
 import com.bonepeople.android.base.manager.UserStateEvent
+import com.bonepeople.android.widget.CoroutinesHolder
 import com.bonepeople.android.widget.util.AppData
 import com.bonepeople.android.widget.util.AppGson
 import com.bonepeople.android.widget.util.event.AppEvent
@@ -12,17 +13,6 @@ abstract class QuickUserManager<D> {
     private val defaultUserInfo: D = userClass.newInstance() as D
     private val userData: AppData = AppData.create("com.bonepeople.android.base.manager.BaseUserManager")
 
-    var token: String = USER_TOKEN
-        get() {
-            if (field == USER_TOKEN) {
-                field = userData.getStringSync(USER_TOKEN)
-            }
-            return field
-        }
-        set(value) {
-            userData.putStringSync(USER_TOKEN, value)
-            field = value
-        }
     val userId: String
         get() = userData.getStringSync(USER_ID)
     val userInfo: D
@@ -33,29 +23,42 @@ abstract class QuickUserManager<D> {
             return userId.isNotBlank()
         }
 
-    fun login(newInfo: D) {
-        val login = !isLogin
-        userData.putStringSync(USER_INFO, AppGson.toJson(newInfo))
-        userData.putStringSync(USER_ID, resolveUserId(newInfo))
-        if (login) {
-            AppEvent.postAsync(UserStateEvent.LOGIN)
-        } else {
-            AppEvent.postAsync(UserStateEvent.UPDATE)
+    suspend fun login(newInfo: D) {
+        CoroutinesHolder.runSerial(SERIAL_NAME) {
+            val event = if (userData.getString(USER_ID).isBlank()) UserStateEvent.LOGIN else UserStateEvent.UPDATE
+            userData.putString(USER_INFO, AppGson.toJson(newInfo))
+            userData.putString(USER_ID, resolveUserId(newInfo))
+            AppEvent.post(event)
         }
     }
 
-    fun logout() {
-        if (isLogin) {
-            token = ""
-            userData.putStringSync(USER_INFO, "")
-            userData.putStringSync(USER_ID, resolveUserId(defaultUserInfo))
-            AppEvent.postAsync(UserStateEvent.LOGOUT)
+    suspend fun logout() {
+        CoroutinesHolder.runSerial(SERIAL_NAME) {
+            if (userData.getString(USER_ID).isBlank()) return@runSerial
+
+            userData.putString(USER_TOKEN, "")
+            userData.putString(USER_INFO, "")
+            userData.putString(USER_ID, resolveUserId(defaultUserInfo))
+            AppEvent.post(UserStateEvent.LOGOUT)
+        }
+    }
+
+    suspend fun getToken(): String {
+        return CoroutinesHolder.runSerial(SERIAL_NAME) {
+            userData.getString(USER_TOKEN)
+        }
+    }
+
+    suspend fun setToken(value: String) {
+        CoroutinesHolder.runSerial(SERIAL_NAME) {
+            userData.putString(USER_TOKEN, value)
         }
     }
 
     abstract fun resolveUserId(userInfo: D): String
 
     companion object {
+        private const val SERIAL_NAME = "com.bonepeople.android.base.manager.BaseUserManager.serial"
         private const val USER_TOKEN = "com.bonepeople.android.key.USER_TOKEN"
         private const val USER_ID = "com.bonepeople.android.key.USER_ID"
         private const val USER_INFO = "com.bonepeople.android.key.USER_INFO"
